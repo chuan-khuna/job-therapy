@@ -28,9 +28,7 @@ export default async function ArticlePage({
 
   return (
     <main className="flex-1">
-      <article
-        style={{ maxWidth: "680px", margin: "0 auto", padding: "3rem 2rem" }}
-      >
+      <article className="mx-auto max-w-[680px] px-5 py-10 sm:px-8 sm:py-12">
         <p
           style={{
             fontSize: "11px",
@@ -46,7 +44,7 @@ export default async function ArticlePage({
           </Link>
           {meta.date && <> · {meta.date}</>}
         </p>
-        <div className="article-prose">
+        <div className="prose max-w-none">
           <Content />
         </div>
       </article>
