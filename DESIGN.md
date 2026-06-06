@@ -31,6 +31,7 @@ File: `styles/presets/warm-paper.css`
 | `--color-accent-fg` | `oklch(99% 0.005 88)` | 白 shiro warm | Text on accent — warm white |
 | `--color-destructive` | `oklch(60% 0.13 38)` | — | Terracotta — warm delete / error |
 | `--color-destructive-hover` | `oklch(54% 0.13 38)` | — | Destructive on hover |
+| `--color-destructive-subtle` | `oklch(94% 0.025 38)` | — | Tinted terracotta background (selected "no" states) |
 | `--color-destructive-fg` | `oklch(99% 0.005 38)` | — | Text on destructive |
 
 **Accent rationale:** やぶきた yabukita (H148) at C=0.125 — the full matcha scale runs C=0.170–0.178 at the vivid stops; pulling back to 0.125 keeps the green legible but unhurried. **Borders use H142** (tsuyuhikari range), giving card edges and dividers a barely-perceptible green cast that reinforces the tea palette without being visible at a glance. Use `--color-accent-subtle` (sencha-range, muted) for selected / hover fill states.
@@ -52,8 +53,8 @@ File: `styles/presets/warm-paper.css`
 
 ### Typography
 
-- **Heading font**: serif (system `Georgia`) — warm, editorial, always roman (`font-style: normal`)
-- **Body font**: `ui-sans-serif, system-ui` — legible, neutral
+- **Heading font**: `Bai Jamjuree` (`--font-serif` slot, via `next/font`) — warm, editorial, always roman (`font-style: normal`)
+- **Body font**: `Noto Sans Thai Looped` (`--font-sans`, via `next/font`) — legible, neutral
 - **Mono font**: `ui-monospace` — for scores and data
 - Base size: `1rem` / `16px`
 - Line height: `1.65` for body, `1.25` for headings

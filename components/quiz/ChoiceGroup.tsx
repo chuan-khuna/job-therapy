@@ -4,27 +4,34 @@ interface ChoiceGroupProps {
   value?: boolean;
   yesLabel?: string;
   noLabel?: string;
-  onChange: (val: boolean) => void;
+  onChange: (val: boolean | null) => void;
 }
 
-function btn(selected: boolean): React.CSSProperties {
-  return {
-    padding: "5px 16px", borderRadius: "5px",
-    border: `1px solid ${selected ? "var(--color-text)" : "var(--color-border-strong)"}`,
-    background: selected ? "var(--color-text)" : "var(--color-surface)",
-    color: selected ? "var(--color-bg)" : "var(--color-text)",
-    fontFamily: "var(--font-sans)", fontSize: "13px",
-    fontWeight: selected ? 500 : 400,
-    cursor: "pointer", minWidth: "54px", textAlign: "center",
-    transition: "all 0.1s",
-  };
-}
+const compact: React.CSSProperties = {
+  padding: "5px 16px",
+  fontSize: "13px",
+  minWidth: "54px",
+  textAlign: "center",
+};
 
 export default function ChoiceGroup({ value, yesLabel = "ใช่", noLabel = "ไม่", onChange }: ChoiceGroupProps) {
+  // Clicking the already-selected choice clears the answer
   return (
     <div style={{ display: "flex", gap: "6px" }}>
-      <button style={btn(value === true)} onClick={() => onChange(true)}>{yesLabel}</button>
-      <button style={btn(value === false)} onClick={() => onChange(false)}>{noLabel}</button>
+      <button
+        className={`option-btn${value === true ? " selected" : ""}`}
+        style={compact}
+        onClick={() => onChange(value === true ? null : true)}
+      >
+        {yesLabel}
+      </button>
+      <button
+        className={`option-btn option-destructive${value === false ? " selected-destructive" : ""}`}
+        style={compact}
+        onClick={() => onChange(value === false ? null : false)}
+      >
+        {noLabel}
+      </button>
     </div>
   );
 }

@@ -27,7 +27,7 @@ export default function PageHeader({ title, subtitle, source, right }: PageHeade
         <div>
           <h2
             style={{
-              fontFamily: "Georgia, 'Times New Roman', serif",
+              fontFamily: "var(--font-serif)",
               fontSize: "18px",
               fontWeight: 700,
               letterSpacing: "-0.02em",

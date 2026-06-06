@@ -27,7 +27,7 @@ export default function Nav() {
         <Link
           href="/"
           style={{
-            fontFamily: "Georgia, 'Times New Roman', serif",
+            fontFamily: "var(--font-serif)",
             fontSize: "15px",
             fontWeight: 700,
             color: "var(--color-ink)",

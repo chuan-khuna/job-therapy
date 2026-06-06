@@ -1,26 +1,23 @@
 import { HTMLAttributes } from "react";
 
-type TagVariant = "default" | "accent" | "muted";
+type TagVariant = "default" | "accent" | "ink";
 
 interface TagProps extends HTMLAttributes<HTMLSpanElement> {
   variant?: TagVariant;
 }
 
-const variants: Record<TagVariant, React.CSSProperties> = {
-  default: { background: "var(--color-border)", color: "var(--color-text-muted)" },
-  accent:  { background: "var(--color-accent-subtle)", color: "var(--color-accent)" },
-  muted:   { background: "var(--color-surface)", color: "var(--color-text-muted)", border: "1px solid var(--color-border)" },
+const variantClass: Record<TagVariant, string> = {
+  default: "",
+  accent: "badge-accent",
+  ink: "badge-ink",
 };
 
-export default function Tag({ variant = "default", style, children, ...props }: TagProps) {
+export default function Tag({ variant = "default", className, style, children, ...props }: TagProps) {
+  const classes = ["badge", variantClass[variant], className ?? ""].filter(Boolean).join(" ");
   return (
     <span
-      style={{
-        display: "inline-flex", alignItems: "center",
-        fontSize: "10px", fontFamily: "var(--font-mono)",
-        padding: "2px 6px", borderRadius: "3px", lineHeight: 1.4,
-        ...variants[variant], ...style,
-      }}
+      className={classes}
+      style={{ fontSize: "10px", padding: "2px 8px", lineHeight: 1.5, ...style }}
       {...props}
     >
       {children}

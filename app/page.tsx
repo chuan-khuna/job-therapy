@@ -1,4 +1,3 @@
-import Link from "next/link";
 import QuizCard from "@/components/home/QuizCard";
 import SectionLabel from "@/components/shared/SectionLabel";
 import { getLastResultDate } from "@/lib/db/results";
@@ -50,7 +49,7 @@ export default function HomePage() {
           </p>
           <h1
             style={{
-              fontFamily: "Georgia, 'Times New Roman', serif",
+              fontFamily: "var(--font-serif)",
               fontSize: "clamp(2rem, 5vw, 3.25rem)",
               fontWeight: 700,
               lineHeight: 1.15,

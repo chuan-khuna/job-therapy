@@ -7,9 +7,9 @@ interface StatusDotProps extends HTMLAttributes<HTMLSpanElement> {
 }
 
 const colors: Record<DotState, string> = {
-  idle:    "var(--color-border-strong)",
-  partial: "var(--color-text-muted)",
-  active:  "var(--color-text)",
+  idle:    "var(--color-border)",
+  partial: "var(--color-border-strong)",
+  active:  "var(--color-accent)",
 };
 
 export default function StatusDot({ state = "idle", style, ...props }: StatusDotProps) {

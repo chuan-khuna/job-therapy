@@ -53,8 +53,15 @@ export default function QuizClient({ recentResults, today }: Props) {
   const [saved, setSaved] = useState(false);
   const [isPending, startTransition] = useTransition();
 
-  function handleAnswer(id: number, val: boolean) {
-    setAnswers((prev) => ({ ...prev, [id]: val }));
+  function handleAnswer(id: number, val: boolean | null) {
+    setAnswers((prev) => {
+      if (val === null) {
+        const rest = { ...prev };
+        delete rest[id];
+        return rest;
+      }
+      return { ...prev, [id]: val };
+    });
     setSaved(false);
   }
 

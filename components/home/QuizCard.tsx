@@ -20,18 +20,10 @@ export default function QuizCard({
 }: QuizCardProps) {
   return (
     <Link href={href} style={{ textDecoration: "none", display: "block" }}>
-      <div
-        style={{
-          background: "var(--color-surface)",
-          border: "1px solid var(--color-border)",
-          borderRadius: "8px",
-          padding: "1rem 1.25rem",
-          transition: "border-color 0.15s",
-        }}
-      >
+      <div className="card card-link" style={{ padding: "1.25rem 1.5rem" }}>
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "1rem" }}>
           <div>
-            <p style={{ fontSize: "14px", fontWeight: 500, color: "var(--color-text)", marginBottom: "4px" }}>
+            <p style={{ fontFamily: "var(--font-serif)", fontSize: "16px", fontWeight: 700, color: "var(--color-ink)", marginBottom: "4px" }}>
               {name}
             </p>
             <p style={{ fontSize: "13px", color: "var(--color-text-muted)", lineHeight: 1.5 }}>

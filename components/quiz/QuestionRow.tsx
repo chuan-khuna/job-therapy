@@ -10,7 +10,7 @@ interface QuestionRowProps {
   showNote?: boolean;
   value?: boolean;
   isLast?: boolean;
-  onChange: (val: boolean) => void;
+  onChange: (val: boolean | null) => void;
 }
 
 export default function QuestionRow({ id, text, note, showNote, value, isLast, onChange }: QuestionRowProps) {
