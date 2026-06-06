@@ -1,0 +1,25 @@
+/* night-matcha · warm-paper's dark companion
+   same matcha accent, warm charcoal washi · v4 */
+[data-theme="night-matcha"] {
+  /* charcoal washi surfaces */
+  --color-bg: oklch(18% 0.012 80);
+  --color-surface: oklch(21% 0.012 80);
+  --color-surface-raised: oklch(25% 0.014 82);
+  /* matcha-tinted borders */
+  --color-border: oklch(32% 0.016 142);
+  --color-border-strong: oklch(44% 0.032 148);
+  /* warm paper text */
+  --color-text: oklch(90% 0.012 88);
+  --color-text-muted: oklch(66% 0.012 84);
+  --color-ink: oklch(96% 0.01 88);
+  /* matcha, lifted for dark ground */
+  --color-accent: oklch(72% 0.11 148);
+  --color-accent-hover: oklch(78% 0.115 148);
+  --color-accent-subtle: oklch(30% 0.04 150);
+  --color-accent-fg: oklch(16% 0.02 148);
+  /* terracotta destructive */
+  --color-destructive: oklch(68% 0.13 38);
+  --color-destructive-hover: oklch(74% 0.13 38);
+  --color-destructive-subtle: oklch(28% 0.04 38);
+  --color-destructive-fg: oklch(16% 0.02 38);
+}

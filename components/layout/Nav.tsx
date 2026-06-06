@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ThemeSwitcher from "./ThemeSwitcher";
 
 export default function Nav() {
   return (
@@ -51,6 +52,7 @@ export default function Nav() {
           >
             แบบประเมิน
           </Link>
+          <ThemeSwitcher />
         </div>
       </div>
     </nav>

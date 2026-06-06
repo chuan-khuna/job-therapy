@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "../styles/presets/warm-paper.css";
+@import "../styles/presets/night-matcha.css";
 
 :root {
   /* Latin font first, Thai fallback second (loaded via next/font in app/layout.tsx) */

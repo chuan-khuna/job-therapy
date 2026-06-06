@@ -54,8 +54,17 @@ export default function RootLayout({
     <html
       lang="th"
       data-theme="warm-paper"
+      suppressHydrationWarning
       className={`${newsreader.variable} ${baiJamjuree.variable} ${notoSans.variable} ${notoSansThaiLooped.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
+      <head>
+        {/* Apply the saved theme before first paint to avoid a flash */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}`,
+          }}
+        />
+      </head>
       <body className="flex min-h-full flex-col">
         <Nav />
         {children}
