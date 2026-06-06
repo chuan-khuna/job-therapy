@@ -90,7 +90,9 @@ export default function TimePicker({ value, onChange }: TimePickerProps) {
           emit(digits, minute);
           if (digits.length === 2) minuteRef.current?.focus();
         }}
-        onBlur={() => setHour(pad2(hour))}
+        // functional update — blur fires synchronously when auto-advance
+        // moves focus, and the closure's `hour` is stale at that point
+        onBlur={() => setHour((h) => pad2(h))}
         onKeyDown={keyHandler("hour")}
       />
       <span style={{ color: "var(--color-text-muted)" }}>:</span>
@@ -105,7 +107,7 @@ export default function TimePicker({ value, onChange }: TimePickerProps) {
         onChange={(e) =>
           emit(hour, handleSegment(e.target.value, 59, setMinute))
         }
-        onBlur={() => setMinute(pad2(minute))}
+        onBlur={() => setMinute((m) => pad2(m))}
         onKeyDown={keyHandler("minute")}
       />
       <span style={{ fontSize: "13px", color: "var(--color-text-muted)" }}>
