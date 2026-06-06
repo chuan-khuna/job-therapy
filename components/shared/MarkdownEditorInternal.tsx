@@ -7,8 +7,9 @@ import { Markdown } from "tiptap-markdown";
 
 export interface MarkdownEditorProps {
   value: string;
-  onChange: (markdown: string) => void;
+  onChange?: (markdown: string) => void;
   placeholder?: string;
+  readOnly?: boolean;
 }
 
 // Very minimal: no toolbar — markdown shortcuts only
@@ -17,6 +18,7 @@ export default function MarkdownEditorInternal({
   value,
   onChange,
   placeholder,
+  readOnly = false,
 }: MarkdownEditorProps) {
   const editor = useEditor({
     extensions: [
@@ -25,17 +27,18 @@ export default function MarkdownEditorInternal({
       Placeholder.configure({ placeholder: placeholder ?? "" }),
     ],
     content: value,
+    editable: !readOnly,
     immediatelyRender: false,
     editorProps: {
       attributes: { class: "md-editor-content" },
     },
     onUpdate({ editor }) {
-      onChange(editor.storage.markdown.getMarkdown());
+      onChange?.(editor.storage.markdown.getMarkdown());
     },
   });
 
   return (
-    <div className="md-editor">
+    <div className={readOnly ? "md-editor readonly" : "md-editor"}>
       <EditorContent editor={editor} />
     </div>
   );

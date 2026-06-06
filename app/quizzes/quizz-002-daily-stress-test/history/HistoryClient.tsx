@@ -6,6 +6,7 @@ import { Trash2 } from "lucide-react";
 import SectionLabel from "@/components/shared/SectionLabel";
 import Tag from "@/components/shared/Tag";
 import Button from "@/components/shared/Button";
+import MarkdownEditor from "@/components/shared/MarkdownEditor";
 import type { QuizResult } from "@/lib/db/results";
 import { EMPTY_ANSWERS, QUIZ_ID, type StressAnswers } from "../quiz-def";
 import StressForm from "../StressForm";
@@ -28,11 +29,126 @@ function timeOf(createdAt: string): string {
   });
 }
 
-// Editable detail — remounted per entry via key={result.id}
+function FieldLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <p
+      style={{
+        fontSize: "14px",
+        fontWeight: 500,
+        color: "var(--color-text)",
+        marginBottom: "8px",
+      }}
+    >
+      {children}
+    </p>
+  );
+}
+
+function Field({ children }: { children: React.ReactNode }) {
+  return <div style={{ padding: "0.9rem 0" }}>{children}</div>;
+}
+
+// Single answer rendered as a badge; muted dash when unanswered
+function Value({ children }: { children?: string }) {
+  if (!children) {
+    return (
+      <p style={{ fontSize: "0.85rem", color: "var(--color-text-muted)" }}>—</p>
+    );
+  }
+  return <Tag>{children}</Tag>;
+}
+
+// Read-only rendering of a submitted entry
+function ResultView({ answers }: { answers: StressAnswers }) {
+  return (
+    <>
+      <SectionLabel size="lg" style={{ marginBottom: "0.5rem" }}>
+        ตอนเช้า · ก่อนเริ่มงาน
+      </SectionLabel>
+      <Field>
+        <FieldLabel>เมื่อนึกถึงวันนี้ คุณกังวลเรื่องอะไรมากที่สุด</FieldLabel>
+        {answers.morningWorry.trim() ? (
+          <MarkdownEditor value={answers.morningWorry} readOnly />
+        ) : (
+          <Value>{""}</Value>
+        )}
+      </Field>
+
+      <SectionLabel size="lg" style={{ margin: "1.5rem 0 0.5rem" }}>
+        ตอนเย็น · ก่อนเข้านอน
+      </SectionLabel>
+      <Field>
+        <FieldLabel>อธิบายเหตุการณ์</FieldLabel>
+        {answers.event.trim() ? (
+          <MarkdownEditor value={answers.event} readOnly />
+        ) : (
+          <Value>{""}</Value>
+        )}
+      </Field>
+
+      <Field>
+        <FieldLabel>ตอนนั้นเป็นเวลากี่โมง</FieldLabel>
+        <Value>{answers.time ? `${answers.time} น.` : ""}</Value>
+      </Field>
+
+      <Field>
+        <FieldLabel>คุณอยู่ที่ไหน</FieldLabel>
+        <Value>{answers.location}</Value>
+      </Field>
+
+      <Field>
+        <FieldLabel>คุณอยู่กับใคร</FieldLabel>
+        {answers.companions.length > 0 ? (
+          <span style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
+            {answers.companions.map((c) => (
+              <Tag key={c}>{c}</Tag>
+            ))}
+          </span>
+        ) : (
+          <Value>{""}</Value>
+        )}
+      </Field>
+
+      <Field>
+        <FieldLabel>ใช่สถานการณ์เดียวกับที่กังวลไว้ตอนเช้าหรือไม่</FieldLabel>
+        <Value>
+          {answers.sameAsMorning === null
+            ? ""
+            : answers.sameAsMorning
+              ? "ใช่"
+              : "ไม่"}
+        </Value>
+      </Field>
+
+      <Field>
+        <FieldLabel>สถานการณ์นี้เกิดขึ้นบ่อยแค่ไหน</FieldLabel>
+        <Value>{answers.frequency}</Value>
+      </Field>
+
+      <Field>
+        <FieldLabel>
+          ตอนเช้า คุณรู้สึกลบหรือบวกแค่ไหนกับเรื่องที่กังวล
+        </FieldLabel>
+        <Value>{answers.morningFeeling}</Value>
+      </Field>
+
+      <Field>
+        <FieldLabel>
+          ตอนเย็น คุณรู้สึกลบหรือบวกแค่ไหนกับเหตุการณ์ที่บันทึก
+        </FieldLabel>
+        <Value>{answers.eveningFeeling}</Value>
+      </Field>
+    </>
+  );
+}
+
+// Detail panel — read-only by default, edit mode via top-right button.
+// Remounted per entry via key={result.id}
 function EditPanel({ result }: { result: QuizResult }) {
   const [answers, setAnswers] = useState<StressAnswers>(() =>
     answersOf(result),
   );
+  const [editing, setEditing] = useState(false);
   const [saved, setSaved] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -48,6 +164,7 @@ function EditPanel({ result }: { result: QuizResult }) {
     startTransition(async () => {
       await updateResultAction(result.id, answers);
       setSaved(true);
+      setEditing(false);
     });
   }
 
@@ -75,14 +192,27 @@ function EditPanel({ result }: { result: QuizResult }) {
               บันทึกแล้ว
             </span>
           )}
-          <Button
-            variant="primary"
-            size="sm"
-            disabled={isPending}
-            onClick={handleSave}
-          >
-            {isPending ? "กำลังบันทึก…" : "บันทึกการแก้ไข"}
-          </Button>
+          {editing ? (
+            <Button
+              variant="primary"
+              size="sm"
+              disabled={isPending}
+              onClick={handleSave}
+            >
+              {isPending ? "กำลังบันทึก…" : "บันทึก"}
+            </Button>
+          ) : (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                setSaved(false);
+                setEditing(true);
+              }}
+            >
+              แก้ไข
+            </Button>
+          )}
         </div>
       </div>
       <hr
@@ -92,7 +222,11 @@ function EditPanel({ result }: { result: QuizResult }) {
           marginBottom: "1rem",
         }}
       />
-      <StressForm answers={answers} onUpdate={update} />
+      {editing ? (
+        <StressForm answers={answers} onUpdate={update} />
+      ) : (
+        <ResultView answers={answers} />
+      )}
     </div>
   );
 }
@@ -255,19 +389,14 @@ export default function HistoryClient({ results }: Props) {
                   )}
                 </span>
                 <span style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
-                  {a.location && (
+                  {a.morningFeeling && (
                     <Tag variant={isSelected ? "surface" : "default"}>
-                      {a.location}
-                    </Tag>
-                  )}
-                  {a.time && (
-                    <Tag variant={isSelected ? "surface" : "default"}>
-                      {a.time} น.
+                      เช้า · {a.morningFeeling}
                     </Tag>
                   )}
                   {a.eveningFeeling && (
                     <Tag variant={isSelected ? "surface" : "default"}>
-                      {a.eveningFeeling}
+                      เย็น · {a.eveningFeeling}
                     </Tag>
                   )}
                 </span>

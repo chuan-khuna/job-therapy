@@ -216,13 +216,24 @@ h4 {
     border-color 120ms,
     box-shadow 120ms;
 }
+/* read-only free-text answer — quote-like left rule, not an input box */
+.md-editor.readonly {
+  border: none;
+  border-left: 3px solid var(--color-border-strong);
+  border-radius: 0;
+  background: transparent;
+}
+.md-editor.readonly .md-editor-content {
+  padding: 0.1rem 0 0.1rem 0.75rem;
+  min-height: 0;
+}
 .md-editor:focus-within {
   border-color: var(--color-accent);
   box-shadow: 0 0 0 3px oklch(54% 0.125 148 / 0.12);
 }
 .md-editor-content {
   font-family: var(--font-sans);
-  font-size: 0.95rem;
+  font-size: 0.75rem;
   color: var(--color-text);
   min-height: 90px;
   line-height: 1.65;
