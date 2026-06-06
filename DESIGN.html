@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="warm-paper">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Design Reference — Job Therapy</title>
+<style>
+  /* ── warm-paper theme tokens ── */
+  [data-theme="warm-paper"] {
+    --color-bg:             oklch(97% 0.015 88);
+    --color-surface:        oklch(94% 0.014 100);
+    --color-surface-raised: oklch(99% 0.008 90);
+    --color-border:         oklch(72% 0.022 112);
+    --color-text:           oklch(22% 0.018 100);
+    --color-text-muted:     oklch(54% 0.020 115);
+    --color-accent:         oklch(52% 0.10 142);
+    --color-accent-hover:   oklch(46% 0.10 142);
+    --color-accent-fg:      oklch(98% 0.006 90);
+    --color-ink:            oklch(20% 0.020 100);
+    --color-shadow:         oklch(72% 0.022 112);
+  }
+
+  /* ── reset & base ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    padding: 2rem;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: Georgia, 'Times New Roman', serif;
+    color: var(--color-ink);
+    line-height: 1.2;
+  }
+
+  h1 { font-size: 2rem; margin-bottom: 0.25rem; }
+  h2 { font-size: 1.35rem; margin-bottom: 1rem; border-bottom: 2px solid var(--color-border); padding-bottom: 0.4rem; }
+  h3 { font-size: 1.05rem; margin-bottom: 0.5rem; }
+
+  p { margin-bottom: 0.75rem; }
+
+  small { color: var(--color-text-muted); font-size: 0.8rem; }
+
+  .layout {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  /* ── section ── */
+  .section { display: flex; flex-direction: column; gap: 1.5rem; }
+
+  /* ── card ── */
+  .card {
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+    border-radius: 4px;
+    box-shadow: 3px 3px 0px var(--color-shadow);
+    padding: 1.25rem 1.5rem;
+  }
+
+  /* ── row helpers ── */
+  .row { display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-start; }
+
+  /* ── buttons ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border: 2px solid var(--color-border);
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.5rem 1.25rem;
+    cursor: pointer;
+    transition: box-shadow 80ms, transform 80ms;
+    font-family: inherit;
+    text-decoration: none;
+    box-shadow: 3px 3px 0px var(--color-shadow);
+  }
+  .btn:hover  { box-shadow: 1px 1px 0px var(--color-shadow); transform: translate(2px, 2px); }
+  .btn:active { box-shadow: none;                             transform: translate(3px, 3px); }
+
+  .btn-primary {
+    background: var(--color-accent);
+    color: var(--color-accent-fg);
+  }
+  .btn-primary:hover { background: var(--color-accent-hover); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--color-text);
+  }
+
+  .btn-ink {
+    background: var(--color-ink);
+    color: var(--color-accent-fg);
+  }
+
+  /* ── inputs ── */
+  .input {
+    border: 2px solid var(--color-border);
+    border-radius: 4px;
+    background: var(--color-surface-raised);
+    color: var(--color-text);
+    font-family: inherit;
+    font-size: 0.95rem;
+    padding: 0.5rem 0.75rem;
+    transition: outline 80ms;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    width: 100%;
+  }
+  .input:focus {
+    outline-color: var(--color-accent);
+  }
+
+  /* ── progress bar ── */
+  .progress-wrap {
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+    border-radius: 2px;
+    height: 14px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    background: var(--color-accent);
+    height: 100%;
+    border-radius: 0;
+    transition: width 300ms ease;
+  }
+
+  /* ── color swatches ── */
+  .swatches { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+  .swatch {
+    width: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    align-items: center;
+  }
+  .swatch-box {
+    width: 80px;
+    height: 50px;
+    border: 2px solid var(--color-border);
+    border-radius: 4px;
+  }
+  .swatch-label { font-size: 0.7rem; color: var(--color-text-muted); text-align: center; word-break: break-all; }
+
+  /* ── quiz question card ── */
+  .question-card {
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+    border-radius: 4px;
+    box-shadow: 3px 3px 0px var(--color-shadow);
+    padding: 1.5rem;
+  }
+  .question-text {
+    font-family: Georgia, serif;
+    font-size: 1.1rem;
+    color: var(--color-ink);
+    margin-bottom: 1.2rem;
+  }
+  .options { display: flex; flex-direction: column; gap: 0.6rem; }
+  .option-btn {
+    text-align: left;
+    background: var(--color-surface-raised);
+    border: 2px solid var(--color-border);
+    border-radius: 4px;
+    padding: 0.65rem 1rem;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--color-text);
+    cursor: pointer;
+    box-shadow: 2px 2px 0px var(--color-shadow);
+    transition: box-shadow 80ms, transform 80ms;
+  }
+  .option-btn:hover  { box-shadow: 1px 1px 0px var(--color-shadow); transform: translate(1px, 1px); }
+  .option-btn.selected {
+    background: var(--color-accent);
+    color: var(--color-accent-fg);
+    border-color: var(--color-border);
+  }
+
+  /* ── result card ── */
+  .result-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: 0.25rem;
+  }
+  .result-score {
+    font-family: ui-monospace, monospace;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  /* ── typography specimens ── */
+  .type-row { margin-bottom: 0.75rem; }
+  .type-label { font-size: 0.7rem; color: var(--color-text-muted); margin-bottom: 0.15rem; }
+
+  /* ── divider ── */
+  hr { border: none; border-top: 2px solid var(--color-border); }
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- Header -->
+  <div>
+    <h1>Job Therapy</h1>
+    <p><small>Design Reference — <code>data-theme="warm-paper"</code></small></p>
+  </div>
+
+  <!-- Color Palette -->
+  <section class="section">
+    <h2>Color Palette</h2>
+    <div class="swatches">
+      <div class="swatch">
+        <div class="swatch-box" style="background: var(--color-bg)"></div>
+        <span class="swatch-label">bg</span>
+      </div>
+      <div class="swatch">
+        <div class="swatch-box" style="background: var(--color-surface)"></div>
+        <span class="swatch-label">surface</span>
+      </div>
+      <div class="swatch">
+        <div class="swatch-box" style="background: var(--color-surface-raised)"></div>
+        <span class="swatch-label">surface-raised</span>
+      </div>
+      <div class="swatch">
+        <div class="swatch-box" style="background: var(--color-accent)"></div>
+        <span class="swatch-label">accent</span>
+      </div>
+      <div class="swatch">
+        <div class="swatch-box" style="background: var(--color-accent-hover)"></div>
+        <span class="swatch-label">accent-hover</span>
+      </div>
+      <div class="swatch">
+        <div class="swatch-box" style="background: var(--color-ink)"></div>
+        <span class="swatch-label">ink</span>
+      </div>
+      <div class="swatch">
+        <div class="swatch-box" style="background: var(--color-border)"></div>
+        <span class="swatch-label">border</span>
+      </div>
+      <div class="swatch">
+        <div class="swatch-box" style="background: var(--color-text)"></div>
+        <span class="swatch-label">text</span>
+      </div>
+      <div class="swatch">
+        <div class="swatch-box" style="background: var(--color-text-muted)"></div>
+        <span class="swatch-label">text-muted</span>
+      </div>
+      <div class="swatch">
+        <div class="swatch-box" style="background: var(--color-shadow)"></div>
+        <span class="swatch-label">shadow</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Typography -->
+  <section class="section">
+    <h2>Typography</h2>
+    <div class="card">
+      <div class="type-row">
+        <div class="type-label">h1 — serif 2rem</div>
+        <h1 style="font-size:2rem">Your Work Life, Diagnosed</h1>
+      </div>
+      <div class="type-row">
+        <div class="type-label">h2 — serif 1.35rem</div>
+        <h2 style="border:none;padding:0;margin:0;font-size:1.35rem">Today's Assessment</h2>
+      </div>
+      <div class="type-row">
+        <div class="type-label">h3 — serif 1.05rem</div>
+        <h3>Misalignment Signals</h3>
+      </div>
+      <div class="type-row">
+        <div class="type-label">body — sans 1rem / 1.6</div>
+        <p>Job Therapy helps you identify the real source of dissatisfaction at work — before you quit, pivot, or burn out. Track your answers daily and watch patterns emerge.</p>
+      </div>
+      <div class="type-row">
+        <div class="type-label">muted / caption</div>
+        <small>Last recorded: today at 9:14 AM</small>
+      </div>
+      <div class="type-row">
+        <div class="type-label">mono / score</div>
+        <span style="font-family: ui-monospace, monospace; font-size: 1.4rem; font-weight:700; color: var(--color-accent)">72 / 100</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Buttons -->
+  <section class="section">
+    <h2>Buttons</h2>
+    <div class="row">
+      <button class="btn btn-primary">Start Assessment</button>
+      <button class="btn btn-ghost">View History</button>
+      <button class="btn btn-ink">Save Results</button>
+      <button class="btn btn-primary" disabled style="opacity:0.45;cursor:not-allowed">Disabled</button>
+    </div>
+  </section>
+
+  <!-- Form Controls -->
+  <section class="section">
+    <h2>Form Controls</h2>
+    <div class="card" style="max-width: 480px; display: flex; flex-direction: column; gap: 1rem;">
+      <div>
+        <label style="display:block;font-size:0.85rem;font-weight:600;margin-bottom:0.3rem">How are you feeling about your role today?</label>
+        <input class="input" type="text" placeholder="Describe in a word or two…" />
+      </div>
+      <div>
+        <label style="display:block;font-size:0.85rem;font-weight:600;margin-bottom:0.3rem">Category</label>
+        <select class="input">
+          <option>Workload</option>
+          <option>Autonomy</option>
+          <option>Recognition</option>
+          <option>Relationships</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <!-- Progress Bar -->
+  <section class="section">
+    <h2>Progress Bar</h2>
+    <div class="card" style="max-width: 480px; display:flex; flex-direction:column; gap:1rem;">
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:0.35rem;">
+          <small>Autonomy score</small><small style="font-family:monospace;color:var(--color-accent)">68%</small>
+        </div>
+        <div class="progress-wrap"><div class="progress-fill" style="width:68%"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:0.35rem;">
+          <small>Recognition</small><small style="font-family:monospace;color:var(--color-accent)">42%</small>
+        </div>
+        <div class="progress-wrap"><div class="progress-fill" style="width:42%"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:0.35rem;">
+          <small>Workload balance</small><small style="font-family:monospace;color:var(--color-accent)">85%</small>
+        </div>
+        <div class="progress-wrap"><div class="progress-fill" style="width:85%"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quiz Question -->
+  <section class="section">
+    <h2>Quiz Question Card</h2>
+    <div class="question-card" style="max-width: 560px;">
+      <p class="question-text">When you imagine coming in to work tomorrow, your first instinct is…</p>
+      <div class="options">
+        <button class="option-btn selected">Mild dread, but manageable</button>
+        <button class="option-btn">Genuine curiosity about what the day holds</button>
+        <button class="option-btn">Relief that it's a short week</button>
+        <button class="option-btn">Frustration that nothing ever changes</button>
+      </div>
+      <div style="margin-top:1.25rem; display:flex; justify-content:space-between; align-items:center;">
+        <small>Question 3 of 12</small>
+        <button class="btn btn-primary" style="font-size:0.85rem;padding:0.4rem 1rem;">Next →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Result Card -->
+  <section class="section">
+    <h2>Result Card</h2>
+    <div class="row">
+      <div class="card" style="min-width:180px;">
+        <div class="result-label">Autonomy</div>
+        <div class="result-score">68</div>
+        <div class="progress-wrap"><div class="progress-fill" style="width:68%"></div></div>
+        <p style="margin-top:0.75rem;font-size:0.85rem;color:var(--color-text-muted)">Some constraints, but room to own your work.</p>
+      </div>
+      <div class="card" style="min-width:180px;">
+        <div class="result-label">Recognition</div>
+        <div class="result-score">42</div>
+        <div class="progress-wrap"><div class="progress-fill" style="width:42%"></div></div>
+        <p style="margin-top:0.75rem;font-size:0.85rem;color:var(--color-text-muted)">Contributions may be going unnoticed.</p>
+      </div>
+      <div class="card" style="min-width:180px;">
+        <div class="result-label">Workload</div>
+        <div class="result-score">85</div>
+        <div class="progress-wrap"><div class="progress-fill" style="width:85%"></div></div>
+        <p style="margin-top:0.75rem;font-size:0.85rem;color:var(--color-text-muted)">Healthy balance — keep an eye on it.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cards -->
+  <section class="section">
+    <h2>Cards</h2>
+    <div class="row">
+      <div class="card" style="max-width: 300px;">
+        <h3>Daily Check-in</h3>
+        <p style="font-size:0.9rem;color:var(--color-text-muted)">A short 5-minute assessment to track how your relationship with work is shifting over time.</p>
+        <button class="btn btn-primary" style="margin-top:0.75rem;font-size:0.85rem">Begin →</button>
+      </div>
+      <div class="card" style="max-width: 300px;">
+        <h3>30-Day Trend</h3>
+        <p style="font-size:0.9rem;color:var(--color-text-muted)">You've completed 18 of 30 entries this month. Your autonomy score has improved by 12 points.</p>
+        <button class="btn btn-ghost" style="margin-top:0.75rem;font-size:0.85rem">See history</button>
+      </div>
+    </div>
+  </section>
+
+  <hr />
+  <p><small>warm-paper theme · matcha &amp; paper · neobrutalism-lite · Tailwind v4 · <code>data-theme</code></small></p>
+
+</div>
+</body>
+</html>
