@@ -1,22 +1,25 @@
-/* warm-paper · amber & kraft · neobrutalism-lite */
+/* Hallmark · redesign · tone: calm editorial · matcha tea palette
+   accent: やぶきた yabukita, muted · borders: 露光り tsuyuhikari tint
+   warm-paper · matcha & washi · v4 */
 [data-theme="warm-paper"] {
-  /* Parchment surfaces */
-  --color-bg:             oklch(96% 0.018 82);
-  --color-surface:        oklch(93% 0.016 88);
-  --color-surface-raised: oklch(98% 0.010 85);
-  /* Kraft paper borders */
-  --color-border:         oklch(70% 0.030 74);
-  --color-shadow:         oklch(56% 0.032 74);
+  /* 和紙 washi surfaces */
+  --color-bg:             oklch(97% 0.016 88);
+  --color-surface:        oklch(99% 0.008 88);
+  --color-surface-raised: oklch(100% 0 0);
+  /* 露光り tsuyuhikari — matcha-tinted borders */
+  --color-border:         oklch(89% 0.018 142);
+  --color-border-strong:  oklch(80% 0.038 148);
   /* Warm ink */
-  --color-text:           oklch(20% 0.022 74);
-  --color-text-muted:     oklch(52% 0.020 84);
-  --color-ink:            oklch(16% 0.022 74);
-  /* Amber accent */
-  --color-accent:         oklch(66% 0.10 68);
-  --color-accent-hover:   oklch(58% 0.10 68);
-  --color-accent-fg:      oklch(14% 0.020 74);
+  --color-text:           oklch(22% 0.016 80);
+  --color-text-muted:     oklch(56% 0.014 84);
+  --color-ink:            oklch(15% 0.016 80);
+  /* やぶきた yabukita — muted matcha */
+  --color-accent:         oklch(54% 0.125 148);
+  --color-accent-hover:   oklch(46% 0.112 148);
+  --color-accent-subtle:  oklch(93% 0.028 150);
+  --color-accent-fg:      oklch(99% 0.005 88);
   /* Terracotta destructive */
   --color-destructive:      oklch(60% 0.13 38);
   --color-destructive-hover:oklch(54% 0.13 38);
-  --color-destructive-fg:   oklch(14% 0.020 74);
+  --color-destructive-fg:   oklch(99% 0.005 38);
 }

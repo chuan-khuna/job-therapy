@@ -5,32 +5,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Design Reference — Job Therapy</title>
 <style>
-  /* Hallmark · redesign · tone: warm/cozy/neobrutalism-lite · anchor hue: amber H68 · border: kraft H74 */
+  /* Hallmark · redesign · tone: calm editorial · matcha tea palette
+     Pre-emit critique: P5 H4 E5 S5 R5 V4
+     accent: やぶきた yabukita muted · borders: 露光り tsuyuhikari green tint */
 
-  /* ── warm-paper theme tokens v2 ── */
   [data-theme="warm-paper"] {
-    /* Parchment surfaces — warm, slightly golden */
-    --color-bg:             oklch(96% 0.018 82);
-    --color-surface:        oklch(93% 0.016 88);
-    --color-surface-raised: oklch(98% 0.010 85);
-    /* Kraft paper borders — warm brown, not sage */
-    --color-border:         oklch(70% 0.030 74);
-    --color-shadow:         oklch(56% 0.032 74);
+    /* 和紙 washi surfaces */
+    --color-bg:             oklch(97% 0.016 88);
+    --color-surface:        oklch(99% 0.008 88);
+    --color-surface-raised: oklch(100% 0 0);
+    /* 露光り tsuyuhikari — matcha-tinted borders */
+    --color-border:         oklch(89% 0.018 142);
+    --color-border-strong:  oklch(80% 0.038 148);
     /* Warm ink */
-    --color-text:           oklch(20% 0.022 74);
-    --color-text-muted:     oklch(52% 0.020 84);
-    --color-ink:            oklch(16% 0.022 74);
-    /* Amber accent — warm, muted, paper-adjacent */
-    --color-accent:         oklch(66% 0.10 68);
-    --color-accent-hover:   oklch(58% 0.10 68);
-    --color-accent-fg:      oklch(14% 0.020 74);
-    /* Terracotta destructive — warm, not alarming */
+    --color-text:           oklch(22% 0.016 80);
+    --color-text-muted:     oklch(56% 0.014 84);
+    --color-ink:            oklch(15% 0.016 80);
+    /* やぶきた yabukita — muted matcha */
+    --color-accent:         oklch(54% 0.125 148);
+    --color-accent-hover:   oklch(46% 0.112 148);
+    --color-accent-subtle:  oklch(93% 0.028 150);
+    --color-accent-fg:      oklch(99% 0.005 88);
+    /* Terracotta destructive */
     --color-destructive:      oklch(60% 0.13 38);
     --color-destructive-hover:oklch(54% 0.13 38);
-    --color-destructive-fg:   oklch(14% 0.020 74);
+    --color-destructive-fg:   oklch(99% 0.005 38);
   }
 
-  /* ── reset & base ── */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
@@ -38,208 +39,213 @@
     color: var(--color-text);
     font-family: ui-sans-serif, system-ui, sans-serif;
     font-size: 1rem;
-    line-height: 1.6;
-    padding: 2rem;
+    line-height: 1.65;
+    padding: 2.5rem 2rem;
   }
 
   h1, h2, h3, h4 {
     font-family: Georgia, 'Times New Roman', serif;
     font-style: normal;
     color: var(--color-ink);
-    line-height: 1.2;
+    line-height: 1.25;
   }
 
   h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.25rem; }
-  h2 { font-size: 1.35rem; margin-bottom: 1rem; border-bottom: 2px solid var(--color-border); padding-bottom: 0.4rem; }
+  h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
   h3 { font-size: 1.05rem; margin-bottom: 0.5rem; }
 
   p { margin-bottom: 0.75rem; }
-
   small { color: var(--color-text-muted); font-size: 0.8rem; }
+  code { font-family: ui-monospace, monospace; font-size: 0.85em; }
 
   .layout {
     max-width: 900px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    gap: 3.5rem;
   }
 
-  /* ── section ── */
   .section { display: flex; flex-direction: column; gap: 1.5rem; }
+  .row { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: flex-start; }
 
   /* ── card ── */
   .card {
     background: var(--color-surface);
-    border: 2px solid var(--color-border);
-    border-radius: 4px;
-    box-shadow: 4px 4px 0px var(--color-shadow);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    box-shadow: 0 1px 2px oklch(20% 0.015 80 / 0.04), 0 4px 16px oklch(20% 0.015 80 / 0.06);
     padding: 1.25rem 1.5rem;
   }
-
-  /* ── row helpers ── */
-  .row { display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-start; }
 
   /* ── buttons ── */
   .btn {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    border: 2px solid var(--color-border);
-    border-radius: 4px;
-    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
     font-size: 0.9rem;
-    padding: 0.5rem 1.25rem;
+    padding: 0.5rem 1.2rem;
     cursor: pointer;
-    transition: box-shadow 80ms, transform 80ms;
+    transition: background 120ms, box-shadow 120ms, transform 80ms;
     font-family: inherit;
     text-decoration: none;
-    box-shadow: 3px 3px 0px var(--color-shadow);
   }
-  .btn:hover  { box-shadow: 1px 1px 0px var(--color-shadow); transform: translate(2px, 2px); }
-  .btn:active { box-shadow: none;                             transform: translate(3px, 3px); }
-  .btn:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  .btn:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
+  .btn:active { transform: scale(0.98); }
 
   .btn-primary {
     background: var(--color-accent);
     color: var(--color-accent-fg);
+    box-shadow: 0 1px 3px oklch(54% 0.125 148 / 0.30);
   }
-  .btn-primary:hover { background: var(--color-accent-hover); }
+  .btn-primary:hover {
+    background: var(--color-accent-hover);
+    box-shadow: 0 2px 8px oklch(54% 0.125 148 / 0.35);
+  }
 
   .btn-ghost {
-    background: transparent;
+    background: var(--color-surface-raised);
     color: var(--color-text);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 1px 2px oklch(20% 0.015 80 / 0.06);
   }
-  .btn-ghost:hover { background: var(--color-surface); }
+  .btn-ghost:hover { background: var(--color-surface); border-color: var(--color-border-strong); }
 
   .btn-ink {
     background: var(--color-ink);
     color: var(--color-surface-raised);
+    box-shadow: 0 1px 3px oklch(15% 0.016 80 / 0.30);
   }
+  .btn-ink:hover { background: oklch(22% 0.016 80); }
+
   .btn-destructive {
     background: var(--color-destructive);
     color: var(--color-destructive-fg);
+    box-shadow: 0 1px 3px oklch(60% 0.13 38 / 0.28);
   }
   .btn-destructive:hover { background: var(--color-destructive-hover); }
 
   /* ── inputs ── */
   .input {
-    border: 2px solid var(--color-border);
-    border-radius: 4px;
+    border: 1.5px solid var(--color-border);
+    border-radius: 6px;
     background: var(--color-surface-raised);
     color: var(--color-text);
     font-family: inherit;
     font-size: 0.95rem;
     padding: 0.5rem 0.75rem;
-    transition: outline 80ms;
-    outline: 2px solid transparent;
-    outline-offset: 2px;
+    transition: border-color 120ms, box-shadow 120ms;
+    outline: none;
     width: 100%;
   }
-  .input:focus { outline-color: var(--color-accent); }
+  .input:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px oklch(54% 0.125 148 / 0.12);
+  }
 
   textarea.input { resize: vertical; min-height: 90px; }
 
   /* ── progress bar ── */
   .progress-wrap {
-    background: var(--color-surface);
-    border: 2px solid var(--color-border);
-    border-radius: 2px;
-    height: 12px;
+    background: oklch(89% 0.022 142);
+    border-radius: 100px;
+    height: 8px;
     overflow: hidden;
   }
   .progress-fill {
     background: var(--color-accent);
     height: 100%;
-    border-radius: 0;
+    border-radius: 100px;
     transition: width 300ms ease;
   }
 
-  /* ── badges / tags ── */
+  /* ── badges ── */
   .badge {
     display: inline-flex;
     align-items: center;
-    border: 2px solid var(--color-border);
-    border-radius: 2px;
+    border-radius: 100px;
     font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
+    font-weight: 600;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
-    padding: 0.2rem 0.55rem;
-    background: var(--color-surface-raised);
+    padding: 0.2rem 0.6rem;
+    background: oklch(90% 0.020 142);
     color: var(--color-text-muted);
-    box-shadow: 2px 2px 0px var(--color-shadow);
   }
   .badge-accent {
-    background: var(--color-accent);
-    color: var(--color-accent-fg);
+    background: var(--color-accent-subtle);
+    color: var(--color-accent-hover);
   }
   .badge-ink {
     background: var(--color-ink);
     color: var(--color-surface-raised);
-    border-color: var(--color-ink);
   }
 
   /* ── color swatches ── */
   .swatches { display: flex; flex-wrap: wrap; gap: 0.75rem; }
-  .swatch {
-    width: 80px;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    align-items: center;
-  }
+  .swatch { width: 80px; display: flex; flex-direction: column; gap: 0.3rem; align-items: center; }
   .swatch-box {
-    width: 80px;
-    height: 50px;
-    border: 2px solid var(--color-border);
-    border-radius: 4px;
-    box-shadow: 2px 2px 0px var(--color-shadow);
+    width: 80px; height: 50px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    box-shadow: 0 1px 3px oklch(20% 0.015 80 / 0.08);
   }
-  .swatch-label { font-size: 0.7rem; color: var(--color-text-muted); text-align: center; word-break: break-all; }
+  .swatch-label { font-size: 0.68rem; color: var(--color-text-muted); text-align: center; word-break: break-all; }
+  .swatch-name  { font-size: 0.62rem; color: oklch(72% 0.06 148); text-align: center; font-style: normal; }
 
   /* ── quiz question card ── */
   .question-card {
     background: var(--color-surface);
-    border: 2px solid var(--color-border);
-    border-radius: 4px;
-    box-shadow: 4px 4px 0px var(--color-shadow);
-    padding: 1.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    box-shadow: 0 1px 2px oklch(20% 0.015 80 / 0.04), 0 6px 20px oklch(20% 0.015 80 / 0.07);
+    padding: 1.75rem;
   }
   .question-text {
     font-family: Georgia, serif;
-    font-style: normal;
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     color: var(--color-ink);
-    margin-bottom: 1.2rem;
+    margin-bottom: 1.25rem;
+    line-height: 1.45;
   }
-  .options { display: flex; flex-direction: column; gap: 0.6rem; }
+  .options { display: flex; flex-direction: column; gap: 0.5rem; }
   .option-btn {
     text-align: left;
     background: var(--color-surface-raised);
-    border: 2px solid var(--color-border);
-    border-radius: 4px;
-    padding: 0.65rem 1rem;
+    border: 1.5px solid var(--color-border);
+    border-radius: 8px;
+    padding: 0.7rem 1rem;
     font-family: inherit;
     font-size: 0.95rem;
     color: var(--color-text);
     cursor: pointer;
-    box-shadow: 2px 2px 0px var(--color-shadow);
-    transition: box-shadow 80ms, transform 80ms;
+    transition: border-color 120ms, background 120ms, box-shadow 120ms;
   }
-  .option-btn:hover  { box-shadow: 1px 1px 0px var(--color-shadow); transform: translate(1px, 1px); }
+  .option-btn:hover {
+    border-color: var(--color-accent);
+    background: var(--color-surface);
+    box-shadow: 0 0 0 3px oklch(54% 0.125 148 / 0.08);
+  }
   .option-btn:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
   .option-btn.selected {
-    background: var(--color-accent);
-    color: var(--color-accent-fg);
-    border-color: var(--color-border);
+    background: var(--color-accent-subtle);
+    border-color: var(--color-accent);
+    color: var(--color-ink);
   }
 
   /* ── result card ── */
   .result-label {
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--color-text-muted);
     margin-bottom: 0.25rem;
@@ -250,15 +256,40 @@
     font-weight: 700;
     color: var(--color-accent);
     line-height: 1;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.6rem;
   }
 
-  /* ── typography specimens ── */
+  /* ── typography ── */
   .type-row { margin-bottom: 0.75rem; }
   .type-label { font-size: 0.7rem; color: var(--color-text-muted); margin-bottom: 0.15rem; }
 
-  /* ── divider ── */
-  hr { border: none; border-top: 2px solid var(--color-border); }
+  hr { border: none; border-top: 1px solid var(--color-border); }
+
+  /* ── named scale table ── */
+  .scale-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+  .scale-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background: var(--color-surface);
+  }
+  .scale-chip {
+    flex-shrink: 0;
+    width: 36px; height: 36px;
+    border-radius: 6px;
+    border: 1px solid oklch(80% 0.025 142 / 0.4);
+  }
+  .scale-meta { display: flex; flex-direction: column; gap: 0.1rem; }
+  .scale-jp   { font-size: 0.78rem; color: var(--color-ink); font-weight: 600; }
+  .scale-en   { font-size: 0.68rem; color: var(--color-text-muted); }
+  .scale-val  { font-size: 0.62rem; color: oklch(68% 0.06 148); font-family: ui-monospace, monospace; }
 </style>
 </head>
 <body>
@@ -267,7 +298,7 @@
   <!-- Header -->
   <div>
     <h1>Job Therapy</h1>
-    <p><small>Design Reference v2 — <code>data-theme="warm-paper"</code> · amber &amp; kraft</small></p>
+    <p><small>Design Reference v4 — <code>data-theme="warm-paper"</code> · matcha &amp; washi · muted yabukita accent</small></p>
   </div>
 
   <!-- Color Palette -->
@@ -277,6 +308,7 @@
       <div class="swatch">
         <div class="swatch-box" style="background: var(--color-bg)"></div>
         <span class="swatch-label">bg</span>
+        <span class="swatch-name">和紙 washi</span>
       </div>
       <div class="swatch">
         <div class="swatch-box" style="background: var(--color-surface)"></div>
@@ -285,14 +317,17 @@
       <div class="swatch">
         <div class="swatch-box" style="background: var(--color-surface-raised)"></div>
         <span class="swatch-label">surface-raised</span>
+        <span class="swatch-name">白 shiro</span>
       </div>
       <div class="swatch">
         <div class="swatch-box" style="background: var(--color-accent)"></div>
         <span class="swatch-label">accent</span>
+        <span class="swatch-name">やぶきた</span>
       </div>
       <div class="swatch">
-        <div class="swatch-box" style="background: var(--color-accent-hover)"></div>
-        <span class="swatch-label">accent-hover</span>
+        <div class="swatch-box" style="background: var(--color-accent-subtle)"></div>
+        <span class="swatch-label">accent-subtle</span>
+        <span class="swatch-name">煎茶 sencha</span>
       </div>
       <div class="swatch">
         <div class="swatch-box" style="background: var(--color-ink)"></div>
@@ -301,10 +336,12 @@
       <div class="swatch">
         <div class="swatch-box" style="background: var(--color-border)"></div>
         <span class="swatch-label">border</span>
+        <span class="swatch-name">露光り hint</span>
       </div>
       <div class="swatch">
-        <div class="swatch-box" style="background: var(--color-shadow)"></div>
-        <span class="swatch-label">shadow</span>
+        <div class="swatch-box" style="background: var(--color-border-strong)"></div>
+        <span class="swatch-label">border-strong</span>
+        <span class="swatch-name">露光り</span>
       </div>
       <div class="swatch">
         <div class="swatch-box" style="background: var(--color-text)"></div>
@@ -321,6 +358,94 @@
     </div>
   </section>
 
+  <!-- Matcha Named Scale Reference -->
+  <section class="section">
+    <h2>Matcha Tea Scale</h2>
+    <p style="font-size:0.85rem;color:var(--color-text-muted);margin-bottom:0.5rem">Named stops for the full palette. Use the semantic tokens above in components; reach into this scale only to extend the system.</p>
+    <div class="scale-grid">
+      <div class="scale-row">
+        <div class="scale-chip" style="background: oklch(96% 0.025 148)"></div>
+        <div class="scale-meta">
+          <span class="scale-jp">白茶 shiracha</span>
+          <span class="scale-en">tints</span>
+          <span class="scale-val">96% 0.025 148</span>
+        </div>
+      </div>
+      <div class="scale-row">
+        <div class="scale-chip" style="background: oklch(93% 0.042 150)"></div>
+        <div class="scale-meta">
+          <span class="scale-jp">煎茶 sencha</span>
+          <span class="scale-en">hover fills</span>
+          <span class="scale-val">93% 0.042 150</span>
+        </div>
+      </div>
+      <div class="scale-row">
+        <div class="scale-chip" style="background: oklch(89% 0.065 151)"></div>
+        <div class="scale-meta">
+          <span class="scale-jp">抹茶ラテ latte</span>
+          <span class="scale-en">softest green</span>
+          <span class="scale-val">89% 0.065 151</span>
+        </div>
+      </div>
+      <div class="scale-row">
+        <div class="scale-chip" style="background: oklch(81% 0.105 152)"></div>
+        <div class="scale-meta">
+          <span class="scale-jp">露光り tsuyuhikari</span>
+          <span class="scale-en">light mid → border-strong</span>
+          <span class="scale-val">81% 0.105 152</span>
+        </div>
+      </div>
+      <div class="scale-row">
+        <div class="scale-chip" style="background: oklch(72% 0.145 151)"></div>
+        <div class="scale-meta">
+          <span class="scale-jp">五月みどり samidori</span>
+          <span class="scale-en">mid</span>
+          <span class="scale-val">72% 0.145 151</span>
+        </div>
+      </div>
+      <div class="scale-row">
+        <div class="scale-chip" style="background: oklch(63% 0.170 150)"></div>
+        <div class="scale-meta">
+          <span class="scale-jp">旭 asahi</span>
+          <span class="scale-en">interactive</span>
+          <span class="scale-val">63% 0.170 150</span>
+        </div>
+      </div>
+      <div class="scale-row" style="outline: 2px solid var(--color-accent); outline-offset: 2px;">
+        <div class="scale-chip" style="background: oklch(54% 0.125 148)"></div>
+        <div class="scale-meta">
+          <span class="scale-jp">やぶきた yabukita</span>
+          <span class="scale-en">primary — muted ↓ C to 0.125</span>
+          <span class="scale-val">54% 0.125 148</span>
+        </div>
+      </div>
+      <div class="scale-row">
+        <div class="scale-chip" style="background: oklch(45% 0.158 148)"></div>
+        <div class="scale-meta">
+          <span class="scale-jp">奥みどり okumidori</span>
+          <span class="scale-en">emphasis</span>
+          <span class="scale-val">45% 0.158 148</span>
+        </div>
+      </div>
+      <div class="scale-row">
+        <div class="scale-chip" style="background: oklch(37% 0.128 150)"></div>
+        <div class="scale-meta">
+          <span class="scale-jp">薄茶 usucha</span>
+          <span class="scale-en">dark accent</span>
+          <span class="scale-val">37% 0.128 150</span>
+        </div>
+      </div>
+      <div class="scale-row">
+        <div class="scale-chip" style="background: oklch(21% 0.065 154)"></div>
+        <div class="scale-meta">
+          <span class="scale-jp">濃茶 koicha</span>
+          <span class="scale-en">near-black ink</span>
+          <span class="scale-val">21% 0.065 154</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Typography -->
   <section class="section">
     <h2>Typography</h2>
@@ -330,15 +455,15 @@
         <h1 style="font-size:2rem">Your Work Life, Diagnosed</h1>
       </div>
       <div class="type-row">
-        <div class="type-label">h2 — serif 1.35rem</div>
-        <h2 style="border:none;padding:0;margin:0;font-size:1.35rem">Today's Assessment</h2>
+        <div class="type-label">h2 — serif 1.25rem</div>
+        <h2 style="border:none;padding:0;margin:0;font-size:1.25rem">Today's Assessment</h2>
       </div>
       <div class="type-row">
         <div class="type-label">h3 — serif 1.05rem</div>
         <h3>Misalignment Signals</h3>
       </div>
       <div class="type-row">
-        <div class="type-label">body — sans 1rem / 1.6</div>
+        <div class="type-label">body — sans 1rem / 1.65</div>
         <p>Job Therapy helps you identify the real source of dissatisfaction at work — before you quit, pivot, or burn out. Track your answers daily and watch patterns emerge.</p>
       </div>
       <div class="type-row">
@@ -381,11 +506,11 @@
     <h2>Form Controls</h2>
     <div class="card" style="max-width: 480px; display: flex; flex-direction: column; gap: 1rem;">
       <div>
-        <label style="display:block;font-size:0.85rem;font-weight:600;margin-bottom:0.3rem">How are you feeling about your role today?</label>
+        <label style="display:block;font-size:0.85rem;font-weight:600;margin-bottom:0.35rem">How are you feeling about your role today?</label>
         <input class="input" type="text" placeholder="Describe in a word or two…" />
       </div>
       <div>
-        <label style="display:block;font-size:0.85rem;font-weight:600;margin-bottom:0.3rem">Category</label>
+        <label style="display:block;font-size:0.85rem;font-weight:600;margin-bottom:0.35rem">Category</label>
         <select class="input">
           <option>Workload</option>
           <option>Autonomy</option>
@@ -394,7 +519,7 @@
         </select>
       </div>
       <div>
-        <label style="display:block;font-size:0.85rem;font-weight:600;margin-bottom:0.3rem">What would make tomorrow better?</label>
+        <label style="display:block;font-size:0.85rem;font-weight:600;margin-bottom:0.35rem">What would make tomorrow better?</label>
         <textarea class="input" placeholder="Write freely — this is just for you…"></textarea>
       </div>
     </div>
@@ -405,20 +530,20 @@
     <h2>Progress Bar</h2>
     <div class="card" style="max-width: 480px; display:flex; flex-direction:column; gap:1rem;">
       <div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:0.35rem;">
-          <small>Autonomy score</small><small style="font-family:monospace;color:var(--color-accent)">68%</small>
+        <div style="display:flex;justify-content:space-between;margin-bottom:0.4rem;">
+          <small>Autonomy score</small><small style="font-family:monospace;color:var(--color-accent);font-weight:600">68%</small>
         </div>
         <div class="progress-wrap"><div class="progress-fill" style="width:68%"></div></div>
       </div>
       <div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:0.35rem;">
-          <small>Recognition</small><small style="font-family:monospace;color:var(--color-accent)">42%</small>
+        <div style="display:flex;justify-content:space-between;margin-bottom:0.4rem;">
+          <small>Recognition</small><small style="font-family:monospace;color:var(--color-accent);font-weight:600">42%</small>
         </div>
         <div class="progress-wrap"><div class="progress-fill" style="width:42%"></div></div>
       </div>
       <div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:0.35rem;">
-          <small>Workload balance</small><small style="font-family:monospace;color:var(--color-accent)">85%</small>
+        <div style="display:flex;justify-content:space-between;margin-bottom:0.4rem;">
+          <small>Workload balance</small><small style="font-family:monospace;color:var(--color-accent);font-weight:600">85%</small>
         </div>
         <div class="progress-wrap"><div class="progress-fill" style="width:85%"></div></div>
       </div>
@@ -436,7 +561,7 @@
         <button class="option-btn">Relief that it's a short week</button>
         <button class="option-btn">Frustration that nothing ever changes</button>
       </div>
-      <div style="margin-top:1.25rem; display:flex; justify-content:space-between; align-items:center;">
+      <div style="margin-top:1.5rem; display:flex; justify-content:space-between; align-items:center;">
         <small>Question 3 of 12</small>
         <button class="btn btn-primary" style="font-size:0.85rem;padding:0.4rem 1rem;">Next →</button>
       </div>
@@ -474,19 +599,19 @@
     <div class="row">
       <div class="card" style="max-width: 300px;">
         <h3>Daily Check-in</h3>
-        <p style="font-size:0.9rem;color:var(--color-text-muted)">A short 5-minute assessment to track how your relationship with work is shifting over time.</p>
-        <button class="btn btn-primary" style="margin-top:0.75rem;font-size:0.85rem">Begin →</button>
+        <p style="font-size:0.9rem;color:var(--color-text-muted);margin-top:0.35rem">A short 5-minute assessment to track how your relationship with work is shifting over time.</p>
+        <button class="btn btn-primary" style="margin-top:1rem;font-size:0.85rem">Begin →</button>
       </div>
       <div class="card" style="max-width: 300px;">
         <h3>30-Day Trend</h3>
-        <p style="font-size:0.9rem;color:var(--color-text-muted)">You've completed 18 of 30 entries this month. Your autonomy score has improved by 12 points.</p>
-        <button class="btn btn-ghost" style="margin-top:0.75rem;font-size:0.85rem">See history</button>
+        <p style="font-size:0.9rem;color:var(--color-text-muted);margin-top:0.35rem">You've completed 18 of 30 entries this month. Your autonomy score has improved by 12 points.</p>
+        <button class="btn btn-ghost" style="margin-top:1rem;font-size:0.85rem">See history</button>
       </div>
     </div>
   </section>
 
   <hr />
-  <p><small>warm-paper v2 · amber &amp; kraft · neobrutalism-lite · Tailwind v4 · <code>data-theme</code></small></p>
+  <p><small>warm-paper v4 · matcha &amp; washi · muted やぶきた yabukita · Tailwind v4 · <code>data-theme</code></small></p>
 
 </div>
 </body>
