@@ -3,6 +3,7 @@ import Tag from "@/components/shared/Tag";
 
 interface QuizCardProps {
   href: string;
+  historyHref?: string;
   name: string;
   description: string;
   questionCount: number;
@@ -12,6 +13,7 @@ interface QuizCardProps {
 
 export default function QuizCard({
   href,
+  historyHref,
   name,
   description,
   questionCount,
@@ -19,60 +21,67 @@ export default function QuizCard({
   lastDate,
 }: QuizCardProps) {
   return (
-    <Link href={href} style={{ textDecoration: "none", display: "block" }}>
-      <div className="card card-link" style={{ padding: "1.25rem 1.5rem" }}>
+    <div className="card card-link" style={{ padding: "1.25rem 1.5rem" }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "flex-start",
+          justifyContent: "space-between",
+          gap: "1rem",
+        }}
+      >
+        <Link href={href} style={{ textDecoration: "none", flex: 1 }}>
+          <p
+            style={{
+              fontFamily: "var(--font-serif)",
+              fontSize: "16px",
+              fontWeight: 700,
+              color: "var(--color-ink)",
+              marginBottom: "4px",
+            }}
+          >
+            {name}
+          </p>
+          <p
+            style={{
+              fontSize: "13px",
+              color: "var(--color-text-muted)",
+              lineHeight: 1.5,
+            }}
+          >
+            {description}
+          </p>
+        </Link>
+
         <div
           style={{
+            flexShrink: 0,
             display: "flex",
-            alignItems: "flex-start",
-            justifyContent: "space-between",
-            gap: "1rem",
+            flexDirection: "column",
+            alignItems: "flex-end",
+            gap: "6px",
           }}
         >
-          <div>
-            <p
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontSize: "16px",
-                fontWeight: 700,
-                color: "var(--color-ink)",
-                marginBottom: "4px",
-              }}
-            >
-              {name}
-            </p>
-            <p
-              style={{
-                fontSize: "13px",
-                color: "var(--color-text-muted)",
-                lineHeight: 1.5,
-              }}
-            >
-              {description}
-            </p>
-          </div>
-
-          <div style={{ flexShrink: 0, textAlign: "right" }}>
-            <p
-              style={{
-                fontSize: "10px",
-                fontFamily: "var(--font-mono)",
-                color: "var(--color-text-muted)",
-                letterSpacing: "0.04em",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {questionCount} คำถาม
-              {typeCount ? ` · ${typeCount} ประเภท` : ""}
-            </p>
-            {lastDate && (
-              <Tag variant="accent" style={{ marginTop: "6px" }}>
-                ล่าสุด {lastDate}
-              </Tag>
-            )}
-          </div>
+          <p
+            style={{
+              fontSize: "10px",
+              fontFamily: "var(--font-mono)",
+              color: "var(--color-text-muted)",
+              letterSpacing: "0.04em",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {questionCount} คำถาม
+            {typeCount ? ` · ${typeCount} ประเภท` : ""}
+          </p>
+          {lastDate && <Tag variant="accent">ล่าสุด {lastDate}</Tag>}
+          {historyHref && (
+            <Link href={historyHref} className="btn btn-ghost btn-sm">
+              ประวัติ
+            </Link>
+          )}
         </div>
       </div>
-    </Link>
+    </div>
   );
 }

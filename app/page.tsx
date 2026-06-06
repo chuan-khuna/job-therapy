@@ -1,9 +1,11 @@
+import Link from "next/link";
 import QuizCard from "@/components/home/QuizCard";
 import SectionLabel from "@/components/shared/SectionLabel";
 import { QUIZZES } from "@/data/quizzes";
+import { getArticles } from "@/lib/articles";
 import { getLastResultDate } from "@/lib/db/results";
 
-export default function HomePage() {
+export default async function HomePage() {
   const lastDates = QUIZZES.map((q) => {
     try {
       return getLastResultDate(q.id);
@@ -11,6 +13,8 @@ export default function HomePage() {
       return null;
     }
   });
+
+  const articles = await getArticles();
 
   return (
     <main className="flex-1">
@@ -70,38 +74,117 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Quiz list */}
+      {/* Quizzes (60) + Articles (40) */}
       <section>
         <div
           style={{
             maxWidth: "1200px",
             margin: "0 auto",
             padding: "3rem 2rem",
+            display: "grid",
+            gridTemplateColumns: "3fr 2fr",
+            gap: "3rem",
+            alignItems: "start",
           }}
         >
-          <SectionLabel style={{ marginBottom: "1.5rem" }}>
-            แบบประเมิน
-          </SectionLabel>
+          <div>
+            <SectionLabel style={{ marginBottom: "1.5rem" }}>
+              แบบประเมิน
+            </SectionLabel>
 
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "12px",
-              maxWidth: "680px",
-            }}
-          >
-            {QUIZZES.map((quiz, i) => (
-              <QuizCard
-                key={quiz.id}
-                href={`/quizzes/${quiz.slug}`}
-                name={quiz.name}
-                description={quiz.description}
-                questionCount={quiz.questionCount}
-                typeCount={quiz.typeCount}
-                lastDate={lastDates[i]}
-              />
-            ))}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "12px",
+              }}
+            >
+              {QUIZZES.map((quiz, i) => (
+                <QuizCard
+                  key={quiz.id}
+                  href={`/quizzes/${quiz.slug}`}
+                  historyHref={`/quizzes/${quiz.slug}/history`}
+                  name={quiz.name}
+                  description={quiz.description}
+                  questionCount={quiz.questionCount}
+                  typeCount={quiz.typeCount}
+                  lastDate={lastDates[i]}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <SectionLabel style={{ marginBottom: "1.5rem" }}>
+              บทความ
+            </SectionLabel>
+
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "12px",
+              }}
+            >
+              {articles.length === 0 && (
+                <p
+                  style={{
+                    fontSize: "13px",
+                    color: "var(--color-text-muted)",
+                  }}
+                >
+                  ยังไม่มีบทความ
+                </p>
+              )}
+              {articles.map((a) => (
+                <Link
+                  key={a.slug}
+                  href={`/articles/${a.slug}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <div
+                    className="card card-link"
+                    style={{ padding: "1rem 1.25rem" }}
+                  >
+                    <p
+                      style={{
+                        fontFamily: "var(--font-serif)",
+                        fontSize: "15px",
+                        fontWeight: 700,
+                        color: "var(--color-ink)",
+                        marginBottom: "4px",
+                      }}
+                    >
+                      {a.title}
+                    </p>
+                    {a.description && (
+                      <p
+                        style={{
+                          fontSize: "12px",
+                          color: "var(--color-text-muted)",
+                          lineHeight: 1.5,
+                          marginBottom: a.date ? "6px" : 0,
+                        }}
+                      >
+                        {a.description}
+                      </p>
+                    )}
+                    {a.date && (
+                      <p
+                        style={{
+                          fontSize: "10px",
+                          fontFamily: "var(--font-mono)",
+                          color: "var(--color-text-muted)",
+                          letterSpacing: "0.04em",
+                        }}
+                      >
+                        {a.date}
+                      </p>
+                    )}
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </section>
