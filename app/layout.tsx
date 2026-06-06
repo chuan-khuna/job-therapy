@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, IBM_Plex_Sans_Thai } from "next/font/google";
+import Nav from "@/components/layout/Nav";
 import "./globals.css";
 
 const ibmPlexSansThai = IBM_Plex_Sans_Thai({
@@ -30,7 +31,10 @@ export default function RootLayout({
       data-theme="warm-paper"
       className={`${ibmPlexSansThai.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <Nav />
+        {children}
+      </body>
     </html>
   );
 }

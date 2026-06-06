@@ -12,9 +12,12 @@ export default function TwoColumnLayout({
   return (
     <div
       style={{
+        maxWidth: "1200px",
+        margin: "0 auto",
+        width: "100%",
         display: "grid",
         gridTemplateColumns: `1fr ${rightWidth}`,
-        minHeight: "calc(100vh - 96px)",
+        minHeight: "calc(100vh - 120px)",
         alignItems: "start",
       }}
     >

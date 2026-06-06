@@ -35,12 +35,12 @@ export function saveQuizResult(params: {
   const db = getDb();
   db.prepare(
     `INSERT INTO quiz_results (quiz_id, date, answers, matched_types)
-     VALUES (?, ?, ?, ?)`
+     VALUES (?, ?, ?, ?)`,
   ).run(
     params.quizId,
     params.date,
     JSON.stringify(params.answers),
-    JSON.stringify(params.matchedTypes)
+    JSON.stringify(params.matchedTypes),
   );
 }
 
@@ -51,7 +51,7 @@ export function getRecentResults(quizId: string, limit = 7): QuizResult[] {
       `SELECT * FROM quiz_results
        WHERE quiz_id = ?
        ORDER BY created_at DESC
-       LIMIT ?`
+       LIMIT ?`,
     )
     .all(quizId, limit) as RawRow[];
   return rows.map(parseRow);
@@ -61,7 +61,7 @@ export function getLastResultDate(quizId: string): string | null {
   const db = getDb();
   const row = db
     .prepare(
-      `SELECT date FROM quiz_results WHERE quiz_id = ? ORDER BY created_at DESC LIMIT 1`
+      `SELECT date FROM quiz_results WHERE quiz_id = ? ORDER BY created_at DESC LIMIT 1`,
     )
     .get(quizId) as { date: string } | undefined;
   return row?.date ?? null;

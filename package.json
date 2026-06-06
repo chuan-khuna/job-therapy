@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "db:migrate": "bun scripts/migrate.ts"
+    "db:migrate": "npx tsx scripts/migrate.ts"
   },
   "dependencies": {
     "better-sqlite3": "^12.10.0",
