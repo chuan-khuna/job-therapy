@@ -163,31 +163,6 @@ h4 {
   box-shadow: 0 0 0 3px oklch(60% 0.13 38 / 0.08);
 }
 
-/* ── badge ── */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  border-radius: 100px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  background: oklch(90% 0.02 142);
-  color: var(--color-text-muted);
-}
-.badge-accent {
-  background: var(--color-accent-subtle);
-  color: var(--color-accent-hover);
-}
-/* readable on accent-subtle surfaces (e.g. selected cards) */
-.badge-surface {
-  background: var(--color-surface-raised);
-  color: var(--color-accent-hover);
-  border: 1px solid oklch(80% 0.038 148 / 0.5);
-}
-.badge-ink {
-  background: var(--color-ink);
-  color: var(--color-surface-raised);
-}
-
 /* ── input ── */
 .input {
   border: 1.5px solid var(--color-border);

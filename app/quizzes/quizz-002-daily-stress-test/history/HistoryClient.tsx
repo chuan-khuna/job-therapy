@@ -55,7 +55,7 @@ function Value({ children }: { children?: string }) {
       <p style={{ fontSize: "0.85rem", color: "var(--color-text-muted)" }}>—</p>
     );
   }
-  return <Tag>{children}</Tag>;
+  return <Tag variant="neutral">{children}</Tag>;
 }
 
 // Read-only rendering of a submitted entry
@@ -101,7 +101,9 @@ function ResultView({ answers }: { answers: StressAnswers }) {
         {answers.companions.length > 0 ? (
           <span style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
             {answers.companions.map((c) => (
-              <Tag key={c}>{c}</Tag>
+              <Tag key={c} variant="neutral">
+                {c}
+              </Tag>
             ))}
           </span>
         ) : (

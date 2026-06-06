@@ -1,39 +1,40 @@
 import { HTMLAttributes } from "react";
 
-type TagVariant = "default" | "accent" | "ink" | "surface";
+type TagVariant = "default" | "accent" | "ink" | "surface" | "neutral";
+
+// shadcn badge — base + variant classes, themed via CSS variables
+const base =
+  "inline-flex w-fit shrink-0 items-center justify-center gap-1 " +
+  "whitespace-nowrap rounded-md border px-2 py-0.5 text-xs font-medium";
+
+const variantClass: Record<TagVariant, string> = {
+  default:
+    "border-transparent bg-[oklch(90%_0.02_142)] text-[var(--color-text-muted)]",
+  accent:
+    "border-transparent bg-[var(--color-accent-subtle)] text-[var(--color-accent-hover)]",
+  ink: "border-transparent bg-[var(--color-ink)] text-[var(--color-surface-raised)]",
+  surface:
+    "border-[oklch(80%_0.038_148_/_0.5)] bg-[var(--color-surface-raised)] text-[var(--color-accent-hover)]",
+  /* answer values — no accent tint */
+  neutral:
+    "border-[var(--color-border)] bg-[var(--color-surface-raised)] text-[var(--color-text)]",
+};
 
 interface TagProps extends HTMLAttributes<HTMLSpanElement> {
   variant?: TagVariant;
 }
 
-const variantClass: Record<TagVariant, string> = {
-  default: "",
-  accent: "badge-accent",
-  ink: "badge-ink",
-  surface: "badge-surface",
-};
-
 export default function Tag({
   variant = "default",
   className,
-  style,
   children,
   ...props
 }: TagProps) {
-  const classes = ["badge", variantClass[variant], className ?? ""]
+  const classes = [base, variantClass[variant], className ?? ""]
     .filter(Boolean)
     .join(" ");
   return (
-    <span
-      className={classes}
-      style={{
-        fontSize: "10px",
-        padding: "2px 8px",
-        lineHeight: 1.5,
-        ...style,
-      }}
-      {...props}
-    >
+    <span className={classes} {...props}>
       {children}
     </span>
   );
