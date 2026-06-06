@@ -23,6 +23,11 @@ A digital self-assessment tool inspired by _Job Therapy_ by Tessa West. Users ta
 - Tokens are CSS custom properties scoped to `[data-theme="<name>"]` selectors
 - See `DESIGN.md` for the visual language and `DESIGN.html` for a rendered reference
 
+## Import conventions
+
+- Use the `@/` path alias for project modules — `@/components/ui/TimePicker`, never relative traversal like `../../components/ui/TimePicker`
+- Same-directory imports (`./quiz-def`) are fine
+
 ## CSS conventions
 
 - Import order in `app/globals.css`: `@import 'tailwindcss'` → preset imports → utility overrides
