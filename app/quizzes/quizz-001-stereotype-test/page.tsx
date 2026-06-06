@@ -1,7 +1,10 @@
+import { connection } from "next/server";
 import { getRecentResults } from "@/lib/db/results";
 import QuizClient from "./QuizClient";
 
-export default function QuizPage() {
+export default async function QuizPage() {
+  await connection(); // read the DB at request time, not at build
+
   let recentResults: Awaited<ReturnType<typeof getRecentResults>> = [];
   try {
     recentResults = getRecentResults("quizz-001-stereotype-test", 7);

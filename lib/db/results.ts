@@ -57,6 +57,26 @@ export function getRecentResults(quizId: string, limit = 7): QuizResult[] {
   return rows.map(parseRow);
 }
 
+export function getAllResults(quizId: string): QuizResult[] {
+  const db = getDb();
+  const rows = db
+    .prepare(
+      `SELECT * FROM quiz_results
+       WHERE quiz_id = ?
+       ORDER BY created_at DESC`,
+    )
+    .all(quizId) as RawRow[];
+  return rows.map(parseRow);
+}
+
+export function deleteResult(quizId: string, id: number) {
+  const db = getDb();
+  db.prepare(`DELETE FROM quiz_results WHERE quiz_id = ? AND id = ?`).run(
+    quizId,
+    id,
+  );
+}
+
 export function getLastResultDate(quizId: string): string | null {
   const db = getDb();
   const row = db
