@@ -278,28 +278,9 @@ export default function HistoryClient({ results }: Props) {
   const selected = results.find((r) => r.id === selectedId) ?? results[0];
 
   return (
-    <div
-      style={{
-        maxWidth: "1200px",
-        margin: "0 auto",
-        width: "100%",
-        display: "grid",
-        gridTemplateColumns: "320px 1fr",
-        minHeight: "calc(100vh - 120px)",
-        alignItems: "start",
-      }}
-    >
+    <div className="mx-auto grid w-full max-w-[1200px] grid-cols-1 items-start md:min-h-[calc(100vh-120px)] md:grid-cols-[320px_1fr]">
       {/* Left — submitted entries */}
-      <div
-        style={{
-          borderRight: "1px solid var(--color-border)",
-          padding: "2rem 1.5rem",
-          position: "sticky",
-          top: 0,
-          maxHeight: "100vh",
-          overflowY: "auto",
-        }}
-      >
+      <div className="border-b border-[var(--color-border)] px-6 py-8 md:sticky md:top-0 md:max-h-screen md:overflow-y-auto md:border-r md:border-b-0">
         <SectionLabel style={{ marginBottom: "1rem" }}>
           ประวัติ · {results.length} ครั้ง
         </SectionLabel>

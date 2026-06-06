@@ -18,17 +18,7 @@ export default function PageHeader({
         borderBottom: "1px solid var(--color-border)",
       }}
     >
-      <div
-        style={{
-          maxWidth: "1200px",
-          margin: "0 auto",
-          padding: "1.5rem 2rem",
-          display: "flex",
-          alignItems: "flex-start",
-          justifyContent: "space-between",
-          gap: "2rem",
-        }}
-      >
+      <div className="mx-auto flex max-w-[1200px] flex-wrap items-start justify-between gap-x-8 gap-y-3 px-5 py-6 sm:px-8">
         <div>
           <h2
             style={{

@@ -11,18 +11,13 @@ export default function TwoColumnLayout({
 }: TwoColumnLayoutProps) {
   return (
     <div
-      style={{
-        maxWidth: "1200px",
-        margin: "0 auto",
-        width: "100%",
-        display: "grid",
-        gridTemplateColumns: `1fr ${rightWidth}`,
-        minHeight: "calc(100vh - 120px)",
-        alignItems: "start",
-      }}
+      className="mx-auto grid w-full max-w-[1200px] grid-cols-1 items-start md:min-h-[calc(100vh-120px)] md:grid-cols-[1fr_var(--right-w)]"
+      style={{ "--right-w": rightWidth } as React.CSSProperties}
     >
-      <div style={{ borderRight: "1px solid var(--color-border)" }}>{left}</div>
-      <div>{right}</div>
+      <div className="md:border-r md:border-[var(--color-border)]">{left}</div>
+      <div className="border-t border-[var(--color-border)] md:border-t-0">
+        {right}
+      </div>
     </div>
   );
 }

@@ -36,13 +36,7 @@ export default async function HomePage() {
           background: "var(--color-surface)",
         }}
       >
-        <div
-          style={{
-            maxWidth: "1200px",
-            margin: "0 auto",
-            padding: "5rem 2rem 4rem",
-          }}
-        >
+        <div className="mx-auto max-w-[1200px] px-5 pt-12 pb-10 sm:px-8 sm:pt-20 sm:pb-16">
           <p
             style={{
               fontSize: "11px",
@@ -87,17 +81,7 @@ export default async function HomePage() {
 
       {/* Quizzes (60) + Articles (40) */}
       <section>
-        <div
-          style={{
-            maxWidth: "1200px",
-            margin: "0 auto",
-            padding: "3rem 2rem",
-            display: "grid",
-            gridTemplateColumns: "3fr 2fr",
-            gap: "3rem",
-            alignItems: "start",
-          }}
-        >
+        <div className="mx-auto grid max-w-[1200px] grid-cols-1 items-start gap-8 px-5 py-8 sm:px-8 sm:py-12 lg:grid-cols-[3fr_2fr] lg:gap-12">
           <div>
             <SectionLabel style={{ marginBottom: "1.5rem" }}>
               แบบประเมิน

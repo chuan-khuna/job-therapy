@@ -91,15 +91,7 @@ export default function QuizClient({ recentResults, today }: Props) {
           </div>
         }
         right={
-          <div
-            style={{
-              padding: "2rem 1.5rem",
-              position: "sticky",
-              top: 0,
-              maxHeight: "100vh",
-              overflowY: "auto",
-            }}
-          >
+          <div className="px-6 py-8 md:sticky md:top-0 md:max-h-screen md:overflow-y-auto">
             <SectionLabel style={{ marginBottom: "1rem" }}>
               บันทึกวันนี้
             </SectionLabel>
