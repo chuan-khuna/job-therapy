@@ -89,12 +89,14 @@ export function deleteResult(quizId: string, id: number) {
   );
 }
 
-export function getLastResultDate(quizId: string): string | null {
+export function getLastResultStamp(
+  quizId: string,
+): { date: string; created_at: string } | null {
   const db = getDb();
   const row = db
     .prepare(
-      `SELECT date FROM quiz_results WHERE quiz_id = ? ORDER BY created_at DESC LIMIT 1`,
+      `SELECT date, created_at FROM quiz_results WHERE quiz_id = ? ORDER BY created_at DESC LIMIT 1`,
     )
-    .get(quizId) as { date: string } | undefined;
-  return row?.date ?? null;
+    .get(quizId) as { date: string; created_at: string } | undefined;
+  return row ?? null;
 }

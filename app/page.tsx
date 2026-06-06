@@ -3,12 +3,23 @@ import QuizCard from "@/components/home/QuizCard";
 import SectionLabel from "@/components/shared/SectionLabel";
 import { QUIZZES } from "@/data/quizzes";
 import { getArticles } from "@/lib/articles";
-import { getLastResultDate } from "@/lib/db/results";
+import { getLastResultStamp } from "@/lib/db/results";
+
+// created_at is sqlite datetime('now') — UTC "YYYY-MM-DD HH:MM:SS"
+function formatStamp(stamp: { date: string; created_at: string }): string {
+  const d = new Date(stamp.created_at.replace(" ", "T") + "Z");
+  const time = d.toLocaleTimeString("th-TH", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  return `${stamp.date} · ${time}`;
+}
 
 export default async function HomePage() {
   const lastDates = QUIZZES.map((q) => {
     try {
-      return getLastResultDate(q.id);
+      const stamp = getLastResultStamp(q.id);
+      return stamp ? formatStamp(stamp) : null;
     } catch {
       return null;
     }
