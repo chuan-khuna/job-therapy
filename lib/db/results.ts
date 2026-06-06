@@ -70,6 +70,17 @@ export function getAllResults(quizId: string): QuizResult[] {
   return rows.map(parseRow);
 }
 
+export function updateResultAnswers(
+  quizId: string,
+  id: number,
+  answers: unknown,
+) {
+  const db = getDb();
+  db.prepare(
+    `UPDATE quiz_results SET answers = ? WHERE quiz_id = ? AND id = ?`,
+  ).run(JSON.stringify(answers), quizId, id);
+}
+
 export function deleteResult(quizId: string, id: number) {
   const db = getDb();
   db.prepare(`DELETE FROM quiz_results WHERE quiz_id = ? AND id = ?`).run(

@@ -1,23 +1,20 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Link from "next/link";
 import { saveResult } from "./actions";
 import TwoColumnLayout from "@/components/layout/TwoColumnLayout";
 import PageHeader from "@/components/layout/PageHeader";
-import ChipGroup from "@/components/quiz/ChipGroup";
-import ChoiceGroup from "@/components/quiz/ChoiceGroup";
 import ResultRow from "@/components/quiz/ResultRow";
 import SectionLabel from "@/components/shared/SectionLabel";
 import Button from "@/components/shared/Button";
+import StressForm from "./StressForm";
 import type { QuizResult } from "@/lib/db/results";
 import {
   EMPTY_ANSWERS,
   FIELD_COUNT,
-  LOCATIONS,
-  COMPANIONS,
-  FREQUENCIES,
-  FEELINGS,
-  MORNING_FEELINGS,
+  QUIZ_ID,
+  QUIZ_NAME,
   answeredCount,
   type StressAnswers,
 } from "./quiz-def";
@@ -27,27 +24,9 @@ interface Props {
   today: string;
 }
 
-function FieldLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <p
-      style={{
-        fontSize: "14px",
-        fontWeight: 500,
-        color: "var(--color-text)",
-        marginBottom: "8px",
-      }}
-    >
-      {children}
-    </p>
-  );
-}
-
-function Field({ children }: { children: React.ReactNode }) {
-  return <div style={{ padding: "0.9rem 0" }}>{children}</div>;
-}
-
 export default function QuizClient({ recentResults, today }: Props) {
   const [answers, setAnswers] = useState<StressAnswers>(EMPTY_ANSWERS);
+  const [formKey, setFormKey] = useState(0); // bump to remount markdown editors
   const [saved, setSaved] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -59,25 +38,9 @@ export default function QuizClient({ recentResults, today }: Props) {
     setSaved(false);
   }
 
-  // Single-select chips: clicking the selected chip unselects
-  function toggleSingle(
-    key: "location" | "frequency" | "morningFeeling" | "eveningFeeling",
-  ) {
-    return (option: string) =>
-      update(key, answers[key] === option ? "" : option);
-  }
-
-  function toggleCompanion(option: string) {
-    update(
-      "companions",
-      answers.companions.includes(option)
-        ? answers.companions.filter((c) => c !== option)
-        : [...answers.companions, option],
-    );
-  }
-
   function handleReset() {
     setAnswers(EMPTY_ANSWERS);
+    setFormKey((k) => k + 1);
     setSaved(false);
   }
 
@@ -93,7 +56,7 @@ export default function QuizClient({ recentResults, today }: Props) {
   return (
     <>
       <PageHeader
-        title="บททดสอบความเครียดประจำวัน"
+        title={QUIZ_NAME}
         subtitle="ตอบช่วงเช้าหนึ่งข้อ และตอบที่เหลือก่อนเข้านอน"
         source="ที่มา: ทฤษฎีบำบัดงาน — Job Therapy โดย Tessa West"
         right={
@@ -111,6 +74,12 @@ export default function QuizClient({ recentResults, today }: Props) {
             <Button variant="ghost" onClick={handleReset}>
               เริ่มใหม่
             </Button>
+            <Link
+              href={`/quizzes/${QUIZ_ID}/history`}
+              className="btn btn-ghost"
+            >
+              ประวัติ
+            </Link>
           </>
         }
       />
@@ -118,123 +87,7 @@ export default function QuizClient({ recentResults, today }: Props) {
       <TwoColumnLayout
         left={
           <div style={{ padding: "2rem" }}>
-            {/* Morning */}
-            <SectionLabel style={{ marginBottom: "0.5rem" }}>
-              ตอนเช้า · ก่อนเริ่มงาน
-            </SectionLabel>
-            <Field>
-              <FieldLabel>
-                เมื่อนึกถึงวันนี้ คุณกังวลเรื่องอะไรมากที่สุด
-              </FieldLabel>
-              <textarea
-                className="input"
-                style={{ width: "100%", resize: "vertical", minHeight: "70px" }}
-                placeholder="เขียนสั้นๆ ถึงสิ่งที่กังวล…"
-                value={answers.morningWorry}
-                onChange={(e) => update("morningWorry", e.target.value)}
-              />
-            </Field>
-
-            {/* Evening */}
-            <SectionLabel style={{ margin: "1.5rem 0 0.5rem" }}>
-              ตอนเย็น · ก่อนเข้านอน
-            </SectionLabel>
-            <p
-              style={{
-                fontSize: "13px",
-                color: "var(--color-text-muted)",
-                lineHeight: 1.65,
-                margin: "0.5rem 0 0.25rem",
-              }}
-            >
-              นึกย้อนทั้งวัน เลือกช่วงเวลาที่เครียด หงุดหงิด เบื่อ
-              หรือรับมือไม่ไหวที่สุด แล้วใช้ช่วงเวลานั้นตอบคำถามต่อไปนี้
-            </p>
-
-            <Field>
-              <FieldLabel>อธิบายเหตุการณ์</FieldLabel>
-              <textarea
-                className="input"
-                style={{ width: "100%", resize: "vertical", minHeight: "90px" }}
-                placeholder="เกิดอะไรขึ้น…"
-                value={answers.event}
-                onChange={(e) => update("event", e.target.value)}
-              />
-            </Field>
-
-            <Field>
-              <FieldLabel>ตอนนั้นเป็นเวลากี่โมง</FieldLabel>
-              <input
-                className="input"
-                type="time"
-                style={{ width: "140px" }}
-                value={answers.time}
-                onChange={(e) => update("time", e.target.value)}
-              />
-            </Field>
-
-            <Field>
-              <FieldLabel>คุณอยู่ที่ไหน</FieldLabel>
-              <ChipGroup
-                options={LOCATIONS}
-                selected={answers.location ? [answers.location] : []}
-                onToggle={toggleSingle("location")}
-              />
-            </Field>
-
-            <Field>
-              <FieldLabel>คุณอยู่กับใคร (เลือกได้หลายข้อ)</FieldLabel>
-              <ChipGroup
-                options={COMPANIONS}
-                selected={answers.companions}
-                onToggle={toggleCompanion}
-              />
-            </Field>
-
-            <Field>
-              <FieldLabel>
-                ใช่สถานการณ์เดียวกับที่กังวลไว้ตอนเช้าหรือไม่
-              </FieldLabel>
-              <ChoiceGroup
-                value={answers.sameAsMorning ?? undefined}
-                onChange={(val) => update("sameAsMorning", val)}
-              />
-            </Field>
-
-            <Field>
-              <FieldLabel>สถานการณ์นี้เกิดขึ้นบ่อยแค่ไหน</FieldLabel>
-              <ChipGroup
-                options={FREQUENCIES}
-                selected={answers.frequency ? [answers.frequency] : []}
-                onToggle={toggleSingle("frequency")}
-              />
-            </Field>
-
-            <Field>
-              <FieldLabel>
-                ตอนเช้า คุณรู้สึกลบหรือบวกแค่ไหนกับเรื่องที่กังวล
-              </FieldLabel>
-              <ChipGroup
-                options={MORNING_FEELINGS}
-                selected={
-                  answers.morningFeeling ? [answers.morningFeeling] : []
-                }
-                onToggle={toggleSingle("morningFeeling")}
-              />
-            </Field>
-
-            <Field>
-              <FieldLabel>
-                ตอนเย็น คุณรู้สึกลบหรือบวกแค่ไหนกับเหตุการณ์ที่บันทึก
-              </FieldLabel>
-              <ChipGroup
-                options={FEELINGS}
-                selected={
-                  answers.eveningFeeling ? [answers.eveningFeeling] : []
-                }
-                onToggle={toggleSingle("eveningFeeling")}
-              />
-            </Field>
+            <StressForm key={formKey} answers={answers} onUpdate={update} />
           </div>
         }
         right={

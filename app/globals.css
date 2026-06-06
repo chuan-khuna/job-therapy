@@ -206,6 +206,37 @@ h4 {
   box-shadow: 0 0 0 3px oklch(54% 0.125 148 / 0.12);
 }
 
+/* ── markdown editor (MDXEditor) ── */
+.md-editor {
+  border: 1.5px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-surface-raised);
+  overflow: hidden;
+  transition:
+    border-color 120ms,
+    box-shadow 120ms;
+}
+.md-editor:focus-within {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px oklch(54% 0.125 148 / 0.12);
+}
+.md-editor .mdxeditor-toolbar {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  border-radius: 0;
+}
+.md-editor-content {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--color-text);
+  min-height: 90px;
+  line-height: 1.65;
+}
+.md-editor-content[data-placeholder]::before,
+.md-editor .mdxeditor-root-contenteditable [data-lexical-placeholder] {
+  color: var(--color-text-muted);
+}
+
 /* ── progress bar ── */
 .progress-wrap {
   background: oklch(89% 0.022 142);
