@@ -5,19 +5,29 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Design Reference — Job Therapy</title>
 <style>
-  /* ── warm-paper theme tokens ── */
+  /* Hallmark · redesign · tone: warm/cozy/neobrutalism-lite · anchor hue: amber H68 · border: kraft H74 */
+
+  /* ── warm-paper theme tokens v2 ── */
   [data-theme="warm-paper"] {
-    --color-bg:             oklch(97% 0.015 88);
-    --color-surface:        oklch(94% 0.014 100);
-    --color-surface-raised: oklch(99% 0.008 90);
-    --color-border:         oklch(72% 0.022 112);
-    --color-text:           oklch(22% 0.018 100);
-    --color-text-muted:     oklch(54% 0.020 115);
-    --color-accent:         oklch(52% 0.10 142);
-    --color-accent-hover:   oklch(46% 0.10 142);
-    --color-accent-fg:      oklch(98% 0.006 90);
-    --color-ink:            oklch(20% 0.020 100);
-    --color-shadow:         oklch(72% 0.022 112);
+    /* Parchment surfaces — warm, slightly golden */
+    --color-bg:             oklch(96% 0.018 82);
+    --color-surface:        oklch(93% 0.016 88);
+    --color-surface-raised: oklch(98% 0.010 85);
+    /* Kraft paper borders — warm brown, not sage */
+    --color-border:         oklch(70% 0.030 74);
+    --color-shadow:         oklch(56% 0.032 74);
+    /* Warm ink */
+    --color-text:           oklch(20% 0.022 74);
+    --color-text-muted:     oklch(52% 0.020 84);
+    --color-ink:            oklch(16% 0.022 74);
+    /* Amber accent — warm, muted, paper-adjacent */
+    --color-accent:         oklch(66% 0.10 68);
+    --color-accent-hover:   oklch(58% 0.10 68);
+    --color-accent-fg:      oklch(14% 0.020 74);
+    /* Terracotta destructive — warm, not alarming */
+    --color-destructive:      oklch(60% 0.13 38);
+    --color-destructive-hover:oklch(54% 0.13 38);
+    --color-destructive-fg:   oklch(14% 0.020 74);
   }
 
   /* ── reset & base ── */
@@ -34,11 +44,12 @@
 
   h1, h2, h3, h4 {
     font-family: Georgia, 'Times New Roman', serif;
+    font-style: normal;
     color: var(--color-ink);
     line-height: 1.2;
   }
 
-  h1 { font-size: 2rem; margin-bottom: 0.25rem; }
+  h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.25rem; }
   h2 { font-size: 1.35rem; margin-bottom: 1rem; border-bottom: 2px solid var(--color-border); padding-bottom: 0.4rem; }
   h3 { font-size: 1.05rem; margin-bottom: 0.5rem; }
 
@@ -62,7 +73,7 @@
     background: var(--color-surface);
     border: 2px solid var(--color-border);
     border-radius: 4px;
-    box-shadow: 3px 3px 0px var(--color-shadow);
+    box-shadow: 4px 4px 0px var(--color-shadow);
     padding: 1.25rem 1.5rem;
   }
 
@@ -87,6 +98,7 @@
   }
   .btn:hover  { box-shadow: 1px 1px 0px var(--color-shadow); transform: translate(2px, 2px); }
   .btn:active { box-shadow: none;                             transform: translate(3px, 3px); }
+  .btn:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
 
   .btn-primary {
     background: var(--color-accent);
@@ -98,11 +110,17 @@
     background: transparent;
     color: var(--color-text);
   }
+  .btn-ghost:hover { background: var(--color-surface); }
 
   .btn-ink {
     background: var(--color-ink);
-    color: var(--color-accent-fg);
+    color: var(--color-surface-raised);
   }
+  .btn-destructive {
+    background: var(--color-destructive);
+    color: var(--color-destructive-fg);
+  }
+  .btn-destructive:hover { background: var(--color-destructive-hover); }
 
   /* ── inputs ── */
   .input {
@@ -118,16 +136,16 @@
     outline-offset: 2px;
     width: 100%;
   }
-  .input:focus {
-    outline-color: var(--color-accent);
-  }
+  .input:focus { outline-color: var(--color-accent); }
+
+  textarea.input { resize: vertical; min-height: 90px; }
 
   /* ── progress bar ── */
   .progress-wrap {
     background: var(--color-surface);
     border: 2px solid var(--color-border);
     border-radius: 2px;
-    height: 14px;
+    height: 12px;
     overflow: hidden;
   }
   .progress-fill {
@@ -135,6 +153,31 @@
     height: 100%;
     border-radius: 0;
     transition: width 300ms ease;
+  }
+
+  /* ── badges / tags ── */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    border: 2px solid var(--color-border);
+    border-radius: 2px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.55rem;
+    background: var(--color-surface-raised);
+    color: var(--color-text-muted);
+    box-shadow: 2px 2px 0px var(--color-shadow);
+  }
+  .badge-accent {
+    background: var(--color-accent);
+    color: var(--color-accent-fg);
+  }
+  .badge-ink {
+    background: var(--color-ink);
+    color: var(--color-surface-raised);
+    border-color: var(--color-ink);
   }
 
   /* ── color swatches ── */
@@ -151,6 +194,7 @@
     height: 50px;
     border: 2px solid var(--color-border);
     border-radius: 4px;
+    box-shadow: 2px 2px 0px var(--color-shadow);
   }
   .swatch-label { font-size: 0.7rem; color: var(--color-text-muted); text-align: center; word-break: break-all; }
 
@@ -159,11 +203,12 @@
     background: var(--color-surface);
     border: 2px solid var(--color-border);
     border-radius: 4px;
-    box-shadow: 3px 3px 0px var(--color-shadow);
+    box-shadow: 4px 4px 0px var(--color-shadow);
     padding: 1.5rem;
   }
   .question-text {
     font-family: Georgia, serif;
+    font-style: normal;
     font-size: 1.1rem;
     color: var(--color-ink);
     margin-bottom: 1.2rem;
@@ -183,6 +228,7 @@
     transition: box-shadow 80ms, transform 80ms;
   }
   .option-btn:hover  { box-shadow: 1px 1px 0px var(--color-shadow); transform: translate(1px, 1px); }
+  .option-btn:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
   .option-btn.selected {
     background: var(--color-accent);
     color: var(--color-accent-fg);
@@ -221,7 +267,7 @@
   <!-- Header -->
   <div>
     <h1>Job Therapy</h1>
-    <p><small>Design Reference — <code>data-theme="warm-paper"</code></small></p>
+    <p><small>Design Reference v2 — <code>data-theme="warm-paper"</code> · amber &amp; kraft</small></p>
   </div>
 
   <!-- Color Palette -->
@@ -257,6 +303,10 @@
         <span class="swatch-label">border</span>
       </div>
       <div class="swatch">
+        <div class="swatch-box" style="background: var(--color-shadow)"></div>
+        <span class="swatch-label">shadow</span>
+      </div>
+      <div class="swatch">
         <div class="swatch-box" style="background: var(--color-text)"></div>
         <span class="swatch-label">text</span>
       </div>
@@ -265,8 +315,8 @@
         <span class="swatch-label">text-muted</span>
       </div>
       <div class="swatch">
-        <div class="swatch-box" style="background: var(--color-shadow)"></div>
-        <span class="swatch-label">shadow</span>
+        <div class="swatch-box" style="background: var(--color-destructive)"></div>
+        <span class="swatch-label">destructive</span>
       </div>
     </div>
   </section>
@@ -276,7 +326,7 @@
     <h2>Typography</h2>
     <div class="card">
       <div class="type-row">
-        <div class="type-label">h1 — serif 2rem</div>
+        <div class="type-label">h1 — serif 2rem / bold</div>
         <h1 style="font-size:2rem">Your Work Life, Diagnosed</h1>
       </div>
       <div class="type-row">
@@ -309,7 +359,20 @@
       <button class="btn btn-primary">Start Assessment</button>
       <button class="btn btn-ghost">View History</button>
       <button class="btn btn-ink">Save Results</button>
-      <button class="btn btn-primary" disabled style="opacity:0.45;cursor:not-allowed">Disabled</button>
+      <button class="btn btn-destructive">Delete Entry</button>
+      <button class="btn btn-primary" disabled style="opacity:0.4;cursor:not-allowed;box-shadow:none">Disabled</button>
+    </div>
+  </section>
+
+  <!-- Badges -->
+  <section class="section">
+    <h2>Badges &amp; Tags</h2>
+    <div class="row">
+      <span class="badge">Workload</span>
+      <span class="badge">Autonomy</span>
+      <span class="badge">Recognition</span>
+      <span class="badge badge-accent">Needs attention</span>
+      <span class="badge badge-ink">Complete</span>
     </div>
   </section>
 
@@ -329,6 +392,10 @@
           <option>Recognition</option>
           <option>Relationships</option>
         </select>
+      </div>
+      <div>
+        <label style="display:block;font-size:0.85rem;font-weight:600;margin-bottom:0.3rem">What would make tomorrow better?</label>
+        <textarea class="input" placeholder="Write freely — this is just for you…"></textarea>
       </div>
     </div>
   </section>
@@ -419,7 +486,7 @@
   </section>
 
   <hr />
-  <p><small>warm-paper theme · matcha &amp; paper · neobrutalism-lite · Tailwind v4 · <code>data-theme</code></small></p>
+  <p><small>warm-paper v2 · amber &amp; kraft · neobrutalism-lite · Tailwind v4 · <code>data-theme</code></small></p>
 
 </div>
 </body>
