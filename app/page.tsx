@@ -1,17 +1,7 @@
 import QuizCard from "@/components/home/QuizCard";
 import SectionLabel from "@/components/shared/SectionLabel";
+import { QUIZZES } from "@/data/quizzes";
 import { getLastResultDate } from "@/lib/db/results";
-
-const QUIZZES = [
-  {
-    id: "quizz-001-stereotype-test",
-    slug: "quizz-001-stereotype-test",
-    name: "คุณเป็นคนทำงานประเภทไหน",
-    description: "ค้นหา stereotype ของคุณใน 5 ประเภทหลัก จาก 11 คำถาม",
-    questionCount: 11,
-    typeCount: 5,
-  },
-];
 
 export default function HomePage() {
   const lastDates = QUIZZES.map((q) => {

@@ -4,7 +4,7 @@ export interface QuizResult {
   id: number;
   quiz_id: string;
   date: string;
-  answers: Record<string, boolean>;
+  answers: Record<string, unknown>;
   matched_types: string[];
   created_at: string;
 }
@@ -26,10 +26,11 @@ function parseRow(row: RawRow): QuizResult {
   };
 }
 
+// answers is any JSON-serialisable shape — each quiz defines its own
 export function saveQuizResult(params: {
   quizId: string;
   date: string;
-  answers: Record<number, boolean>;
+  answers: unknown;
   matchedTypes: string[];
 }) {
   const db = getDb();

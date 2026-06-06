@@ -1,0 +1,27 @@
+export interface QuizMeta {
+  id: string;
+  slug: string;
+  name: string;
+  description: string;
+  questionCount: number;
+  typeCount?: number;
+}
+
+export const QUIZZES: QuizMeta[] = [
+  {
+    id: "quizz-001-stereotype-test",
+    slug: "quizz-001-stereotype-test",
+    name: "คุณเป็นคนทำงานประเภทไหน",
+    description: "ค้นหา stereotype ของคุณใน 5 ประเภทหลัก จาก 11 คำถาม",
+    questionCount: 11,
+    typeCount: 5,
+  },
+  {
+    id: "quizz-002-daily-stress-test",
+    slug: "quizz-002-daily-stress-test",
+    name: "บททดสอบความเครียดประจำวัน",
+    description:
+      "บันทึกความกังวลตอนเช้าและเหตุการณ์เครียดตอนเย็น เพื่อดูแพตเทิร์นในแต่ละวัน",
+    questionCount: 9,
+  },
+];

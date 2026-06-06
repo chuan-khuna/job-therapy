@@ -1,6 +1,6 @@
 import { HTMLAttributes } from "react";
 
-type TagVariant = "default" | "accent" | "ink";
+type TagVariant = "default" | "accent" | "ink" | "surface";
 
 interface TagProps extends HTMLAttributes<HTMLSpanElement> {
   variant?: TagVariant;
@@ -10,6 +10,7 @@ const variantClass: Record<TagVariant, string> = {
   default: "",
   accent: "badge-accent",
   ink: "badge-ink",
+  surface: "badge-surface",
 };
 
 export default function Tag({

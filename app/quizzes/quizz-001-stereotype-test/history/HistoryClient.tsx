@@ -17,8 +17,8 @@ interface Props {
 // JSON keys come back as strings — normalise to numeric ids
 function answersOf(result: QuizResult): Answers {
   return Object.fromEntries(
-    Object.entries(result.answers).map(([k, v]) => [Number(k), v]),
-  );
+    Object.entries(result.answers).map(([k, v]) => [Number(k), v === true]),
+  ) as Answers;
 }
 
 // created_at is sqlite datetime('now') — UTC "YYYY-MM-DD HH:MM:SS"
@@ -226,7 +226,7 @@ export default function HistoryClient({ results }: Props) {
                     r.matched_types.map((typeId) => (
                       <Tag
                         key={typeId}
-                        variant={isSelected ? "accent" : "default"}
+                        variant={isSelected ? "surface" : "default"}
                       >
                         {typeId} ·{" "}
                         {typeMeta.find((t) => t.id === typeId)?.name ?? typeId}

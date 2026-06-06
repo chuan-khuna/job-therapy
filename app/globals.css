@@ -176,6 +176,12 @@ h4 {
   background: var(--color-accent-subtle);
   color: var(--color-accent-hover);
 }
+/* readable on accent-subtle surfaces (e.g. selected cards) */
+.badge-surface {
+  background: var(--color-surface-raised);
+  color: var(--color-accent-hover);
+  border: 1px solid oklch(80% 0.038 148 / 0.5);
+}
 .badge-ink {
   background: var(--color-ink);
   color: var(--color-surface-raised);

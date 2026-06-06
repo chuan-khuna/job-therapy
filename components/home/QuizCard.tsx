@@ -6,7 +6,7 @@ interface QuizCardProps {
   name: string;
   description: string;
   questionCount: number;
-  typeCount: number;
+  typeCount?: number;
   lastDate?: string | null;
 }
 
@@ -62,7 +62,8 @@ export default function QuizCard({
                 whiteSpace: "nowrap",
               }}
             >
-              {questionCount} คำถาม · {typeCount} ประเภท
+              {questionCount} คำถาม
+              {typeCount ? ` · ${typeCount} ประเภท` : ""}
             </p>
             {lastDate && (
               <Tag variant="accent" style={{ marginTop: "6px" }}>
