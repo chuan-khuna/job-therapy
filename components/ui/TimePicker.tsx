@@ -13,10 +13,11 @@ function pad2(v: string): string {
 }
 
 const segmentStyle: React.CSSProperties = {
-  width: "46px",
+  width: "42px",
   textAlign: "center",
   fontFamily: "var(--font-mono)",
-  fontSize: "0.9rem",
+  fontSize: "0.85rem",
+  padding: "0.3rem 0.4rem",
 };
 
 // shadcn-style segmented time picker (hh : mm) — type digits,
