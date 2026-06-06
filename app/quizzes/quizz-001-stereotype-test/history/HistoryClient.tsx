@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import Link from "next/link";
 import { Trash2 } from "lucide-react";
-import ConfirmDialog from "@/components/shared/ConfirmDialog";
 import SectionLabel from "@/components/shared/SectionLabel";
 import Tag from "@/components/shared/Tag";
 import TypeCard from "@/components/quiz/TypeCard";
@@ -58,15 +57,20 @@ export default function HistoryClient({ results }: Props) {
   const [selectedId, setSelectedId] = useState<number | null>(
     results[0]?.id ?? null,
   );
-  const [deleteTarget, setDeleteTarget] = useState<QuizResult | null>(null);
+  const [confirmingId, setConfirmingId] = useState<number | null>(null);
   const [isPending, startTransition] = useTransition();
 
-  function handleConfirmDelete() {
-    if (!deleteTarget) return;
-    const id = deleteTarget.id;
+  // Inline confirm reverts to the bin icon if not acted on
+  useEffect(() => {
+    if (confirmingId === null) return;
+    const t = setTimeout(() => setConfirmingId(null), 4000);
+    return () => clearTimeout(t);
+  }, [confirmingId]);
+
+  function handleDelete(id: number) {
     startTransition(async () => {
       await deleteResultAction(id);
-      setDeleteTarget(null);
+      setConfirmingId(null);
     });
   }
 
@@ -138,7 +142,10 @@ export default function HistoryClient({ results }: Props) {
                   width: "100%",
                   opacity: isPending ? 0.6 : 1,
                 }}
-                onClick={() => setSelectedId(r.id)}
+                onClick={() => {
+                  setSelectedId(r.id);
+                  setConfirmingId(null);
+                }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") setSelectedId(r.id);
                 }}
@@ -158,33 +165,52 @@ export default function HistoryClient({ results }: Props) {
                   >
                     {r.date} · {timeOf(r.created_at)}
                   </span>
-                  <button
-                    aria-label="ลบรายการนี้"
-                    title="ลบรายการนี้"
-                    disabled={isPending}
-                    style={{
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                      fontSize: "13px",
-                      lineHeight: 1,
-                      padding: "2px 4px",
-                      color: "var(--color-text-muted)",
-                      transition: "color 120ms",
-                    }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setDeleteTarget(r);
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.color = "var(--color-destructive)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.color = "var(--color-text-muted)";
-                    }}
-                  >
-                    <Trash2 size={14} strokeWidth={2} />
-                  </button>
+                  {confirmingId === r.id ? (
+                    <button
+                      className="btn btn-destructive"
+                      disabled={isPending}
+                      style={{
+                        fontSize: "11px",
+                        padding: "2px 10px",
+                        flexShrink: 0,
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(r.id);
+                      }}
+                    >
+                      {isPending ? "กำลังลบ…" : "ยืนยันลบ"}
+                    </button>
+                  ) : (
+                    <button
+                      aria-label="ลบรายการนี้"
+                      title="ลบรายการนี้"
+                      disabled={isPending}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        fontSize: "13px",
+                        lineHeight: 1,
+                        padding: "2px 4px",
+                        color: "var(--color-text-muted)",
+                        transition: "color 120ms",
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setConfirmingId(r.id);
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.color =
+                          "var(--color-destructive)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.color = "var(--color-text-muted)";
+                      }}
+                    >
+                      <Trash2 size={14} strokeWidth={2} />
+                    </button>
+                  )}
                 </span>
                 <span style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
                   {r.matched_types.length === 0 ? (
@@ -338,20 +364,6 @@ export default function HistoryClient({ results }: Props) {
           </div>
         ))}
       </div>
-
-      <ConfirmDialog
-        open={deleteTarget !== null}
-        title="ลบรายการนี้?"
-        description={
-          deleteTarget
-            ? `ผลการประเมินวันที่ ${deleteTarget.date} จะถูกลบถาวร`
-            : undefined
-        }
-        confirmLabel="ลบ"
-        busy={isPending}
-        onConfirm={handleConfirmDelete}
-        onCancel={() => setDeleteTarget(null)}
-      />
     </div>
   );
 }

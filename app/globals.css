@@ -214,11 +214,6 @@ h4 {
   transition: width 300ms ease;
 }
 
-/* ── dialog ── */
-dialog::backdrop {
-  background: oklch(20% 0.015 80 / 0.35);
-}
-
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
