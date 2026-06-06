@@ -4,6 +4,7 @@ import ChipGroup from "@/components/quiz/ChipGroup";
 import ChoiceGroup from "@/components/quiz/ChoiceGroup";
 import SectionLabel from "@/components/shared/SectionLabel";
 import MarkdownEditor from "@/components/shared/MarkdownEditor";
+import TimePicker from "@/components/ui/TimePicker";
 import {
   LOCATIONS,
   COMPANIONS,
@@ -100,12 +101,9 @@ export default function StressForm({ answers, onUpdate }: StressFormProps) {
 
       <Field>
         <FieldLabel>ตอนนั้นเป็นเวลากี่โมง</FieldLabel>
-        <input
-          className="input"
-          type="time"
-          style={{ width: "140px" }}
+        <TimePicker
           value={answers.time}
-          onChange={(e) => onUpdate("time", e.target.value)}
+          onChange={(v) => onUpdate("time", v)}
         />
       </Field>
 
