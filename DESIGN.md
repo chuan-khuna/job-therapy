@@ -53,8 +53,9 @@ File: `styles/presets/warm-paper.css`
 
 ### Typography
 
-- **Heading font**: `Bai Jamjuree` (`--font-serif` slot, via `next/font`) — warm, editorial, always roman (`font-style: normal`)
-- **Body font**: `Noto Sans Thai Looped` (`--font-sans`, via `next/font`) — legible, neutral
+- **Heading font** (`--font-serif`): `Newsreader` (Latin) → `Bai Jamjuree` (Thai fallback) — warm, editorial, always roman (`font-style: normal`)
+- **Body font** (`--font-sans`): `Noto Sans` (Latin) → `Noto Sans Thai Looped` (Thai fallback) — legible, neutral
+- All loaded via `next/font` in `app/layout.tsx`; stacks composed in `app/globals.css` (`:root`)
 - **Mono font**: `ui-monospace` — for scores and data
 - Base size: `1rem` / `16px`
 - Line height: `1.65` for body, `1.25` for headings
