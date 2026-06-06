@@ -28,8 +28,12 @@ h4 {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: 12px;
-  box-shadow: 0 1px 2px oklch(20% 0.015 80 / 0.04), 0 4px 16px oklch(20% 0.015 80 / 0.06);
-  transition: border-color 120ms, box-shadow 120ms;
+  box-shadow:
+    0 1px 2px oklch(20% 0.015 80 / 0.04),
+    0 4px 16px oklch(20% 0.015 80 / 0.06);
+  transition:
+    border-color 120ms,
+    box-shadow 120ms;
 }
 
 .card-link:hover {
@@ -49,7 +53,11 @@ h4 {
   font-size: 0.9rem;
   padding: 0.5rem 1.2rem;
   cursor: pointer;
-  transition: background 120ms, border-color 120ms, box-shadow 120ms, transform 80ms;
+  transition:
+    background 120ms,
+    border-color 120ms,
+    box-shadow 120ms,
+    transform 80ms;
   text-decoration: none;
 }
 .btn:focus-visible {
@@ -117,7 +125,10 @@ h4 {
   font-family: var(--font-sans);
   color: var(--color-text);
   cursor: pointer;
-  transition: border-color 120ms, background 120ms, box-shadow 120ms;
+  transition:
+    border-color 120ms,
+    background 120ms,
+    box-shadow 120ms;
 }
 .option-btn:hover {
   border-color: var(--color-accent);
@@ -173,7 +184,9 @@ h4 {
   font-family: var(--font-sans);
   font-size: 0.95rem;
   padding: 0.5rem 0.75rem;
-  transition: border-color 120ms, box-shadow 120ms;
+  transition:
+    border-color 120ms,
+    box-shadow 120ms;
   outline: none;
 }
 .input:focus {
