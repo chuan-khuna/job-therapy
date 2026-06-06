@@ -4,7 +4,7 @@
 
 ## What this app is
 
-A digital self-assessment tool inspired by *Job Therapy* by Tessa West. Users take structured quizzes to surface workplace misalignment signals, and can log results daily to track patterns over time. The goal is honest self-reflection, not gamification.
+A digital self-assessment tool inspired by _Job Therapy_ by Tessa West. Users take structured quizzes to surface workplace misalignment signals, and can log results daily to track patterns over time. The goal is honest self-reflection, not gamification.
 
 ## Stack
 

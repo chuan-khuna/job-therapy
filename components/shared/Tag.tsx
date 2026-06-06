@@ -12,12 +12,25 @@ const variantClass: Record<TagVariant, string> = {
   ink: "badge-ink",
 };
 
-export default function Tag({ variant = "default", className, style, children, ...props }: TagProps) {
-  const classes = ["badge", variantClass[variant], className ?? ""].filter(Boolean).join(" ");
+export default function Tag({
+  variant = "default",
+  className,
+  style,
+  children,
+  ...props
+}: TagProps) {
+  const classes = ["badge", variantClass[variant], className ?? ""]
+    .filter(Boolean)
+    .join(" ");
   return (
     <span
       className={classes}
-      style={{ fontSize: "10px", padding: "2px 8px", lineHeight: 1.5, ...style }}
+      style={{
+        fontSize: "10px",
+        padding: "2px 8px",
+        lineHeight: 1.5,
+        ...style,
+      }}
       {...props}
     >
       {children}

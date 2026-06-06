@@ -15,8 +15,11 @@ const QUIZZES = [
 
 export default function HomePage() {
   const lastDates = QUIZZES.map((q) => {
-    try { return getLastResultDate(q.id); }
-    catch { return null; }
+    try {
+      return getLastResultDate(q.id);
+    } catch {
+      return null;
+    }
   });
 
   return (
@@ -59,7 +62,9 @@ export default function HomePage() {
               marginBottom: "1.25rem",
             }}
           >
-            ค้นพบสัญญาณ<br />ความไม่สอดคล้องในการทำงาน
+            ค้นพบสัญญาณ
+            <br />
+            ความไม่สอดคล้องในการทำงาน
           </h1>
           <p
             style={{
@@ -84,9 +89,18 @@ export default function HomePage() {
             padding: "3rem 2rem",
           }}
         >
-          <SectionLabel style={{ marginBottom: "1.5rem" }}>แบบประเมิน</SectionLabel>
+          <SectionLabel style={{ marginBottom: "1.5rem" }}>
+            แบบประเมิน
+          </SectionLabel>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "680px" }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "12px",
+              maxWidth: "680px",
+            }}
+          >
             {QUIZZES.map((quiz, i) => (
               <QuizCard
                 key={quiz.id}

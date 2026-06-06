@@ -21,18 +21,47 @@ export default function QuizCard({
   return (
     <Link href={href} style={{ textDecoration: "none", display: "block" }}>
       <div className="card card-link" style={{ padding: "1.25rem 1.5rem" }}>
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "1rem" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
+            gap: "1rem",
+          }}
+        >
           <div>
-            <p style={{ fontFamily: "var(--font-serif)", fontSize: "16px", fontWeight: 700, color: "var(--color-ink)", marginBottom: "4px" }}>
+            <p
+              style={{
+                fontFamily: "var(--font-serif)",
+                fontSize: "16px",
+                fontWeight: 700,
+                color: "var(--color-ink)",
+                marginBottom: "4px",
+              }}
+            >
               {name}
             </p>
-            <p style={{ fontSize: "13px", color: "var(--color-text-muted)", lineHeight: 1.5 }}>
+            <p
+              style={{
+                fontSize: "13px",
+                color: "var(--color-text-muted)",
+                lineHeight: 1.5,
+              }}
+            >
               {description}
             </p>
           </div>
 
           <div style={{ flexShrink: 0, textAlign: "right" }}>
-            <p style={{ fontSize: "10px", fontFamily: "var(--font-mono)", color: "var(--color-text-muted)", letterSpacing: "0.04em", whiteSpace: "nowrap" }}>
+            <p
+              style={{
+                fontSize: "10px",
+                fontFamily: "var(--font-mono)",
+                color: "var(--color-text-muted)",
+                letterSpacing: "0.04em",
+                whiteSpace: "nowrap",
+              }}
+            >
               {questionCount} คำถาม · {typeCount} ประเภท
             </p>
             {lastDate && (

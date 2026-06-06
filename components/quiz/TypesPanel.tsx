@@ -21,10 +21,27 @@ interface TypesPanelProps {
   savedDate?: string;
 }
 
-export default function TypesPanel({ types, answeredCount, onSave, saving, saved, savedDate }: TypesPanelProps) {
+export default function TypesPanel({
+  types,
+  answeredCount,
+  onSave,
+  saving,
+  saved,
+  savedDate,
+}: TypesPanelProps) {
   return (
-    <div style={{ padding: "2rem 1.5rem", position: "sticky", top: 0, maxHeight: "100vh", overflowY: "auto" }}>
-      <SectionLabel style={{ marginBottom: "1rem" }}>ประเภทคนทำงาน</SectionLabel>
+    <div
+      style={{
+        padding: "2rem 1.5rem",
+        position: "sticky",
+        top: 0,
+        maxHeight: "100vh",
+        overflowY: "auto",
+      }}
+    >
+      <SectionLabel style={{ marginBottom: "1rem" }}>
+        ประเภทคนทำงาน
+      </SectionLabel>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
         {types.map((t) => (
@@ -39,12 +56,30 @@ export default function TypesPanel({ types, answeredCount, onSave, saving, saved
         ))}
       </div>
 
-      <div style={{ marginTop: "1.5rem", paddingTop: "1rem", borderTop: "1px solid var(--color-border)" }}>
-        <Button variant="primary" disabled={answeredCount === 0 || saving} onClick={onSave} style={{ width: "100%" }}>
+      <div
+        style={{
+          marginTop: "1.5rem",
+          paddingTop: "1rem",
+          borderTop: "1px solid var(--color-border)",
+        }}
+      >
+        <Button
+          variant="primary"
+          disabled={answeredCount === 0 || saving}
+          onClick={onSave}
+          style={{ width: "100%" }}
+        >
           {saving ? "กำลังบันทึก…" : "บันทึกผล"}
         </Button>
         {saved && savedDate && (
-          <p style={{ marginTop: "8px", fontSize: "12px", color: "var(--color-accent)", textAlign: "center" }}>
+          <p
+            style={{
+              marginTop: "8px",
+              fontSize: "12px",
+              color: "var(--color-accent)",
+              textAlign: "center",
+            }}
+          >
             บันทึกแล้ว {savedDate}
           </p>
         )}

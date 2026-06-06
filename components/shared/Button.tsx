@@ -15,8 +15,19 @@ const variantClass: Record<Variant, string> = {
   danger: "btn-destructive",
 };
 
-export default function Button({ variant = "ghost", size = "md", className, children, ...props }: ButtonProps) {
-  const classes = ["btn", variantClass[variant], size === "sm" ? "btn-sm" : "", className ?? ""]
+export default function Button({
+  variant = "ghost",
+  size = "md",
+  className,
+  children,
+  ...props
+}: ButtonProps) {
+  const classes = [
+    "btn",
+    variantClass[variant],
+    size === "sm" ? "btn-sm" : "",
+    className ?? "",
+  ]
     .filter(Boolean)
     .join(" ");
   return (

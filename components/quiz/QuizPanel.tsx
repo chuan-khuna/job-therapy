@@ -17,7 +17,12 @@ interface QuizPanelProps {
   onAnswer: (id: number, val: boolean | null) => void;
 }
 
-export default function QuizPanel({ questions, answers, showNoteFor, onAnswer }: QuizPanelProps) {
+export default function QuizPanel({
+  questions,
+  answers,
+  showNoteFor,
+  onAnswer,
+}: QuizPanelProps) {
   return (
     <div style={{ padding: "2rem" }}>
       <SectionLabel style={{ marginBottom: "1.25rem" }}>คำถาม</SectionLabel>
@@ -27,11 +32,14 @@ export default function QuizPanel({ questions, answers, showNoteFor, onAnswer }:
           {q.label && (
             <p
               style={{
-                fontFamily: "var(--font-serif)", fontSize: "15px", fontWeight: 600,
+                fontFamily: "var(--font-serif)",
+                fontSize: "15px",
+                fontWeight: 600,
                 color: "var(--color-ink)",
                 padding: idx === 0 ? "0 0 0.5rem" : "1rem 0 0.5rem",
                 borderTop: idx === 0 ? "none" : "1px solid var(--color-border)",
-                marginTop: "0.25rem", letterSpacing: "0.01em",
+                marginTop: "0.25rem",
+                letterSpacing: "0.01em",
               }}
             >
               {q.label}
@@ -43,7 +51,9 @@ export default function QuizPanel({ questions, answers, showNoteFor, onAnswer }:
             note={q.note}
             showNote={showNoteFor === q.id}
             value={answers[q.id]}
-            isLast={idx === questions.length - 1 || Boolean(questions[idx + 1]?.label)}
+            isLast={
+              idx === questions.length - 1 || Boolean(questions[idx + 1]?.label)
+            }
             onChange={(val) => onAnswer(q.id, val)}
           />
         </div>

@@ -1,0 +1,8 @@
+node_modules
+.next
+bun.lock
+db/*.sqlite
+tsconfig.tsbuildinfo
+.agents
+.claude
+quizz.html

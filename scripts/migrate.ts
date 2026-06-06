@@ -17,8 +17,8 @@ db.exec(`
 
 const applied = new Set(
   (db.prepare("SELECT name FROM _migrations").all() as { name: string }[]).map(
-    (r) => r.name
-  )
+    (r) => r.name,
+  ),
 );
 
 const files = fs

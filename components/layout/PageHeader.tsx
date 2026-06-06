@@ -5,7 +5,12 @@ interface PageHeaderProps {
   right?: React.ReactNode;
 }
 
-export default function PageHeader({ title, subtitle, source, right }: PageHeaderProps) {
+export default function PageHeader({
+  title,
+  subtitle,
+  source,
+  right,
+}: PageHeaderProps) {
   return (
     <header
       style={{
@@ -38,7 +43,13 @@ export default function PageHeader({ title, subtitle, source, right }: PageHeade
             {title}
           </h2>
           {subtitle && (
-            <p style={{ fontSize: "13px", color: "var(--color-text-muted)", lineHeight: 1.6 }}>
+            <p
+              style={{
+                fontSize: "13px",
+                color: "var(--color-text-muted)",
+                lineHeight: 1.6,
+              }}
+            >
               {subtitle}
             </p>
           )}

@@ -14,19 +14,24 @@ const compact: React.CSSProperties = {
   textAlign: "center",
 };
 
-export default function ChoiceGroup({ value, yesLabel = "ใช่", noLabel = "ไม่", onChange }: ChoiceGroupProps) {
+export default function ChoiceGroup({
+  value,
+  yesLabel = "ใช่",
+  noLabel = "ไม่",
+  onChange,
+}: ChoiceGroupProps) {
   // Clicking the already-selected choice clears the answer
   return (
     <div style={{ display: "flex", gap: "6px" }}>
       <button
-        className={`option-btn${value === true ? " selected" : ""}`}
+        className={`option-btn ${value === true ? "selected" : ""}`}
         style={compact}
         onClick={() => onChange(value === true ? null : true)}
       >
         {yesLabel}
       </button>
       <button
-        className={`option-btn option-destructive${value === false ? " selected-destructive" : ""}`}
+        className={`option-btn option-destructive ${value === false ? "selected-destructive" : ""}`}
         style={compact}
         onClick={() => onChange(value === false ? null : false)}
       >
