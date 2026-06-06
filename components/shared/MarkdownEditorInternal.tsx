@@ -1,18 +1,9 @@
 "use client";
 
-import {
-  MDXEditor,
-  headingsPlugin,
-  listsPlugin,
-  quotePlugin,
-  thematicBreakPlugin,
-  markdownShortcutPlugin,
-  toolbarPlugin,
-  BoldItalicUnderlineToggles,
-  ListsToggle,
-  UndoRedo,
-} from "@mdxeditor/editor";
-import "@mdxeditor/editor/style.css";
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Placeholder from "@tiptap/extension-placeholder";
+import { Markdown } from "tiptap-markdown";
 
 export interface MarkdownEditorProps {
   value: string;
@@ -20,35 +11,32 @@ export interface MarkdownEditorProps {
   placeholder?: string;
 }
 
+// Very minimal: no toolbar — markdown shortcuts only
+// (**bold**, *italic*, - list, 1. list, # heading, > quote)
 export default function MarkdownEditorInternal({
   value,
   onChange,
   placeholder,
 }: MarkdownEditorProps) {
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Markdown,
+      Placeholder.configure({ placeholder: placeholder ?? "" }),
+    ],
+    content: value,
+    immediatelyRender: false,
+    editorProps: {
+      attributes: { class: "md-editor-content" },
+    },
+    onUpdate({ editor }) {
+      onChange(editor.storage.markdown.getMarkdown());
+    },
+  });
+
   return (
     <div className="md-editor">
-      <MDXEditor
-        markdown={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        contentEditableClassName="md-editor-content"
-        plugins={[
-          headingsPlugin(),
-          listsPlugin(),
-          quotePlugin(),
-          thematicBreakPlugin(),
-          markdownShortcutPlugin(),
-          toolbarPlugin({
-            toolbarContents: () => (
-              <>
-                <BoldItalicUnderlineToggles />
-                <ListsToggle options={["bullet", "number"]} />
-                <UndoRedo />
-              </>
-            ),
-          }),
-        ]}
-      />
+      <EditorContent editor={editor} />
     </div>
   );
 }

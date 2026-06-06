@@ -206,7 +206,7 @@ h4 {
   box-shadow: 0 0 0 3px oklch(54% 0.125 148 / 0.12);
 }
 
-/* ── markdown editor (MDXEditor) ── */
+/* ── markdown editor (TipTap, minimal) ── */
 .md-editor {
   border: 1.5px solid var(--color-border);
   border-radius: 6px;
@@ -220,21 +220,71 @@ h4 {
   border-color: var(--color-accent);
   box-shadow: 0 0 0 3px oklch(54% 0.125 148 / 0.12);
 }
-.md-editor .mdxeditor-toolbar {
-  background: var(--color-surface);
-  border-bottom: 1px solid var(--color-border);
-  border-radius: 0;
-}
 .md-editor-content {
   font-family: var(--font-sans);
   font-size: 0.95rem;
   color: var(--color-text);
   min-height: 90px;
   line-height: 1.65;
+  padding: 0.5rem 0.75rem;
+  outline: none;
 }
-.md-editor-content[data-placeholder]::before,
-.md-editor .mdxeditor-root-contenteditable [data-lexical-placeholder] {
+.md-editor-content p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
   color: var(--color-text-muted);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+.md-editor-content ul,
+.md-editor-content ol {
+  margin: 0.25rem 0 0.25rem 1.25rem;
+  list-style: disc;
+}
+.md-editor-content ol {
+  list-style: decimal;
+}
+.md-editor-content blockquote {
+  border-left: 3px solid var(--color-border-strong);
+  padding-left: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+/* ── article prose (MDX) ── */
+.article-prose p {
+  margin-bottom: 0.9rem;
+}
+.article-prose h1 {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+}
+.article-prose h2 {
+  font-size: 1.2rem;
+  margin: 1.75rem 0 0.6rem;
+}
+.article-prose h3 {
+  font-size: 1.05rem;
+  margin: 1.25rem 0 0.5rem;
+}
+.article-prose ul,
+.article-prose ol {
+  margin: 0 0 0.9rem 1.25rem;
+  list-style: disc;
+}
+.article-prose ol {
+  list-style: decimal;
+}
+.article-prose li {
+  margin-bottom: 0.3rem;
+}
+.article-prose blockquote {
+  border-left: 3px solid var(--color-border-strong);
+  padding-left: 1rem;
+  color: var(--color-text-muted);
+  margin-bottom: 0.9rem;
+}
+.article-prose a {
+  color: var(--color-accent-hover);
 }
 
 /* ── progress bar ── */
