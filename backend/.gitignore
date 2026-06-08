@@ -1,0 +1,29 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+.vscode
+.DS_Store
+
+# python
+.ipynb_checkpoints
+__pycache__/
+*.py[cod]
+Untitled.ipynb
+Untitled[a-zA-Z0-9]*.ipynb
+Untitled-*.ipynb
+
+tmp
+
+# Local SQLite database (keep the db/ folder via .gitkeep, ignore its contents)
+db/*.sqlite
+db/*.sqlite-wal
+db/*.sqlite-shm
+!db/.gitkeep
