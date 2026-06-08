@@ -41,7 +41,7 @@ justfile    Task runner — recipes run in the right service via [working-direct
 
 ## Backend conventions (`backend/`)
 
-- **Run from `backend/`** (the `justfile` does this for you): `uv run uvicorn app.main:app --reload`. Interactive docs at `/docs`.
+- **Run from `backend/`** (the `justfile` does this for you): `uv run uvicorn app.main:app --reload`. Interactive docs at `/docs` (Swagger) and `/scalar` (Scalar API reference). The raw OpenAPI schema is at `/openapi.json` — the frontend can fetch this to discover/generate types against the API contract.
 - **App shape**: `app/main.py` creates the FastAPI app and only wires routers (`app.include_router(...)`) — no business logic. Each resource is an `APIRouter` with its own `prefix` + `tags` under `app/routers/`.
 - **Schemas**: define Pydantic models for inputs and outputs; validate/coerce all incoming data — never trust client input. Prefer `async def` handlers; raise `HTTPException` on error paths.
 - **Database access (SQLModel)**: get a session via `Depends(get_session)` from `app/db/client.py`. The engine opens `backend/db/job-therapy.sqlite` (path resolved relative to the backend root) and applies `journal_mode = WAL` + `foreign_keys = ON` on every connection. Tables are created at startup by `init_db()` (called from the app lifespan) — there is no separate migration runner yet.

@@ -7,6 +7,7 @@ Run with: ``uvicorn app.main:app --reload``.
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from scalar_fastapi import get_scalar_api_reference
 
 from app.db import init_db
 from app.routers import health, quizzes, results
@@ -29,3 +30,9 @@ app = FastAPI(
 app.include_router(health.router)
 app.include_router(quizzes.router)
 app.include_router(results.router)
+
+
+@app.get("/scalar", include_in_schema=False)
+async def scalar_reference():
+    """Serve the Scalar API reference UI."""
+    return get_scalar_api_reference(openapi_url=app.openapi_url, title=app.title)
