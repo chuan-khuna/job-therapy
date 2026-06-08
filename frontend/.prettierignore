@@ -5,4 +5,4 @@ db/*.sqlite
 tsconfig.tsbuildinfo
 .agents
 .claude
-quizz.html
+quiz.html

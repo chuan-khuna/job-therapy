@@ -8,7 +8,7 @@ export async function saveResult(params: {
   date: string;
 }) {
   await saveQuizResult({
-    quizId: "quizz-001-stereotype-test",
+    quizId: "quiz-001-stereotype-test",
     date: params.date,
     answers: params.answers,
     matchedTypes: params.matchedTypes,

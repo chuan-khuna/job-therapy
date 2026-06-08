@@ -84,7 +84,7 @@ export default function QuizClient({ recentResults, today }: Props) {
               เริ่มใหม่
             </Button>
             <Link
-              href="/quizzes/quizz-001-stereotype-test/history"
+              href="/quizzes/quiz-001-stereotype-test/history"
               className="btn btn-ghost"
             >
               ประวัติ

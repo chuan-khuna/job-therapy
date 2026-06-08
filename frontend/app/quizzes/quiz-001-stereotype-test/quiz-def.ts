@@ -8,7 +8,7 @@ export interface QuizType {
   note: ((a: Answers) => string | null) | null;
 }
 
-export const QUIZ_ID = "quizz-001-stereotype-test";
+export const QUIZ_ID = "quiz-001-stereotype-test";
 
 export const QUIZ_NAME = "คุณเป็นคนทำงานประเภทไหน";
 

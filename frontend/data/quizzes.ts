@@ -9,16 +9,16 @@ export interface QuizMeta {
 
 export const quizzes: QuizMeta[] = [
   {
-    id: "quizz-001-stereotype-test",
-    slug: "quizz-001-stereotype-test",
+    id: "quiz-001-stereotype-test",
+    slug: "quiz-001-stereotype-test",
     name: "คุณเป็นคนทำงานประเภทไหน",
     description: "ค้นหา stereotype ของคุณใน 5 ประเภทหลัก จาก 11 คำถาม",
     questionCount: 11,
     typeCount: 5,
   },
   {
-    id: "quizz-002-daily-stress-test",
-    slug: "quizz-002-daily-stress-test",
+    id: "quiz-002-daily-stress-test",
+    slug: "quiz-002-daily-stress-test",
     name: "บททดสอบความเครียดประจำวัน",
     description:
       "บันทึกความกังวลตอนเช้าและเหตุการณ์เครียดตอนเย็น เพื่อดูแพตเทิร์นในแต่ละวัน",

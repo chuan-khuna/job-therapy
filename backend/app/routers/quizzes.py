@@ -1,20 +1,34 @@
-"""Quiz endpoints.
+"""Quiz index endpoint.
 
-Placeholder router — data access (local SQLite) is not implemented yet.
+Lists the available quizzes. Each quiz's full definition is served by its own
+module (``stereotype_quiz``, ``tessa_daily_stress_quiz``); this router just
+exposes the catalog of ``{id, title}`` summaries.
 """
 
 from pydantic import BaseModel
 from fastapi import APIRouter
 
+from app.routers import stereotype_quiz, tessa_daily_stress_quiz
+
 router = APIRouter(prefix="/quizzes", tags=["quizzes"])
 
 
-class Quiz(BaseModel):
+class QuizSummary(BaseModel):
+    """A quiz as it appears in the catalog."""
+
     id: str
     title: str
 
 
-@router.get("", response_model=list[Quiz])
-async def list_quizzes() -> list[Quiz]:
-    """Return all available quizzes. Stub: no quizzes yet."""
-    return []
+SUMMARIES: list[QuizSummary] = [
+    QuizSummary(id=stereotype_quiz.QUIZ_ID, title=stereotype_quiz.QUIZ_TITLE),
+    QuizSummary(
+        id=tessa_daily_stress_quiz.QUIZ_ID, title=tessa_daily_stress_quiz.QUIZ_TITLE
+    ),
+]
+
+
+@router.get("", response_model=list[QuizSummary])
+async def list_quizzes() -> list[QuizSummary]:
+    """Return all available quizzes."""
+    return SUMMARIES
