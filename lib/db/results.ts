@@ -1,4 +1,4 @@
-import { getDb } from "./client";
+import { prisma } from "./client";
 
 export interface QuizResult {
   id: number;
@@ -9,94 +9,87 @@ export interface QuizResult {
   created_at: string;
 }
 
-interface RawRow {
+// Prisma row shape (camelCase) → the snake_case QuizResult the UI consumes.
+// answers / matched_types are stored as JSON-in-TEXT, parsed at this boundary.
+interface PrismaRow {
   id: number;
-  quiz_id: string;
+  quizId: string;
   date: string;
   answers: string;
-  matched_types: string;
-  created_at: string;
+  matchedTypes: string;
+  createdAt: string;
 }
 
-function parseRow(row: RawRow): QuizResult {
+function toResult(row: PrismaRow): QuizResult {
   return {
-    ...row,
+    id: row.id,
+    quiz_id: row.quizId,
+    date: row.date,
     answers: JSON.parse(row.answers),
-    matched_types: JSON.parse(row.matched_types),
+    matched_types: JSON.parse(row.matchedTypes),
+    created_at: row.createdAt,
   };
 }
 
 // answers is any JSON-serialisable shape — each quiz defines its own
-export function saveQuizResult(params: {
+export async function saveQuizResult(params: {
   quizId: string;
   date: string;
   answers: unknown;
   matchedTypes: string[];
 }) {
-  const db = getDb();
-  db.prepare(
-    `INSERT INTO quiz_results (quiz_id, date, answers, matched_types)
-     VALUES (?, ?, ?, ?)`,
-  ).run(
-    params.quizId,
-    params.date,
-    JSON.stringify(params.answers),
-    JSON.stringify(params.matchedTypes),
-  );
+  await prisma.quizResult.create({
+    data: {
+      quizId: params.quizId,
+      date: params.date,
+      answers: JSON.stringify(params.answers),
+      matchedTypes: JSON.stringify(params.matchedTypes),
+    },
+  });
 }
 
-export function getRecentResults(quizId: string, limit = 7): QuizResult[] {
-  const db = getDb();
-  const rows = db
-    .prepare(
-      `SELECT * FROM quiz_results
-       WHERE quiz_id = ?
-       ORDER BY created_at DESC
-       LIMIT ?`,
-    )
-    .all(quizId, limit) as RawRow[];
-  return rows.map(parseRow);
+export async function getRecentResults(
+  quizId: string,
+  limit = 7,
+): Promise<QuizResult[]> {
+  const rows = await prisma.quizResult.findMany({
+    where: { quizId },
+    orderBy: { createdAt: "desc" },
+    take: limit,
+  });
+  return rows.map(toResult);
 }
 
-export function getAllResults(quizId: string): QuizResult[] {
-  const db = getDb();
-  const rows = db
-    .prepare(
-      `SELECT * FROM quiz_results
-       WHERE quiz_id = ?
-       ORDER BY created_at DESC`,
-    )
-    .all(quizId) as RawRow[];
-  return rows.map(parseRow);
+export async function getAllResults(quizId: string): Promise<QuizResult[]> {
+  const rows = await prisma.quizResult.findMany({
+    where: { quizId },
+    orderBy: { createdAt: "desc" },
+  });
+  return rows.map(toResult);
 }
 
-export function updateResultAnswers(
+export async function updateResultAnswers(
   quizId: string,
   id: number,
   answers: unknown,
 ) {
-  const db = getDb();
-  db.prepare(
-    `UPDATE quiz_results SET answers = ? WHERE quiz_id = ? AND id = ?`,
-  ).run(JSON.stringify(answers), quizId, id);
+  await prisma.quizResult.updateMany({
+    where: { quizId, id },
+    data: { answers: JSON.stringify(answers) },
+  });
 }
 
-export function deleteResult(quizId: string, id: number) {
-  const db = getDb();
-  db.prepare(`DELETE FROM quiz_results WHERE quiz_id = ? AND id = ?`).run(
-    quizId,
-    id,
-  );
+export async function deleteResult(quizId: string, id: number) {
+  await prisma.quizResult.deleteMany({ where: { quizId, id } });
 }
 
-export function getLastResultStamp(
+export async function getLastResultStamp(
   quizId: string,
-): { date: string; created_at: string } | null {
-  const db = getDb();
-  const row = db
-    .prepare(
-      `SELECT date, created_at FROM quiz_results WHERE quiz_id = ? ORDER BY created_at DESC LIMIT 1`,
-    )
-    .get(quizId) as { date: string; created_at: string } | undefined;
-  return row ?? null;
+): Promise<{ date: string; created_at: string } | null> {
+  const row = await prisma.quizResult.findFirst({
+    where: { quizId },
+    orderBy: { createdAt: "desc" },
+    select: { date: true, createdAt: true },
+  });
+  return row ? { date: row.date, created_at: row.createdAt } : null;
 }

@@ -1,7 +1,8 @@
 import Link from "next/link";
 import QuizCard from "@/components/home/QuizCard";
 import SectionLabel from "@/components/shared/SectionLabel";
-import { QUIZZES } from "@/data/quizzes";
+import { quizzes } from "@/data/quizzes";
+import { site } from "@/data/site";
 import { getArticles } from "@/lib/articles";
 import { getLastResultStamp } from "@/lib/db/results";
 
@@ -16,14 +17,16 @@ function formatStamp(stamp: { date: string; created_at: string }): string {
 }
 
 export default async function HomePage() {
-  const lastDates = QUIZZES.map((q) => {
-    try {
-      const stamp = getLastResultStamp(q.id);
-      return stamp ? formatStamp(stamp) : null;
-    } catch {
-      return null;
-    }
-  });
+  const lastDates = await Promise.all(
+    quizzes.map(async (q) => {
+      try {
+        const stamp = await getLastResultStamp(q.id);
+        return stamp ? formatStamp(stamp) : null;
+      } catch {
+        return null;
+      }
+    }),
+  );
 
   const articles = await getArticles();
 
@@ -47,7 +50,7 @@ export default async function HomePage() {
               marginBottom: "1.25rem",
             }}
           >
-            อิงจาก Job Therapy · Tessa West
+            {site.hero.eyebrow}
           </p>
           <h1
             style={{
@@ -61,9 +64,12 @@ export default async function HomePage() {
               marginBottom: "1.25rem",
             }}
           >
-            ค้นพบสัญญาณ
-            <br />
-            ความไม่สอดคล้องในการทำงาน
+            {site.hero.headline.map((line, i) => (
+              <span key={i}>
+                {i > 0 && <br />}
+                {line}
+              </span>
+            ))}
           </h1>
           <p
             style={{
@@ -73,8 +79,7 @@ export default async function HomePage() {
               maxWidth: "480px",
             }}
           >
-            แบบประเมินตนเองที่ช่วยให้คุณรู้จักตัวเองในมิติของการทำงาน
-            ก่อนที่ปัญหาจะใหญ่เกินแก้
+            {site.hero.subhead}
           </p>
         </div>
       </section>
@@ -94,7 +99,7 @@ export default async function HomePage() {
                 gap: "12px",
               }}
             >
-              {QUIZZES.map((quiz, i) => (
+              {quizzes.map((quiz, i) => (
                 <QuizCard
                   key={quiz.id}
                   href={`/quizzes/${quiz.slug}`}

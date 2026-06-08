@@ -6,6 +6,7 @@ import {
   Noto_Sans,
   Noto_Sans_Thai_Looped,
 } from "next/font/google";
+import Footer from "@/components/layout/Footer";
 import Nav from "@/components/layout/Nav";
 import "./globals.css";
 
@@ -68,6 +69,7 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col">
         <Nav />
         {children}
+        <Footer />
       </body>
     </html>
   );

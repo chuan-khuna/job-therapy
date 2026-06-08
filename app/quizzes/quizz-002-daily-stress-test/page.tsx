@@ -8,7 +8,7 @@ export default async function QuizPage() {
 
   let recentResults: Awaited<ReturnType<typeof getRecentResults>> = [];
   try {
-    recentResults = getRecentResults(QUIZ_ID, 7);
+    recentResults = await getRecentResults(QUIZ_ID, 7);
   } catch {
     // DB not yet initialised — first run before migrations
   }

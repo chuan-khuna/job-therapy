@@ -11,8 +11,8 @@ A digital self-assessment tool inspired by _Job Therapy_ by Tessa West. Users ta
 - **Framework**: Next.js 16 (App Router, Turbopack) — read `node_modules/next/dist/docs/` before touching routing or data patterns
 - **React**: 19 — use Server Components by default; add `"use client"` only when needed
 - **Language**: TypeScript (strict)
-- **Database**: Supabase (Postgres) via `@supabase/supabase-js` + `@supabase/ssr` — async API, no ORM
-- **Auth**: Supabase Auth with the Discord provider; data ownership enforced by Row Level Security (RLS)
+- **Database**: SQLite via `better-sqlite3` — synchronous API, local file, no ORM
+- **Auth**: none — single-user, local-first; results are not scoped to a user
 - **Styling**: Tailwind CSS v4 — no `tailwind.config.js`; configuration lives in CSS via `@theme`
 - **Package manager**: bun (preferred); npm is acceptable
 
@@ -36,15 +36,14 @@ A digital self-assessment tool inspired by _Job Therapy_ by Tessa West. Users ta
 - Use CSS variables (`var(--color-surface)` etc.) for theme-sensitive values
 - No inline `style=` props for colors — always route through a CSS variable
 
-## Database & Auth
+## Database
 
-- **Hosted Postgres on Supabase** — no local DB file. Connection + keys come from env (see `.env.example`); copy it to `.env.local`.
-- **Keys**: `NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` are browser-safe (gated by RLS). `SUPABASE_SECRET_KEY` is server-only and **bypasses RLS** — never expose it or prefix it with `NEXT_PUBLIC_`.
-- **Migrations**: Postgres SQL files in `supabase/migrations/`. Apply via the Supabase dashboard SQL Editor, or `supabase db push` once the CLI is set up. (Legacy SQLite files under `db/migrations/` are dead — do not use; they're SQLite dialect and won't run on Postgres.)
-- **RLS is mandatory**: every table holding user data must have RLS enabled with owner-scoped policies (`auth.uid() = user_id`) before it ships. A table without RLS is readable by anyone with the publishable key.
-- **No ORM** — write raw SQL in migrations; query through the Supabase client in `lib/db/` modules.
-- **Clients**: use the server client (reads the auth cookie) in Server Components / server actions / route handlers; use the browser client only in `"use client"` code. The secret-key client is for trusted server-side admin work only.
-- **Ownership**: derive the user from the session server-side (`supabase.auth.getUser()`), never trust a client-supplied `user_id`. RLS is the backstop, not the only gate.
+- **Local SQLite file** at `db/job-therapy.sqlite` (WAL mode; git-ignored along with its `-shm`/`-wal` sidecars). No external service, no connection keys.
+- **Access**: `better-sqlite3` is **synchronous** — no `await` on queries. Get the shared connection via `getDb()` from `lib/db/client.ts`; it opens the file lazily and sets `journal_mode = WAL` + `foreign_keys = ON`.
+- **Query modules**: write raw SQL behind typed helpers in `lib/db/` (see `lib/db/results.ts`). JSON-shaped columns (`answers`, `matched_types`) are stored as `TEXT` and `JSON.parse`/`JSON.stringify`d at the boundary.
+- **No ORM** — write raw SQL with prepared statements (`db.prepare(...).run/get/all`).
+- **Migrations**: plain SQLite `.sql` files in `db/migrations/`, applied in filename order by `scripts/migrate.ts`, which tracks applied files in a `_migrations` table (idempotent — safe to re-run). Run with `bun run db:migrate` (or `just migrate`).
+- **No auth / no per-user scoping**: this is a single-user local app — rows are not owned by a user and there is no login. Do not add a `user_id` column or auth flow without discussing first.
 
 ## File layout (intended)
 
@@ -52,11 +51,13 @@ A digital self-assessment tool inspired by _Job Therapy_ by Tessa West. Users ta
 app/                   Next.js App Router
   layout.tsx           Sets data-theme on <html>
   globals.css          Tailwind + preset imports
-supabase/
-  migrations/          Postgres SQL migrations (RLS policies live here)
+db/
+  job-therapy.sqlite   Local SQLite database (git-ignored)
+  migrations/          SQLite *.sql migrations, applied by scripts/migrate.ts
 lib/
-  db/                  Supabase query modules
-  supabase/            server + browser client factories
+  db/                  SQLite query modules (client.ts, results.ts)
+scripts/
+  migrate.ts           Migration runner (bun run db:migrate)
 styles/
   presets/
     warm-paper.css     Default theme
@@ -90,8 +91,7 @@ Use `just` (see `justfile`):
 ```
 just dev      # start dev server
 just build    # production build
-# Migrations: apply supabase/migrations/*.sql via the Supabase SQL Editor
-# (or `supabase db push` once the CLI is installed)
+just migrate  # apply pending db/migrations/*.sql (bun run db:migrate)
 ```
 
 ## What to avoid
@@ -99,8 +99,8 @@ just build    # production build
 - Do not create a `tailwind.config.js` — Tailwind v4 is configured in CSS only
 - Do not use `next/font` with `variable` prop to set CSS vars for color — fonts only
 - Do not add an ORM (Prisma, Drizzle, etc.) without discussing first
-- Do not create a table without enabling RLS + owner-scoped policies
-- Do not expose `SUPABASE_SECRET_KEY` to the browser or prefix it with `NEXT_PUBLIC_`
-- Do not use `better-sqlite3` or write SQLite-dialect SQL — the DB is Postgres now
+- Do not add a `user_id` column, auth, or per-user scoping without discussing first — this is a single-user local app
+- Do not `await` `better-sqlite3` queries — the API is synchronous
+- Do not write Postgres-dialect SQL or reach for Supabase — the DB is local SQLite
 - Do not use `className="dark:…"` — use `data-theme` selectors in CSS instead
 - Do not add `console.log` debugging left in committed code

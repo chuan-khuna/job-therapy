@@ -1,0 +1,27 @@
+// Prisma schema — see https://pris.ly/d/prisma-schema
+// SQLite via the better-sqlite3 driver adapter (configured in prisma.config.ts).
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// One row per quiz submission. Mirrors the original hand-rolled `quiz_results`
+// table: `answers` and `matchedTypes` are JSON serialised into TEXT columns and
+// parsed at the lib/db boundary; `createdAt` keeps SQLite's
+// "YYYY-MM-DD HH:MM:SS" UTC format that the UI formats against.
+model QuizResult {
+  id           Int    @id @default(autoincrement())
+  quizId       String @map("quiz_id")
+  date         String // YYYY-MM-DD
+  answers      String // JSON object, quiz-specific shape
+  matchedTypes String @map("matched_types") // JSON array of type codes
+  createdAt    String @default(dbgenerated("(datetime('now'))")) @map("created_at")
+
+  @@index([quizId, date], map: "idx_quiz_results_quiz_date")
+  @@map("quiz_results")
+}

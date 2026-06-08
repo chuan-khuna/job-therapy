@@ -7,7 +7,7 @@ export async function saveResult(params: {
   answers: StressAnswers;
   date: string;
 }) {
-  saveQuizResult({
+  await saveQuizResult({
     quizId: QUIZ_ID,
     date: params.date,
     answers: params.answers,

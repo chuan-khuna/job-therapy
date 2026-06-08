@@ -1,48 +1,41 @@
 import Link from "next/link";
 import { site } from "@/data/site";
-import ThemeSwitcher from "./ThemeSwitcher";
 
-export default function Nav() {
+export default function Footer() {
   return (
-    <nav
+    <footer
       style={{
         background: "var(--color-surface)",
-        borderBottom: "1px solid var(--color-border)",
-        position: "sticky",
-        top: 0,
-        zIndex: 50,
-        backdropFilter: "blur(8px)",
-        WebkitBackdropFilter: "blur(8px)",
+        borderTop: "1px solid var(--color-border)",
+        marginTop: "auto",
       }}
     >
       <div
         style={{
           maxWidth: "1200px",
           margin: "0 auto",
-          padding: "0 2rem",
-          height: "56px",
+          padding: "1.5rem 2rem",
           display: "flex",
+          flexWrap: "wrap",
           alignItems: "center",
           justifyContent: "space-between",
+          gap: "1rem",
         }}
       >
-        <Link
-          href="/"
+        <span
           style={{
             fontFamily: "var(--font-serif)",
-            fontSize: "15px",
+            fontSize: "14px",
             fontWeight: 700,
             color: "var(--color-ink)",
-            textDecoration: "none",
             letterSpacing: "-0.02em",
-            lineHeight: 1,
           }}
         >
-          {site.nav.brand}
-        </Link>
+          {site.name}
+        </span>
 
-        <div style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
-          {site.nav.links.map((link) => (
+        <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
+          {site.footer.links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
@@ -56,9 +49,19 @@ export default function Nav() {
               {link.label}
             </Link>
           ))}
-          <ThemeSwitcher />
         </div>
+
+        <span
+          style={{
+            fontSize: "11px",
+            fontFamily: "var(--font-mono)",
+            color: "var(--color-text-muted)",
+            letterSpacing: "0.04em",
+          }}
+        >
+          {site.footer.note}
+        </span>
       </div>
-    </nav>
+    </footer>
   );
 }

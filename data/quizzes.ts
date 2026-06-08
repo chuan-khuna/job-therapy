@@ -7,7 +7,7 @@ export interface QuizMeta {
   typeCount?: number;
 }
 
-export const QUIZZES: QuizMeta[] = [
+export const quizzes: QuizMeta[] = [
   {
     id: "quizz-001-stereotype-test",
     slug: "quizz-001-stereotype-test",

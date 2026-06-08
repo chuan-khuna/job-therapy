@@ -1,15 +1,19 @@
-import Database from "better-sqlite3";
-import path from "path";
+import { PrismaBetterSQLite3 } from "@prisma/adapter-better-sqlite3";
+import { PrismaClient } from "@/lib/generated/prisma/client";
 
-const DB_PATH = path.join(process.cwd(), "db", "job-therapy.sqlite");
+// SQLite connection string, resolved relative to the project root (see .env).
+const url = process.env.DATABASE_URL ?? "file:./db/job-therapy.sqlite";
 
-let _db: ReturnType<typeof Database> | null = null;
+// Reuse a single PrismaClient across hot reloads in dev — Next.js re-evaluates
+// modules on every change, which would otherwise open a new DB handle each time.
+const globalForPrisma = globalThis as unknown as {
+  prisma?: PrismaClient;
+};
 
-export function getDb() {
-  if (!_db) {
-    _db = new Database(DB_PATH);
-    _db.pragma("journal_mode = WAL");
-    _db.pragma("foreign_keys = ON");
-  }
-  return _db;
+export const prisma =
+  globalForPrisma.prisma ??
+  new PrismaClient({ adapter: new PrismaBetterSQLite3({ url }) });
+
+if (process.env.NODE_ENV !== "production") {
+  globalForPrisma.prisma = prisma;
 }
