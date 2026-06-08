@@ -1,34 +1,50 @@
-"""Result endpoints.
+"""Result endpoints — log and read quiz results.
 
-Placeholder router — data access (local SQLite) is not implemented yet.
+Persistence is SQLModel over the local SQLite database (see ``app.db``).
 """
 
-from fastapi import APIRouter, status
+from datetime import datetime
+from uuid import UUID
+
+from fastapi import APIRouter, Depends, status
 from pydantic import BaseModel
+from sqlmodel import Session, select
+
+from app.db import get_session
+from app.models import Result
 
 router = APIRouter(prefix="/results", tags=["results"])
 
 
-class Result(BaseModel):
-    id: str
-    quiz_id: str
-    answers: dict[str, object]
-    matched_types: list[str]
-
-
 class ResultCreate(BaseModel):
+    """Request body for logging a result."""
+
     quiz_id: str
     answers: dict[str, object]
     matched_types: list[str]
 
 
-@router.get("", response_model=list[Result])
-async def list_results() -> list[Result]:
-    """Return logged results. Stub: no persistence yet."""
-    return []
+class ResultRead(BaseModel):
+    """Response shape for a logged result."""
+
+    id: UUID
+    quiz_id: str
+    answers: dict[str, object]
+    matched_types: list[str]
+    created_at: datetime
 
 
-@router.post("", response_model=Result, status_code=status.HTTP_201_CREATED)
-async def create_result(payload: ResultCreate) -> Result:
-    """Persist a new result. Stub: echoes input with a placeholder id."""
-    return Result(id="stub", **payload.model_dump())
+@router.get("", response_model=list[ResultRead])
+def list_results(session: Session = Depends(get_session)) -> list[Result]:
+    """Return logged results, oldest first."""
+    return list(session.exec(select(Result).order_by(Result.created_at)).all())
+
+
+@router.post("", response_model=ResultRead, status_code=status.HTTP_201_CREATED)
+def create_result(payload: ResultCreate, session: Session = Depends(get_session)) -> Result:
+    """Persist a new result. The id is a server-generated UUIDv7."""
+    result = Result(**payload.model_dump())
+    session.add(result)
+    session.commit()
+    session.refresh(result)
+    return result

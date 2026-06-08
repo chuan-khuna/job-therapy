@@ -1,7 +1,8 @@
 # Job Therapy — Backend
 
 FastAPI service for the Job Therapy self-assessment tool. Managed with
-[uv](https://docs.astral.sh/uv/). Data layer is local SQLite (added later — no ORM).
+[uv](https://docs.astral.sh/uv/). Data layer is local SQLite via
+[SQLModel](https://sqlmodel.tiangolo.com/); primary keys are UUIDv7.
 
 ## Install
 
@@ -23,10 +24,11 @@ The API is then served at http://127.0.0.1:8000 (interactive docs at `/docs`).
 backend/
   app/                   # the FastAPI application package
     __init__.py
-    main.py              # creates the FastAPI app and includes routers — no business logic
-    db/                  # data layer (raw SQLite, no ORM)
-      __init__.py        # re-exports DB_PATH, connect, get_db
-      client.py          # stdlib sqlite3 connection plumbing (WAL, foreign_keys ON)
+    main.py              # creates the FastAPI app, includes routers, init_db() on startup
+    models.py            # SQLModel table models (UUIDv7 primary keys)
+    db/                  # data layer (SQLModel over SQLite)
+      __init__.py        # re-exports DB_PATH, engine, get_session, init_db
+      client.py          # SQLModel engine + session plumbing (WAL, foreign_keys ON)
     routers/             # one module per resource, each an APIRouter
       __init__.py
       health.py          # GET /health   -> {"status": "ok"}
@@ -58,15 +60,17 @@ The data layer lives in `app/db/`.
 
 There are two distinct `db` locations:
 
-- **`app/db/client.py`** is the connection *plumbing*. It uses the standard
-  library `sqlite3` (no ORM) and applies the project's standard pragmas —
-  `journal_mode = WAL` and `foreign_keys = ON`. The database path
-  (`DB_PATH`) is resolved relative to the backend root, so it points at the same
-  file regardless of the process's working directory (launch-location
-  independent). It exposes `connect()` (open a new connection with `sqlite3.Row`
-  rows) and `get_db()` (a FastAPI dependency yielding a connection for use with
-  `Depends(get_db)`, closed when the request finishes). These are re-exported
-  from `app/db/__init__.py`.
+- **`app/db/client.py`** is the engine *plumbing*. It builds a SQLModel
+  (SQLAlchemy) `engine` and applies the project's standard pragmas —
+  `journal_mode = WAL` and `foreign_keys = ON` — to every connection. The
+  database path (`DB_PATH`) is resolved relative to the backend root, so it
+  points at the same file regardless of the process's working directory
+  (launch-location independent). It exposes `engine`, `get_session()` (a FastAPI
+  dependency yielding a `Session` for use with `Depends(get_session)`, closed
+  when the request finishes), and `init_db()` (creates tables from the SQLModel
+  models — called from the app lifespan on startup). These are re-exported from
+  `app/db/__init__.py`. Table models live in `app/models.py`, with **UUIDv7**
+  primary keys via the stdlib `uuid.uuid7`.
 
 - **`backend/db/`** holds the actual database *file*,
   `job-therapy.sqlite`, created at runtime. Its contents are git-ignored —

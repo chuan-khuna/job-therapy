@@ -4,14 +4,26 @@ Creates the app and wires in routers. No business logic lives here.
 Run with: ``uvicorn app.main:app --reload``.
 """
 
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 
+from app.db import init_db
 from app.routers import health, quizzes, results
+
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    """Create database tables on startup."""
+    init_db()
+    yield
+
 
 app = FastAPI(
     title="Job Therapy API",
     description="Backend for the Job Therapy self-assessment tool.",
     version="0.1.0",
+    lifespan=lifespan,
 )
 
 app.include_router(health.router)
