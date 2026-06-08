@@ -5,9 +5,9 @@ import { QUIZZES } from "@/data/quizzes";
 import { getArticles } from "@/lib/articles";
 import { getLastResultStamp } from "@/lib/db/results";
 
-// created_at is a Postgres timestamptz — ISO 8601 with offset
+// created_at is sqlite datetime('now') — UTC "YYYY-MM-DD HH:MM:SS"
 function formatStamp(stamp: { date: string; created_at: string }): string {
-  const d = new Date(stamp.created_at);
+  const d = new Date(stamp.created_at.replace(" ", "T") + "Z");
   const time = d.toLocaleTimeString("th-TH", {
     hour: "2-digit",
     minute: "2-digit",
@@ -16,16 +16,14 @@ function formatStamp(stamp: { date: string; created_at: string }): string {
 }
 
 export default async function HomePage() {
-  const lastDates = await Promise.all(
-    QUIZZES.map(async (q) => {
-      try {
-        const stamp = await getLastResultStamp(q.id);
-        return stamp ? formatStamp(stamp) : null;
-      } catch {
-        return null;
-      }
-    }),
-  );
+  const lastDates = QUIZZES.map((q) => {
+    try {
+      const stamp = getLastResultStamp(q.id);
+      return stamp ? formatStamp(stamp) : null;
+    } catch {
+      return null;
+    }
+  });
 
   const articles = await getArticles();
 

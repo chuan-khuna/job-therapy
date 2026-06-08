@@ -7,9 +7,9 @@ export default async function QuizPage() {
 
   let recentResults: Awaited<ReturnType<typeof getRecentResults>> = [];
   try {
-    recentResults = await getRecentResults("quizz-001-stereotype-test", 7);
+    recentResults = getRecentResults("quizz-001-stereotype-test", 7);
   } catch {
-    // Not signed in or Supabase unavailable — render with no history
+    // DB not yet initialised — first run before migrations
   }
 
   const today = new Date().toISOString().slice(0, 10);

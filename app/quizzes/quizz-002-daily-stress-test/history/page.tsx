@@ -8,11 +8,11 @@ import HistoryClient from "./HistoryClient";
 export default async function HistoryPage() {
   await connection(); // read the DB at request time, not at build
 
-  let results: Awaited<ReturnType<typeof getAllResults>> = [];
+  let results: ReturnType<typeof getAllResults> = [];
   try {
-    results = await getAllResults(QUIZ_ID);
+    results = getAllResults(QUIZ_ID);
   } catch {
-    // Not signed in or Supabase unavailable — render with no history
+    // DB not yet initialised — first run before migrations
   }
 
   return (
