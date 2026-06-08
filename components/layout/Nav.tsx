@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AuthButton from "./AuthButton";
 import ThemeSwitcher from "./ThemeSwitcher";
 
 export default function Nav() {
@@ -53,6 +54,7 @@ export default function Nav() {
             แบบประเมิน
           </Link>
           <ThemeSwitcher />
+          <AuthButton />
         </div>
       </div>
     </nav>

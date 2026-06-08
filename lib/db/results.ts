@@ -1,4 +1,4 @@
-import { getDb } from "./client";
+import { createClient } from "@/lib/supabase/server";
 
 export interface QuizResult {
   id: number;
@@ -9,94 +9,96 @@ export interface QuizResult {
   created_at: string;
 }
 
-interface RawRow {
-  id: number;
-  quiz_id: string;
-  date: string;
-  answers: string;
-  matched_types: string;
-  created_at: string;
-}
+const COLUMNS = "id, quiz_id, date, answers, matched_types, created_at";
 
-function parseRow(row: RawRow): QuizResult {
-  return {
-    ...row,
-    answers: JSON.parse(row.answers),
-    matched_types: JSON.parse(row.matched_types),
-  };
-}
+// Ownership is enforced two ways: RLS scopes every row to the logged-in user,
+// and inserts stamp user_id from the session. We never accept a user_id from
+// the caller. answers/matched_types are jsonb — pass/return plain objects, no
+// JSON.parse/stringify needed.
 
-// answers is any JSON-serialisable shape — each quiz defines its own
-export function saveQuizResult(params: {
+export async function saveQuizResult(params: {
   quizId: string;
   date: string;
   answers: unknown;
   matchedTypes: string[];
 }) {
-  const db = getDb();
-  db.prepare(
-    `INSERT INTO quiz_results (quiz_id, date, answers, matched_types)
-     VALUES (?, ?, ?, ?)`,
-  ).run(
-    params.quizId,
-    params.date,
-    JSON.stringify(params.answers),
-    JSON.stringify(params.matchedTypes),
-  );
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) throw new Error("Not authenticated");
+
+  const { error } = await supabase.from("quiz_results").insert({
+    user_id: user.id,
+    quiz_id: params.quizId,
+    date: params.date,
+    answers: params.answers,
+    matched_types: params.matchedTypes,
+  });
+  if (error) throw error;
 }
 
-export function getRecentResults(quizId: string, limit = 7): QuizResult[] {
-  const db = getDb();
-  const rows = db
-    .prepare(
-      `SELECT * FROM quiz_results
-       WHERE quiz_id = ?
-       ORDER BY created_at DESC
-       LIMIT ?`,
-    )
-    .all(quizId, limit) as RawRow[];
-  return rows.map(parseRow);
+export async function getRecentResults(
+  quizId: string,
+  limit = 7,
+): Promise<QuizResult[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("quiz_results")
+    .select(COLUMNS)
+    .eq("quiz_id", quizId)
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  if (error) throw error;
+  return (data ?? []) as QuizResult[];
 }
 
-export function getAllResults(quizId: string): QuizResult[] {
-  const db = getDb();
-  const rows = db
-    .prepare(
-      `SELECT * FROM quiz_results
-       WHERE quiz_id = ?
-       ORDER BY created_at DESC`,
-    )
-    .all(quizId) as RawRow[];
-  return rows.map(parseRow);
+export async function getAllResults(quizId: string): Promise<QuizResult[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("quiz_results")
+    .select(COLUMNS)
+    .eq("quiz_id", quizId)
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return (data ?? []) as QuizResult[];
 }
 
-export function updateResultAnswers(
+export async function updateResultAnswers(
   quizId: string,
   id: number,
   answers: unknown,
 ) {
-  const db = getDb();
-  db.prepare(
-    `UPDATE quiz_results SET answers = ? WHERE quiz_id = ? AND id = ?`,
-  ).run(JSON.stringify(answers), quizId, id);
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("quiz_results")
+    .update({ answers })
+    .eq("quiz_id", quizId)
+    .eq("id", id);
+  if (error) throw error;
 }
 
-export function deleteResult(quizId: string, id: number) {
-  const db = getDb();
-  db.prepare(`DELETE FROM quiz_results WHERE quiz_id = ? AND id = ?`).run(
-    quizId,
-    id,
-  );
+export async function deleteResult(quizId: string, id: number) {
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("quiz_results")
+    .delete()
+    .eq("quiz_id", quizId)
+    .eq("id", id);
+  if (error) throw error;
 }
 
-export function getLastResultStamp(
+export async function getLastResultStamp(
   quizId: string,
-): { date: string; created_at: string } | null {
-  const db = getDb();
-  const row = db
-    .prepare(
-      `SELECT date, created_at FROM quiz_results WHERE quiz_id = ? ORDER BY created_at DESC LIMIT 1`,
-    )
-    .get(quizId) as { date: string; created_at: string } | undefined;
-  return row ?? null;
+): Promise<{ date: string; created_at: string } | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("quiz_results")
+    .select("date, created_at")
+    .eq("quiz_id", quizId)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (error) throw error;
+  return data ?? null;
 }

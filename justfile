@@ -20,10 +20,6 @@ lint:
 format:
     bun run format
 
-# Run pending SQL migrations (update path when db module is wired up)
-migrate:
-    bun run db:migrate
-
 # Install dependencies
 install:
     bun install

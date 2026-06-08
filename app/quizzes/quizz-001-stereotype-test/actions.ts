@@ -7,7 +7,7 @@ export async function saveResult(params: {
   matchedTypes: string[];
   date: string;
 }) {
-  saveQuizResult({
+  await saveQuizResult({
     quizId: "quizz-001-stereotype-test",
     date: params.date,
     answers: params.answers,
