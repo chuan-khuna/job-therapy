@@ -20,6 +20,26 @@ justfile    Task runner — recipes run in the right service via [working-direct
 - **backend/** and **frontend/** are independent: install, lint, and run them separately (the `justfile` wraps each).
 - The **backend owns the data**. The frontend fetches from the backend API rather than reading the database directly.
 
+## Agent roles & delegation
+
+This project defines specialized subagents in `.claude/agents/`. The main Claude session acts as the **orchestrator**: it plans the work and routes implementation to the right subagent rather than doing everything inline.
+
+| Subagent | Owns |
+| --- | --- |
+| `backend-developer` | Python/FastAPI/SQLModel changes under `backend/` — endpoints, models, data access, business logic |
+| `frontend-developer` | Next.js/React/Tailwind changes under `frontend/` — components, routes, pages, styling, data fetching |
+| `tester-and-security-guard` | Read-only correctness **and** security review across both services |
+| `doc-writer` | Project documents under `.docs/` |
+
+**Delegation policy (MUST follow):**
+
+1. **Route implementation by area.** Non-trivial backend coding goes to `backend-developer`; non-trivial frontend coding goes to `frontend-developer`. The orchestrator may still handle small, cross-cutting, or purely investigative tasks directly — but a substantive feature or change in one service should be delegated to that service's agent.
+2. **Mandatory review gate.** **When `backend-developer` or `frontend-developer` reports a task finished, the orchestrator MUST hand the resulting diff to `tester-and-security-guard` for a code-quality and security review before the task is considered done and before committing.** Pass the changed `file:line` ranges and a short description of the change.
+3. **Act on the review.** Route any Critical/High findings back to the implementing agent to fix, then re-review. Only surface the task as complete once the review is clean (or the remaining findings are explicitly accepted by the user).
+4. A change touching both services triggers a review covering both; `tester-and-security-guard` already spans the full stack.
+
+Note: this gate is a convention the orchestrator follows by reading this file — it is not machine-enforced, so do not skip it.
+
 ## Stack
 
 ### Backend (`backend/`)
