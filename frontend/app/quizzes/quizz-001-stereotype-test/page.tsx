@@ -1,5 +1,5 @@
 import { connection } from "next/server";
-import { getRecentResults } from "@/lib/db/results";
+import { getRecentResults } from "@/lib/api/results";
 import QuizClient from "./QuizClient";
 
 export default async function QuizPage() {

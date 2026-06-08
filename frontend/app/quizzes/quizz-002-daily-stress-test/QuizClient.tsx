@@ -9,7 +9,7 @@ import ResultRow from "@/components/quiz/ResultRow";
 import SectionLabel from "@/components/shared/SectionLabel";
 import Button from "@/components/shared/Button";
 import StressForm from "./StressForm";
-import type { QuizResult } from "@/lib/db/results";
+import type { QuizResult } from "@/lib/api/results";
 import {
   EMPTY_ANSWERS,
   FIELD_COUNT,

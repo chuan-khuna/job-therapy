@@ -1,6 +1,6 @@
 "use server";
 
-import { saveQuizResult } from "@/lib/db/results";
+import { saveQuizResult } from "@/lib/api/results";
 import { QUIZ_ID, type StressAnswers } from "./quiz-def";
 
 export async function saveResult(params: {

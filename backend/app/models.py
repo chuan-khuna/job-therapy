@@ -19,7 +19,10 @@ class Result(SQLModel, table=True):
 
     id: UUID = Field(default_factory=uuid7, primary_key=True)
     quiz_id: str = Field(index=True)
+    # The day the result is logged for, "YYYY-MM-DD" (distinct from created_at).
+    date: str = Field(index=True)
     # JSON-shaped payloads stored as a JSON column.
     answers: dict[str, object] = Field(default_factory=dict, sa_column=Column(JSON))
     matched_types: list[str] = Field(default_factory=list, sa_column=Column(JSON))
     created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(UTC))

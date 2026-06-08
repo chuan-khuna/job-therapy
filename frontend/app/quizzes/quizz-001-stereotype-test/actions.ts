@@ -1,6 +1,6 @@
 "use server";
 
-import { saveQuizResult } from "@/lib/db/results";
+import { saveQuizResult } from "@/lib/api/results";
 
 export async function saveResult(params: {
   answers: Record<number, boolean>;

@@ -4,11 +4,11 @@ import SectionLabel from "@/components/shared/SectionLabel";
 import { quizzes } from "@/data/quizzes";
 import { site } from "@/data/site";
 import { getArticles } from "@/lib/articles";
-import { getLastResultStamp } from "@/lib/db/results";
+import { getLastResultStamp } from "@/lib/api/results";
 
-// created_at is sqlite datetime('now') — UTC "YYYY-MM-DD HH:MM:SS"
+// created_at is an ISO 8601 UTC timestamp from the backend
 function formatStamp(stamp: { date: string; created_at: string }): string {
-  const d = new Date(stamp.created_at.replace(" ", "T") + "Z");
+  const d = new Date(stamp.created_at);
   const time = d.toLocaleTimeString("th-TH", {
     hour: "2-digit",
     minute: "2-digit",

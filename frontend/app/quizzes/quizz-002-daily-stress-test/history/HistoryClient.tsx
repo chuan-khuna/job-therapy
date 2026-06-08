@@ -7,7 +7,7 @@ import SectionLabel from "@/components/shared/SectionLabel";
 import Tag from "@/components/shared/Tag";
 import Button from "@/components/shared/Button";
 import MarkdownEditor from "@/components/shared/MarkdownEditor";
-import type { QuizResult } from "@/lib/db/results";
+import type { QuizResult } from "@/lib/api/results";
 import { EMPTY_ANSWERS, QUIZ_ID, type StressAnswers } from "../quiz-def";
 import StressForm from "../StressForm";
 import { deleteResultAction, updateResultAction } from "./actions";
@@ -20,9 +20,9 @@ function answersOf(result: QuizResult): StressAnswers {
   return { ...EMPTY_ANSWERS, ...(result.answers as Partial<StressAnswers>) };
 }
 
-// created_at is sqlite datetime('now') — UTC "YYYY-MM-DD HH:MM:SS"
+// created_at is an ISO 8601 UTC timestamp from the backend
 function timeOf(createdAt: string): string {
-  const d = new Date(createdAt.replace(" ", "T") + "Z");
+  const d = new Date(createdAt);
   return d.toLocaleTimeString("th-TH", {
     hour: "2-digit",
     minute: "2-digit",
@@ -234,10 +234,10 @@ function EditPanel({ result }: { result: QuizResult }) {
 }
 
 export default function HistoryClient({ results }: Props) {
-  const [selectedId, setSelectedId] = useState<number | null>(
+  const [selectedId, setSelectedId] = useState<string | null>(
     results[0]?.id ?? null,
   );
-  const [confirmingId, setConfirmingId] = useState<number | null>(null);
+  const [confirmingId, setConfirmingId] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
   // Inline confirm reverts to the bin icon if not acted on
@@ -247,7 +247,7 @@ export default function HistoryClient({ results }: Props) {
     return () => clearTimeout(t);
   }, [confirmingId]);
 
-  function handleDelete(id: number) {
+  function handleDelete(id: string) {
     startTransition(async () => {
       await deleteResultAction(id);
       setConfirmingId(null);

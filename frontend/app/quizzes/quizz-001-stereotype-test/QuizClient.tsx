@@ -10,7 +10,7 @@ import TypesPanel from "@/components/quiz/TypesPanel";
 import ResultRow from "@/components/quiz/ResultRow";
 import SectionLabel from "@/components/shared/SectionLabel";
 import Button from "@/components/shared/Button";
-import type { QuizResult } from "@/lib/db/results";
+import type { QuizResult } from "@/lib/api/results";
 import { QUESTIONS, TYPES, type Answers } from "./quiz-def";
 
 interface Props {

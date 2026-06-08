@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { connection } from "next/server";
 import PageHeader from "@/components/layout/PageHeader";
-import { getAllResults } from "@/lib/db/results";
+import { getAllResults } from "@/lib/api/results";
 import { QUIZ_ID, QUIZ_NAME } from "../quiz-def";
 import HistoryClient from "./HistoryClient";
 

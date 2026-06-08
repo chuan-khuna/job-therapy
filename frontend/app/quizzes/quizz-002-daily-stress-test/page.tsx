@@ -1,5 +1,5 @@
 import { connection } from "next/server";
-import { getRecentResults } from "@/lib/db/results";
+import { getRecentResults } from "@/lib/api/results";
 import { QUIZ_ID } from "./quiz-def";
 import QuizClient from "./QuizClient";
 
