@@ -64,6 +64,25 @@ components/
   ui/                  Shared primitive components
 ```
 
+## Project documentation
+
+Project documents (design records, specs, proposals) live under `.docs/`, organized by category:
+
+```
+.docs/
+  <category>/
+    yyyy-mm-dd-topic.md      # or .html
+```
+
+- **Path format**: `.docs/<category>/<yyyy-mm-dd>-<topic>.{md,html}`
+- **Category** is the kind of document — e.g. `adr` (architecture decision record), `prd` (product requirements), `rfc` (request for comments), `doc` (general documentation — explaining how things/logic in this project work). Add new categories as needed.
+- **Date prefix** is the date the document was authored (`yyyy-mm-dd`), so files sort chronologically within a category.
+- **Topic** is a short kebab-case slug.
+- Examples: `.docs/adr/2026-06-08-supabase-auth.md`, `.docs/prd/2026-06-08-daily-logging.md`
+- When a document is requested as **HTML**, follow `DESIGN.md` (and `DESIGN.html`) for the visual language — use the `warm-paper` theme tokens, not ad-hoc styles.
+  - **Code blocks**: highlight with [Shiki](https://shiki.style) using the `catppuccin-mocha` theme.
+  - **Diagrams**: use [Mermaid](https://mermaid.js.org) for flowcharts, sequence diagrams, etc.
+
 ## Commands
 
 Use `just` (see `justfile`):
