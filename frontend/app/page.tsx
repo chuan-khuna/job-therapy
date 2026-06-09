@@ -84,107 +84,95 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Quizzes (60) + Articles (40) */}
+      {/* Quizzes */}
       <section>
-        <div className="mx-auto grid max-w-[1200px] grid-cols-1 items-start gap-8 px-5 py-8 sm:px-8 sm:py-12 lg:grid-cols-[3fr_2fr] lg:gap-12">
-          <div>
-            <SectionLabel style={{ marginBottom: "1.5rem" }}>
-              แบบประเมิน
-            </SectionLabel>
+        <div className="mx-auto max-w-[1200px] px-5 py-8 sm:px-8 sm:py-12">
+          <SectionLabel style={{ marginBottom: "1.5rem" }}>
+            แบบประเมิน
+          </SectionLabel>
 
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "12px",
-              }}
-            >
-              {quizzes.map((quiz, i) => (
-                <QuizCard
-                  key={quiz.id}
-                  href={`/quizzes/${quiz.slug}`}
-                  historyHref={`/quizzes/${quiz.slug}/history`}
-                  name={quiz.name}
-                  description={quiz.description}
-                  questionCount={quiz.questionCount}
-                  typeCount={quiz.typeCount}
-                  lastDate={lastDates[i]}
-                />
-              ))}
-            </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {quizzes.map((quiz, i) => (
+              <QuizCard
+                key={quiz.id}
+                href={`/quizzes/${quiz.slug}`}
+                historyHref={`/quizzes/${quiz.slug}/history`}
+                name={quiz.name}
+                description={quiz.description}
+                questionCount={quiz.questionCount}
+                typeCount={quiz.typeCount}
+                tags={quiz.tags}
+                lastDate={lastDates[i]}
+              />
+            ))}
           </div>
+        </div>
+      </section>
 
-          <div>
-            <SectionLabel style={{ marginBottom: "1.5rem" }}>
-              บทความ
-            </SectionLabel>
+      {/* Articles */}
+      <section>
+        <div className="mx-auto max-w-[1200px] px-5 pb-8 sm:px-8 sm:pb-12">
+          <SectionLabel style={{ marginBottom: "1.5rem" }}>บทความ</SectionLabel>
 
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "12px",
-              }}
-            >
-              {articles.length === 0 && (
-                <p
-                  style={{
-                    fontSize: "13px",
-                    color: "var(--color-text-muted)",
-                  }}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {articles.length === 0 && (
+              <p
+                style={{
+                  fontSize: "13px",
+                  color: "var(--color-text-muted)",
+                }}
+              >
+                ยังไม่มีบทความ
+              </p>
+            )}
+            {articles.map((a) => (
+              <Link
+                key={a.slug}
+                href={`/articles/${a.slug}`}
+                style={{ textDecoration: "none" }}
+              >
+                <div
+                  className="card card-link"
+                  style={{ padding: "1rem 1.25rem" }}
                 >
-                  ยังไม่มีบทความ
-                </p>
-              )}
-              {articles.map((a) => (
-                <Link
-                  key={a.slug}
-                  href={`/articles/${a.slug}`}
-                  style={{ textDecoration: "none" }}
-                >
-                  <div
-                    className="card card-link"
-                    style={{ padding: "1rem 1.25rem" }}
+                  <p
+                    style={{
+                      fontFamily: "var(--font-serif)",
+                      fontSize: "15px",
+                      fontWeight: 700,
+                      color: "var(--color-ink)",
+                      marginBottom: "4px",
+                    }}
                   >
+                    {a.title}
+                  </p>
+                  {a.description && (
                     <p
                       style={{
-                        fontFamily: "var(--font-serif)",
-                        fontSize: "15px",
-                        fontWeight: 700,
-                        color: "var(--color-ink)",
-                        marginBottom: "4px",
+                        fontSize: "12px",
+                        color: "var(--color-text-muted)",
+                        lineHeight: 1.5,
+                        marginBottom: a.date ? "6px" : 0,
                       }}
                     >
-                      {a.title}
+                      {a.description}
                     </p>
-                    {a.description && (
-                      <p
-                        style={{
-                          fontSize: "12px",
-                          color: "var(--color-text-muted)",
-                          lineHeight: 1.5,
-                          marginBottom: a.date ? "6px" : 0,
-                        }}
-                      >
-                        {a.description}
-                      </p>
-                    )}
-                    {a.date && (
-                      <p
-                        style={{
-                          fontSize: "10px",
-                          fontFamily: "var(--font-mono)",
-                          color: "var(--color-text-muted)",
-                          letterSpacing: "0.04em",
-                        }}
-                      >
-                        {a.date}
-                      </p>
-                    )}
-                  </div>
-                </Link>
-              ))}
-            </div>
+                  )}
+                  {a.date && (
+                    <p
+                      style={{
+                        fontSize: "10px",
+                        fontFamily: "var(--font-mono)",
+                        color: "var(--color-text-muted)",
+                        letterSpacing: "0.04em",
+                      }}
+                    >
+                      {a.date}
+                    </p>
+                  )}
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       </section>

@@ -5,6 +5,7 @@ export interface QuizMeta {
   description: string;
   questionCount: number;
   typeCount?: number;
+  tags: string[];
 }
 
 export const quizzes: QuizMeta[] = [
@@ -15,6 +16,7 @@ export const quizzes: QuizMeta[] = [
     description: "ค้นหา stereotype ของคุณใน 5 ประเภทหลัก จาก 11 คำถาม",
     questionCount: 11,
     typeCount: 5,
+    tags: ["Job therapy - Tessa West"],
   },
   {
     id: "quiz-002-daily-stress-test",
@@ -23,5 +25,6 @@ export const quizzes: QuizMeta[] = [
     description:
       "บันทึกความกังวลตอนเช้าและเหตุการณ์เครียดตอนเย็น เพื่อดูแพตเทิร์นในแต่ละวัน",
     questionCount: 9,
+    tags: ["Job therapy - Tessa West"],
   },
 ];
