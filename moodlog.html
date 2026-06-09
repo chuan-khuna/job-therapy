@@ -1,0 +1,1020 @@
+<!doctype html>
+<html lang="th" data-theme="warm-paper">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mood Log — Widget Mockup · Job Therapy</title>
+    <style>
+      /* warm-paper · matcha & washi — tokens mirror styles/presets/warm-paper.css */
+      [data-theme="warm-paper"] {
+        --color-bg: oklch(97% 0.016 88);
+        --color-surface: oklch(99% 0.008 88);
+        --color-surface-raised: oklch(100% 0 0);
+        --color-border: oklch(89% 0.018 142);
+        --color-border-strong: oklch(80% 0.038 148);
+        --color-text: oklch(22% 0.016 80);
+        --color-text-muted: oklch(56% 0.014 84);
+        --color-ink: oklch(15% 0.016 80);
+        --color-accent: oklch(54% 0.125 148);
+        --color-accent-hover: oklch(46% 0.112 148);
+        --color-accent-subtle: oklch(93% 0.028 150);
+        --color-accent-fg: oklch(99% 0.005 88);
+        --color-destructive: oklch(60% 0.13 38);
+
+        /* Muted Plutchik — canonical hue, chroma pulled back to sit in warm-paper.
+           Eight Emotion Families, going clockwise from the top of the wheel. */
+        --emotion-joy: oklch(82% 0.095 96);
+        --emotion-trust: oklch(74% 0.082 132);
+        --emotion-fear: oklch(66% 0.072 168);
+        --emotion-surprise: oklch(74% 0.070 212);
+        --emotion-sadness: oklch(62% 0.082 250);
+        --emotion-disgust: oklch(60% 0.082 312);
+        --emotion-anger: oklch(64% 0.100 28);
+        --emotion-anticipation: oklch(74% 0.092 62);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background: var(--color-bg);
+        color: var(--color-text);
+        font-family: "Noto Sans Thai Looped", ui-sans-serif, system-ui, sans-serif;
+        font-size: 1rem;
+        line-height: 1.65;
+        padding: 2.5rem 1.5rem 4rem;
+      }
+
+      .page {
+        max-width: 1040px;
+        margin: 0 auto;
+      }
+
+      .page-head {
+        margin-bottom: 1.75rem;
+      }
+      .eyebrow {
+        font-family: ui-monospace, monospace;
+        font-size: 11px;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        color: var(--color-text-muted);
+        margin-bottom: 0.6rem;
+      }
+      .page-head h1 {
+        font-family: Georgia, "Bai Jamjuree", serif;
+        font-weight: 700;
+        font-size: clamp(1.6rem, 4vw, 2.2rem);
+        letter-spacing: -0.02em;
+        color: var(--color-ink);
+        line-height: 1.2;
+      }
+      .page-head p {
+        color: var(--color-text-muted);
+        font-size: 14px;
+        max-width: 56ch;
+        margin-top: 0.5rem;
+      }
+
+      /* ── the widget ── */
+      .widget {
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: 16px;
+        box-shadow:
+          0 1px 2px oklch(20% 0.015 80 / 0.04),
+          0 6px 24px oklch(20% 0.015 80 / 0.07);
+        overflow: hidden;
+      }
+
+      .widget-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+        padding: 1.1rem 1.4rem;
+        border-bottom: 1px solid var(--color-border);
+      }
+      .widget-title {
+        display: flex;
+        align-items: baseline;
+        gap: 0.6rem;
+      }
+      .widget-title h2 {
+        font-family: Georgia, "Bai Jamjuree", serif;
+        font-size: 1.15rem;
+        color: var(--color-ink);
+        line-height: 1.2;
+      }
+      .widget-title small {
+        font-family: ui-monospace, monospace;
+        font-size: 11px;
+        color: var(--color-text-muted);
+        letter-spacing: 0.04em;
+      }
+
+      .month-nav {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+      .nav-btn {
+        width: 28px;
+        height: 28px;
+        display: grid;
+        place-items: center;
+        border: 1px solid var(--color-border);
+        border-radius: 6px;
+        background: var(--color-surface-raised);
+        color: var(--color-text-muted);
+        cursor: pointer;
+        font-size: 14px;
+        line-height: 1;
+        transition: border-color 120ms, color 120ms;
+      }
+      .nav-btn:hover {
+        border-color: var(--color-border-strong);
+        color: var(--color-text);
+      }
+      .month-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--color-text);
+        min-width: 10ch;
+        text-align: center;
+      }
+
+      .btn-primary {
+        appearance: none;
+        border: none;
+        border-radius: 6px;
+        background: var(--color-accent);
+        color: var(--color-accent-fg);
+        font: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        box-shadow: 0 1px 3px oklch(54% 0.125 148 / 0.3);
+        transition: background 120ms, box-shadow 120ms, transform 80ms;
+      }
+      .btn-primary:hover {
+        background: var(--color-accent-hover);
+      }
+      .btn-primary:active {
+        transform: scale(0.98);
+      }
+
+      .widget-body {
+        display: grid;
+        grid-template-columns: 1.35fr 1fr;
+        gap: 0;
+      }
+      @media (max-width: 760px) {
+        .widget-body {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .grid-pane {
+        padding: 1.4rem;
+        border-right: 1px solid var(--color-border);
+      }
+      @media (max-width: 760px) {
+        .grid-pane {
+          border-right: none;
+          border-bottom: 1px solid var(--color-border);
+        }
+      }
+
+      /* ── calendar ── */
+      .weekdays,
+      .calendar {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 6px;
+      }
+      .weekdays {
+        margin-bottom: 6px;
+      }
+      .weekdays span {
+        text-align: center;
+        font-family: ui-monospace, monospace;
+        font-size: 10px;
+        letter-spacing: 0.04em;
+        color: var(--color-text-muted);
+        text-transform: uppercase;
+      }
+      .cell {
+        position: relative;
+        aspect-ratio: 1 / 1;
+        border-radius: 7px;
+        border: 1px solid transparent;
+        background: var(--color-surface-raised);
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+        transition: transform 80ms, box-shadow 120ms, border-color 120ms;
+      }
+      .cell.empty-slot {
+        cursor: default;
+        background: transparent;
+      }
+      .cell.no-log {
+        background: var(--color-bg);
+        border-color: var(--color-border);
+      }
+      .cell .daynum {
+        font-family: ui-monospace, monospace;
+        font-size: 10px;
+        color: oklch(22% 0.016 80 / 0.55);
+        mix-blend-mode: multiply;
+      }
+      .cell.filled .daynum {
+        color: oklch(18% 0.02 80 / 0.7);
+      }
+      .cell:not(.empty-slot):hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px oklch(20% 0.015 80 / 0.12);
+        border-color: var(--color-border-strong);
+      }
+      .cell.today {
+        outline: 1.5px solid var(--color-accent);
+        outline-offset: 1px;
+      }
+      .cell.selected {
+        border-color: var(--color-accent);
+        box-shadow: 0 0 0 2px var(--color-accent-subtle);
+      }
+
+      /* ── legend ── */
+      .legend {
+        margin-top: 1.1rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem 0.9rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--color-border);
+      }
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 11px;
+        color: var(--color-text-muted);
+      }
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 3px;
+        flex: none;
+      }
+
+      /* ── day detail ── */
+      .detail-pane {
+        padding: 1.4rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .detail-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 0.5rem;
+      }
+      .detail-head h3 {
+        font-family: Georgia, "Bai Jamjuree", serif;
+        font-size: 1rem;
+        color: var(--color-ink);
+      }
+      .detail-head .total {
+        font-family: ui-monospace, monospace;
+        font-size: 11px;
+        color: var(--color-text-muted);
+      }
+
+      .breakdown {
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+      }
+      .bd-row {
+        display: grid;
+        grid-template-columns: 4.5rem 1fr 1.5rem;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 12px;
+      }
+      .bd-row.zero {
+        opacity: 0.4;
+      }
+      .bd-label {
+        color: var(--color-text);
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+      }
+      .bd-track {
+        height: 8px;
+        border-radius: 100px;
+        background: oklch(89% 0.022 142);
+        overflow: hidden;
+      }
+      .bd-fill {
+        height: 100%;
+        border-radius: 100px;
+      }
+      .bd-count {
+        font-family: ui-monospace, monospace;
+        font-size: 11px;
+        color: var(--color-text-muted);
+        text-align: right;
+      }
+
+      .entries {
+        margin-top: 0.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        padding-top: 0.9rem;
+        border-top: 1px solid var(--color-border);
+      }
+      .entries-empty {
+        font-size: 12px;
+        color: var(--color-text-muted);
+        font-style: italic;
+      }
+      .entry {
+        background: var(--color-surface-raised);
+        border: 1px solid var(--color-border);
+        border-radius: 10px;
+        padding: 0.7rem 0.8rem;
+      }
+      .entry-time {
+        font-family: ui-monospace, monospace;
+        font-size: 10px;
+        color: var(--color-text-muted);
+        margin-bottom: 0.3rem;
+      }
+      .entry-note {
+        font-size: 13px;
+        color: var(--color-text);
+        line-height: 1.5;
+        margin-bottom: 0.5rem;
+      }
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--color-text);
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: 100px;
+        padding: 0.12rem 0.55rem 0.12rem 0.35rem;
+      }
+      .chip .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+      .chip.complex {
+        border-style: dashed;
+        border-color: var(--color-border-strong);
+      }
+
+      /* ── modal: Plutchik wheel composer ── */
+      .scrim {
+        position: fixed;
+        inset: 0;
+        background: oklch(22% 0.016 80 / 0.32);
+        display: none;
+        place-items: center;
+        padding: 1.5rem;
+        z-index: 20;
+      }
+      .scrim.open {
+        display: grid;
+      }
+      .modal {
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: 16px;
+        box-shadow: 0 12px 48px oklch(20% 0.015 80 / 0.22);
+        width: min(680px, 100%);
+        max-height: 90vh;
+        overflow: auto;
+        padding: 1.5rem;
+      }
+      .modal-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        margin-bottom: 0.25rem;
+      }
+      .modal-head h3 {
+        font-family: Georgia, "Bai Jamjuree", serif;
+        font-size: 1.2rem;
+        color: var(--color-ink);
+      }
+      .modal-head button {
+        border: none;
+        background: none;
+        font-size: 20px;
+        color: var(--color-text-muted);
+        cursor: pointer;
+        line-height: 1;
+      }
+      .modal-sub {
+        font-size: 12px;
+        color: var(--color-text-muted);
+        margin-bottom: 1rem;
+      }
+      .composer {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 1.4rem;
+        align-items: start;
+      }
+      @media (max-width: 600px) {
+        .composer {
+          grid-template-columns: 1fr;
+          justify-items: center;
+        }
+      }
+      .wheel-wrap {
+        text-align: center;
+      }
+      .wheel-hint {
+        font-size: 11px;
+        color: var(--color-text-muted);
+        margin-top: 0.5rem;
+      }
+      .petal {
+        cursor: pointer;
+        stroke: var(--color-surface);
+        stroke-width: 1.2;
+        transition: opacity 120ms;
+      }
+      .petal:hover {
+        opacity: 0.85;
+      }
+      .petal.selected {
+        stroke: var(--color-ink);
+        stroke-width: 2;
+      }
+      .dyad {
+        stroke: var(--color-surface);
+        stroke-width: 2;
+        cursor: pointer;
+        transition: stroke 120ms, stroke-width 120ms;
+        filter: drop-shadow(0 1px 2px oklch(20% 0.015 80 / 0.2));
+      }
+      .dyad:hover {
+        stroke: var(--color-border-strong);
+      }
+      .dyad.selected {
+        stroke: var(--color-ink);
+        stroke-width: 2.5;
+      }
+      .hub-label {
+        font-family: Georgia, serif;
+        font-size: 11px;
+        fill: var(--color-text-muted);
+      }
+
+      .compose-side label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--color-text);
+        margin-bottom: 0.4rem;
+      }
+      .compose-side textarea {
+        width: 100%;
+        border: 1.5px solid var(--color-border);
+        border-radius: 6px;
+        background: var(--color-surface-raised);
+        padding: 0.5rem 0.65rem;
+        font: inherit;
+        font-size: 13px;
+        min-height: 84px;
+        resize: vertical;
+        color: var(--color-text);
+      }
+      .compose-side textarea:focus {
+        outline: none;
+        border-color: var(--color-accent);
+        box-shadow: 0 0 0 3px oklch(54% 0.125 148 / 0.14);
+      }
+      .selected-chips {
+        margin: 0.8rem 0 1rem;
+        min-height: 1.6rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+      }
+      .selected-chips .placeholder {
+        font-size: 12px;
+        color: var(--color-text-muted);
+        font-style: italic;
+      }
+      .modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.5rem;
+      }
+      .btn-ghost {
+        appearance: none;
+        border: 1px solid var(--color-border);
+        background: var(--color-surface-raised);
+        color: var(--color-text);
+        border-radius: 6px;
+        font: inherit;
+        font-size: 13px;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+      }
+      .btn-ghost:hover {
+        border-color: var(--color-border-strong);
+      }
+
+      .note-callout {
+        margin-top: 2rem;
+        font-size: 12px;
+        color: var(--color-text-muted);
+        border-left: 2px solid var(--color-border-strong);
+        padding-left: 0.9rem;
+        line-height: 1.7;
+      }
+      .note-callout b {
+        color: var(--color-text);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="page-head">
+        <p class="eyebrow">Widget Mockup · หน้า Home</p>
+        <h1>Mood Log</h1>
+        <p>
+          วิดเจ็ตหลักบนหน้า Home — บันทึกอารมณ์รายวันแบบ Plutchik
+          แล้วมองย้อนเป็นปฏิทินสีอารมณ์ คลิกวันไหนก็เห็นว่าวันนั้นรู้สึกอะไรไปกี่ครั้ง
+        </p>
+      </div>
+
+      <!-- ════ THE WIDGET ════ -->
+      <section class="widget">
+        <header class="widget-head">
+          <div class="widget-title">
+            <h2>บันทึกอารมณ์</h2>
+            <small id="streak">— วันนี้ 9 มิ.ย.</small>
+          </div>
+          <div style="display: flex; align-items: center; gap: 1rem">
+            <div class="month-nav">
+              <button class="nav-btn" title="เดือนก่อน">‹</button>
+              <span class="month-label">มิถุนายน 2026</span>
+              <button class="nav-btn" title="เดือนถัดไป">›</button>
+            </div>
+            <button class="btn-primary" id="openModal">+ บันทึกอารมณ์</button>
+          </div>
+        </header>
+
+        <div class="widget-body">
+          <div class="grid-pane">
+            <div class="weekdays">
+              <span>จ</span><span>อ</span><span>พ</span><span>พฤ</span>
+              <span>ศ</span><span>ส</span><span>อา</span>
+            </div>
+            <div class="calendar" id="calendar"></div>
+            <div class="legend" id="legend"></div>
+          </div>
+
+          <div class="detail-pane">
+            <div class="detail-head">
+              <h3 id="detailDate">วันนี้</h3>
+              <span class="total" id="detailTotal"></span>
+            </div>
+            <div class="breakdown" id="breakdown"></div>
+            <div class="entries" id="entries"></div>
+          </div>
+        </div>
+      </section>
+
+      <div class="note-callout">
+        <b>การออกแบบที่ฝังไว้ในม็อกอัปนี้</b> — แต่ละ cell ลงสีตาม
+        <b>Dominant Emotion</b> ของวัน (อารมณ์ที่ log มากสุด) ความเข้มตามจำนวน log รวม ·
+        วันที่ยังไม่ log = cell โล่ง · เสมอกัน → ใช้ลำดับวง Plutchik (Joy ก่อน) ·
+        คลิก cell เพื่อสลับ breakdown · ปุ่ม <b>+ บันทึกอารมณ์</b> เปิด modal วงล้อ 24 กลีบ
+        (8 อารมณ์ × 3 ระดับ) · breakdown จัดกลุ่มตาม 8 อารมณ์หลัก intensity เป็นรายละเอียดย่อย ·
+        <b>อารมณ์ผสม</b> (dyad) อยู่จุดระหว่างกลีบ — นับเข้า 2 อารมณ์ที่ประกอบกัน
+      </div>
+    </div>
+
+    <!-- ════ MODAL: Plutchik wheel composer ════ -->
+    <div class="scrim" id="scrim">
+      <div class="modal">
+        <div class="modal-head">
+          <h3>วันนี้รู้สึกยังไง</h3>
+          <button id="closeModal" title="ปิด">×</button>
+        </div>
+        <p class="modal-sub">
+          เขียนสิ่งที่เกิดขึ้น แตะกลีบเพื่อติดอารมณ์ หรือแตะจุดระหว่างกลีบเพื่อเลือกอารมณ์ผสม
+          — ติดได้หลายอารมณ์ใน 1 บันทึก
+        </p>
+        <div class="composer">
+          <div class="wheel-wrap">
+            <svg id="wheel" viewBox="0 0 300 300" width="280" height="280"
+                 role="img" aria-label="Plutchik emotion wheel"></svg>
+            <p class="wheel-hint">วงในสุด = เข้มสุด · วงนอก = อ่อนสุด · จุดระหว่างกลีบ = อารมณ์ผสม</p>
+          </div>
+          <div class="compose-side">
+            <label for="note">บันทึก</label>
+            <textarea id="note" placeholder="เกิดอะไรขึ้น…"></textarea>
+            <div class="selected-chips" id="selectedChips">
+              <span class="placeholder">ยังไม่ได้เลือกอารมณ์</span>
+            </div>
+            <div class="modal-actions">
+              <button class="btn-ghost" id="cancelModal">ยกเลิก</button>
+              <button class="btn-primary" id="saveEntry">บันทึก</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ── 8 Emotion Families (clockwise from top of the wheel) ──
+      const FAMILIES = [
+        { key: "joy",          th: "ยินดี",     en: "Joy",          levels: ["สงบใจ", "ยินดี", "ปีติ"] },
+        { key: "trust",        th: "ไว้ใจ",     en: "Trust",        levels: ["ยอมรับ", "ไว้ใจ", "ศรัทธา"] },
+        { key: "fear",         th: "กลัว",      en: "Fear",         levels: ["กังวล", "กลัว", "หวาดกลัว"] },
+        { key: "surprise",     th: "ประหลาดใจ", en: "Surprise",     levels: ["เผลอ", "ประหลาดใจ", "ตะลึง"] },
+        { key: "sadness",      th: "เศร้า",     en: "Sadness",      levels: ["หม่น", "เศร้า", "โศก"] },
+        { key: "disgust",      th: "รังเกียจ",  en: "Disgust",      levels: ["เบื่อ", "รังเกียจ", "ชิงชัง"] },
+        { key: "anger",        th: "โกรธ",      en: "Anger",        levels: ["ขุ่น", "โกรธ", "เดือด"] },
+        { key: "anticipation", th: "คาดหวัง",   en: "Anticipation", levels: ["สนใจ", "คาดหวัง", "จดจ่อ"] },
+      ];
+      const colorOf = (key) =>
+        getComputedStyle(document.documentElement).getPropertyValue(`--emotion-${key}`).trim();
+
+      // ── Complex emotions: Plutchik's 8 primary dyads (adjacent family pairs) ──
+      // pair = indices into FAMILIES; the dyad sits in the wheel gap between them.
+      const DYADS = [
+        { key: "love",           th: "รัก",         en: "Love",           pair: [0, 1] },
+        { key: "submission",     th: "นอบน้อม",     en: "Submission",     pair: [1, 2] },
+        { key: "awe",            th: "เกรงขาม",     en: "Awe",            pair: [2, 3] },
+        { key: "disapproval",    th: "ไม่เห็นด้วย", en: "Disapproval",    pair: [3, 4] },
+        { key: "remorse",        th: "สำนึกผิด",    en: "Remorse",        pair: [4, 5] },
+        { key: "contempt",       th: "ดูแคลน",      en: "Contempt",       pair: [5, 6] },
+        { key: "aggressiveness", th: "ก้าวร้าว",    en: "Aggressiveness", pair: [6, 7] },
+        { key: "optimism",       th: "มองโลกแง่ดี", en: "Optimism",       pair: [7, 0] },
+      ];
+      const dyadColor = (d) =>
+        `color-mix(in oklab, ${colorOf(FAMILIES[d.pair[0]].key)} 50%, ${colorOf(
+          FAMILIES[d.pair[1]].key,
+        )} 50%)`;
+
+      // ── Seeded month of Entries (June 2026). Each entry: time, note, emotions[{fam,lvl}] ──
+      // lvl: 0 = mild, 1 = base, 2 = strong
+      const DATA = {
+        2:  [ { t: "08:40", n: "เริ่มสัปดาห์ด้วยรายการยาวเหยียด", e: [["anticipation",1],["fear",0]] } ],
+        3:  [ { t: "13:10", n: "งานคืบเร็วกว่าที่คิด", e: [["joy",1],["trust",1]] } ],
+        4:  [ { t: "10:00", n: "โดนแซงคิวในที่ประชุม", e: [["anger",1]] },
+              { t: "16:30", n: "แต่ปิดดีลได้", e: [["joy",2],["anticipation",1]], c: ["optimism"] } ],
+        5:  [ { t: "09:15", n: "อีเมลค้างเยอะมาก", e: [["disgust",0],["anticipation",0]] } ],
+        6:  [ { t: "11:00", n: "คุยกับหัวหน้าเรื่อง career", e: [["fear",1],["trust",1],["anticipation",2]], c: ["submission"] } ],
+        8:  [ { t: "20:30", n: "วันหยุดแต่ยังคิดเรื่องงาน", e: [["sadness",0],["anticipation",0]] } ],
+        9:  [ { t: "09:50", n: "ประชุมแล้วโดน feedback แรง", e: [["anger",1],["sadness",1],["fear",1]] },
+              { t: "14:20", n: "ทบทวนแล้วรู้สึกดีขึ้น", e: [["trust",0],["joy",0]] },
+              { t: "19:05", n: "ได้คุยกับเพื่อนร่วมทีม", e: [["joy",1],["trust",2]] } ],
+        10: [ { t: "12:00", n: "ลองวิธีทำงานใหม่", e: [["anticipation",1],["surprise",1]] } ],
+        11: [ { t: "15:40", n: "พรีเซนต์ผ่านไปด้วยดี", e: [["joy",2],["trust",1],["anticipation",0]] } ],
+        12: [ { t: "18:10", n: "เหนื่อยสะสมทั้งสัปดาห์", e: [["sadness",1],["disgust",0]] } ],
+        13: [ { t: "10:30", n: "นอนตื่นสาย รู้สึกผิดนิดหน่อย", e: [["sadness",0]] } ],
+        15: [ { t: "09:00", n: "เริ่มโปรเจกต์ใหม่", e: [["anticipation",2],["fear",0],["joy",1]] } ],
+        16: [ { t: "14:00", n: "ติดบั๊กทั้งบ่าย", e: [["anger",0],["disgust",1]], c: ["contempt"] } ],
+        17: [ { t: "11:20", n: "เพื่อนช่วยแก้จนได้", e: [["trust",1],["joy",1]] } ],
+      };
+
+      // June 1 2026 is a Monday → no leading blanks; 30 days.
+      const TODAY = 9;
+      const DAYS_IN_MONTH = 30;
+      const FIRST_WEEKDAY = 0; // 0 = Monday column
+
+      // ── aggregate a day's entries into per-family counts ──
+      // A primary tag adds 1 to its Family; a complex tag (dyad) adds 1 to EACH of
+      // its two constituent Families — a dyad is definitionally both feelings at once.
+      function familyCounts(day) {
+        const counts = Object.fromEntries(FAMILIES.map((f) => [f.key, 0]));
+        (DATA[day] || []).forEach((entry) => {
+          (entry.e || []).forEach(([fam]) => (counts[fam] += 1));
+          (entry.c || []).forEach((key) => {
+            const d = DYADS.find((x) => x.key === key);
+            if (d) d.pair.forEach((idx) => (counts[FAMILIES[idx].key] += 1));
+          });
+        });
+        return counts;
+      }
+      // tag count (primary + complex), used for cell volume + the "X ครั้ง" header
+      function dayLogCount(day) {
+        return (DATA[day] || []).reduce(
+          (n, e) => n + (e.e ? e.e.length : 0) + (e.c ? e.c.length : 0),
+          0,
+        );
+      }
+      function dominantFamily(day) {
+        const counts = familyCounts(day);
+        let best = null,
+          bestN = 0;
+        for (const f of FAMILIES) {
+          if (counts[f.key] > bestN) {
+            bestN = counts[f.key];
+            best = f.key;
+          }
+        } // FAMILIES order = Plutchik wheel order → ties keep the earlier (Joy-first)
+        return best;
+      }
+
+      // max volume in the month → opacity scale
+      let maxVol = 1;
+      for (let d = 1; d <= DAYS_IN_MONTH; d++) maxVol = Math.max(maxVol, dayLogCount(d));
+
+      // ── render calendar ──
+      const calendar = document.getElementById("calendar");
+      let selectedDay = TODAY;
+
+      function buildCalendar() {
+        calendar.innerHTML = "";
+        for (let i = 0; i < FIRST_WEEKDAY; i++) {
+          const slot = document.createElement("div");
+          slot.className = "cell empty-slot";
+          calendar.appendChild(slot);
+        }
+        for (let day = 1; day <= DAYS_IN_MONTH; day++) {
+          const cell = document.createElement("div");
+          const total = dayLogCount(day);
+          cell.className = "cell" + (total ? " filled" : " no-log");
+          if (day === TODAY) cell.classList.add("today");
+          if (day === selectedDay) cell.classList.add("selected");
+
+          if (total) {
+            const fam = dominantFamily(day);
+            const opacity = 0.28 + 0.72 * (total / maxVol);
+            cell.style.background = colorOf(fam);
+            cell.style.opacity = "1";
+            cell.style.setProperty("--c", colorOf(fam));
+            // use a wrapper alpha via box-shadow-free tint
+            cell.style.background = `color-mix(in oklab, ${colorOf(fam)} ${Math.round(
+              opacity * 100,
+            )}%, var(--color-surface-raised))`;
+          }
+          cell.innerHTML = `<span class="daynum">${day}</span>`;
+          cell.addEventListener("click", () => selectDay(day));
+          calendar.appendChild(cell);
+        }
+      }
+
+      function selectDay(day) {
+        selectedDay = day;
+        buildCalendar();
+        renderDetail(day);
+      }
+
+      // ── render legend ──
+      const legend = document.getElementById("legend");
+      FAMILIES.forEach((f) => {
+        const item = document.createElement("span");
+        item.className = "legend-item";
+        item.innerHTML = `<span class="dot" style="background:${colorOf(
+          f.key,
+        )}"></span>${f.th}`;
+        legend.appendChild(item);
+      });
+
+      // ── render day detail ──
+      const TH_MONTH = "มิถุนายน";
+      function renderDetail(day) {
+        const counts = familyCounts(day);
+        const total = dayLogCount(day);
+        document.getElementById("detailDate").textContent =
+          `${day} ${TH_MONTH}` + (day === TODAY ? " · วันนี้" : "");
+        document.getElementById("detailTotal").textContent = total
+          ? `${total} ครั้ง`
+          : "";
+
+        const max = Math.max(1, ...Object.values(counts));
+        const bd = document.getElementById("breakdown");
+        bd.innerHTML = "";
+        FAMILIES.forEach((f) => {
+          const n = counts[f.key];
+          const row = document.createElement("div");
+          row.className = "bd-row" + (n ? "" : " zero");
+          row.innerHTML = `
+            <span class="bd-label"><span class="dot" style="background:${colorOf(
+              f.key,
+            )}"></span>${f.th}</span>
+            <span class="bd-track"><span class="bd-fill" style="width:${
+              (n / max) * 100
+            }%;background:${colorOf(f.key)}"></span></span>
+            <span class="bd-count">${n || ""}</span>`;
+          bd.appendChild(row);
+        });
+
+        const entriesEl = document.getElementById("entries");
+        entriesEl.innerHTML = "";
+        const entries = DATA[day] || [];
+        if (!entries.length) {
+          entriesEl.innerHTML =
+            '<p class="entries-empty">ยังไม่มีบันทึกของวันนี้ — แตะ “+ บันทึกอารมณ์” เพื่อเริ่ม</p>';
+          return;
+        }
+        entries.forEach((entry) => {
+          const el = document.createElement("div");
+          el.className = "entry";
+          const primaryChips = (entry.e || [])
+            .map(([fam, lvl]) => {
+              const f = FAMILIES.find((x) => x.key === fam);
+              return `<span class="chip"><span class="dot" style="background:${colorOf(
+                fam,
+              )}"></span>${f.levels[lvl]}</span>`;
+            })
+            .join("");
+          const complexChips = (entry.c || [])
+            .map((key) => {
+              const d = DYADS.find((x) => x.key === key);
+              return `<span class="chip complex"><span class="dot" style="background:${dyadColor(
+                d,
+              )}"></span>${d.th}</span>`;
+            })
+            .join("");
+          el.innerHTML = `
+            <div class="entry-time">${entry.t}</div>
+            <div class="entry-note">${entry.n}</div>
+            <div class="chips">${primaryChips}${complexChips}</div>`;
+          entriesEl.appendChild(el);
+        });
+      }
+
+      buildCalendar();
+      renderDetail(TODAY);
+
+      // ── Plutchik wheel SVG (8 sectors × 3 rings; inner = most intense) ──
+      const wheel = document.getElementById("wheel");
+      const CX = 150,
+        CY = 150;
+      const RINGS = [
+        { inner: 30, outer: 60, lvl: 2, alpha: 1.0 }, // strong (center)
+        { inner: 60, outer: 88, lvl: 1, alpha: 0.7 }, // base
+        { inner: 88, outer: 118, lvl: 0, alpha: 0.42 }, // mild (outer)
+      ];
+      const SVGNS = "http://www.w3.org/2000/svg";
+
+      function annularSector(a0, a1, ri, ro) {
+        const p = (ang, r) => [
+          CX + r * Math.cos((ang * Math.PI) / 180),
+          CY + r * Math.sin((ang * Math.PI) / 180),
+        ];
+        const [x1, y1] = p(a0, ri);
+        const [x2, y2] = p(a1, ri);
+        const [x3, y3] = p(a1, ro);
+        const [x4, y4] = p(a0, ro);
+        return `M${x1} ${y1} A${ri} ${ri} 0 0 1 ${x2} ${y2} L${x3} ${y3} A${ro} ${ro} 0 0 0 ${x4} ${y4} Z`;
+      }
+
+      const selected = new Map(); // id -> {fam, lvl}
+      const selectedComplex = new Map(); // dyad key -> dyad
+      FAMILIES.forEach((f, i) => {
+        const a0 = -90 + i * 45 + 2;
+        const a1 = -90 + (i + 1) * 45 - 2;
+        RINGS.forEach((ring) => {
+          const path = document.createElementNS(SVGNS, "path");
+          path.setAttribute("d", annularSector(a0, a1, ring.inner, ring.outer));
+          path.setAttribute("fill", colorOf(f.key));
+          path.setAttribute("fill-opacity", ring.alpha);
+          path.setAttribute("class", "petal");
+          const id = `${f.key}-${ring.lvl}`;
+          path.dataset.id = id;
+          const title = document.createElementNS(SVGNS, "title");
+          title.textContent = `${f.th} · ${f.levels[ring.lvl]}`;
+          path.appendChild(title);
+          path.addEventListener("click", () => togglePetal(path, f, ring.lvl));
+          wheel.appendChild(path);
+        });
+        // family label hub spoke
+        const mid = -90 + i * 45 + 22.5;
+        const lx = CX + 128 * Math.cos((mid * Math.PI) / 180);
+        const ly = CY + 128 * Math.sin((mid * Math.PI) / 180);
+        const txt = document.createElementNS(SVGNS, "text");
+        txt.setAttribute("x", lx);
+        txt.setAttribute("y", ly);
+        txt.setAttribute("text-anchor", "middle");
+        txt.setAttribute("dominant-baseline", "middle");
+        txt.setAttribute("class", "hub-label");
+        txt.textContent = f.th;
+        wheel.appendChild(txt);
+      });
+
+      // ── complex emotions: dyad markers seated in the gap between two sectors ──
+      DYADS.forEach((d, i) => {
+        const boundary = -90 + (i + 1) * 45; // seam between family i and i+1
+        const r = 126;
+        const mx = CX + r * Math.cos((boundary * Math.PI) / 180);
+        const my = CY + r * Math.sin((boundary * Math.PI) / 180);
+        const marker = document.createElementNS(SVGNS, "circle");
+        marker.setAttribute("cx", mx);
+        marker.setAttribute("cy", my);
+        marker.setAttribute("r", 8);
+        marker.setAttribute("class", "dyad");
+        marker.style.fill = dyadColor(d);
+        marker.dataset.key = d.key;
+        const title = document.createElementNS(SVGNS, "title");
+        title.textContent = `${d.th} = ${FAMILIES[d.pair[0]].th} + ${FAMILIES[d.pair[1]].th}`;
+        marker.appendChild(title);
+        marker.addEventListener("click", () => toggleDyad(marker, d));
+        wheel.appendChild(marker);
+      });
+
+      function toggleDyad(marker, d) {
+        if (selectedComplex.has(d.key)) {
+          selectedComplex.delete(d.key);
+          marker.classList.remove("selected");
+        } else {
+          selectedComplex.set(d.key, d);
+          marker.classList.add("selected");
+        }
+        renderSelectedChips();
+      }
+
+      function togglePetal(path, fam, lvl) {
+        const id = `${fam.key}-${lvl}`;
+        if (selected.has(id)) {
+          selected.delete(id);
+          path.classList.remove("selected");
+        } else {
+          // one intensity per family in a single entry — drop other rings of same family
+          wheel.querySelectorAll(`.petal.selected`).forEach((p) => {
+            if (p.dataset.id.startsWith(fam.key + "-")) {
+              p.classList.remove("selected");
+              selected.delete(p.dataset.id);
+            }
+          });
+          selected.set(id, { fam: fam.key, lvl });
+          path.classList.add("selected");
+        }
+        renderSelectedChips();
+      }
+
+      function renderSelectedChips() {
+        const box = document.getElementById("selectedChips");
+        if (!selected.size && !selectedComplex.size) {
+          box.innerHTML = '<span class="placeholder">ยังไม่ได้เลือกอารมณ์</span>';
+          return;
+        }
+        box.innerHTML = "";
+        selected.forEach(({ fam, lvl }) => {
+          const f = FAMILIES.find((x) => x.key === fam);
+          const chip = document.createElement("span");
+          chip.className = "chip";
+          chip.innerHTML = `<span class="dot" style="background:${colorOf(
+            fam,
+          )}"></span>${f.levels[lvl]}`;
+          box.appendChild(chip);
+        });
+        selectedComplex.forEach((d) => {
+          const chip = document.createElement("span");
+          chip.className = "chip complex";
+          chip.innerHTML = `<span class="dot" style="background:${dyadColor(
+            d,
+          )}"></span>${d.th}`;
+          box.appendChild(chip);
+        });
+      }
+
+      // ── modal open/close (mock save) ──
+      const scrim = document.getElementById("scrim");
+      const open = () => scrim.classList.add("open");
+      const close = () => scrim.classList.remove("open");
+      document.getElementById("openModal").addEventListener("click", open);
+      document.getElementById("closeModal").addEventListener("click", close);
+      document.getElementById("cancelModal").addEventListener("click", close);
+      document.getElementById("saveEntry").addEventListener("click", close);
+      scrim.addEventListener("click", (e) => {
+        if (e.target === scrim) close();
+      });
+    </script>
+  </body>
+</html>
