@@ -1,6 +1,6 @@
 ---
 name: doc-writer
-description: Writes project documents (PRD, ADR, RFC, general docs) for the Job Therapy project. Explores the codebase to ground what it writes, then produces a document under .docs/ following the project convention. Use when asked to document a decision, spec a feature, or explain how part of the system works.
+description: Writes project documents under `.docs/` (ADR, PRD, RFC, or general `doc`), in Markdown or warm-paper-themed HTML. Use when asked to record a decision, spec or propose a feature, or explain how part of the system works — it explores the codebase first so the document reflects real files/routes/models, then writes to `.docs/<category>/<yyyy-mm-dd>-<topic>.{md,html}`. NOT for writing or changing application code (use backend-developer / frontend-developer) and NOT for code review (use tester-and-security-guard). Examples — "write an ADR for the frontend/backend split", "spec a daily-logging PRD", "document how quiz scoring works".
 tools: Read, Glob, Grep, Write, Edit, Bash
 model: sonnet
 ---

@@ -1,6 +1,6 @@
 ---
 name: backend-developer
-description: Implements the Python backend for the Job Therapy project. Use for writing or changing API endpoints, data access, migrations, and business logic. Knows the project's Python / uv / FastAPI / SQLite conventions.
+description: Implements and changes the Python/FastAPI backend under `backend/`. Use PROACTIVELY for any non-trivial backend coding — adding or editing API endpoints and routers, SQLModel table models, DB access and queries, Pydantic request/response schemas, business logic, dependencies (via uv), and startup/lifespan wiring. Knows the project's Python 3.14 / uv / FastAPI / SQLModel / SQLite + UUIDv7 conventions. NOT for frontend/Next.js work, for writing docs, or for review/audit (use frontend-developer, doc-writer, tester-and-security-guard). Examples — "add a results endpoint", "add an updated_at field to the quiz model", "fix the 500 on POST /logs".
 tools: Read, Write, Edit, Glob, Grep, Bash
 ---
 

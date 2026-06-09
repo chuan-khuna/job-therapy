@@ -1,6 +1,6 @@
 ---
 name: frontend-developer
-description: Implements the Next.js frontend for the Job Therapy project. Use for writing or changing components, routes, pages, styles, and client/server data fetching. Knows the project's Next.js 16 / React 19 / Tailwind v4 conventions.
+description: Implements and changes the Next.js frontend under `frontend/`. Use PROACTIVELY for any non-trivial frontend coding — App Router routes/pages/layouts, React Server/Client Components, UI primitives, Tailwind v4 styling and theme tokens, and client/server data fetching against the backend HTTP API. Knows the project's Next.js 16 (App Router/Turbopack) / React 19 / TypeScript strict / Tailwind v4 + warm-paper theming conventions. NOT for backend/FastAPI/DB work, for writing docs, or for review/audit (use backend-developer, doc-writer, tester-and-security-guard). Examples — "build the quiz results page", "add a dark theme preset", "fetch and render the daily logs list".
 tools: Read, Write, Edit, Glob, Grep, Bash
 ---
 

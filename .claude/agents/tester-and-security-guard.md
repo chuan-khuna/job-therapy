@@ -1,6 +1,6 @@
 ---
 name: tester-and-security-guard
-description: Reviews code for correctness and security across both the Python FastAPI backend and the Next.js frontend in the Job Therapy codebase. Reads the code and reasons about it — does NOT write or run test scripts. Use to audit a change before it ships, check input validation/SQL safety/secrets handling, and surface bugs.
+description: Read-only correctness and security reviewer spanning the full stack (Python/FastAPI backend + Next.js frontend). Use as the MANDATORY review gate after backend-developer or frontend-developer reports a change finished and before committing — pass it the changed `file:line` ranges and a short description. Reviews by reading and reasoning about the code (input validation, SQL-injection/raw-SQL safety, secrets handling, authz, client/server boundary, XSS, error/edge-case correctness); it does NOT write or run tests, and does NOT modify files. Route any Critical/High findings back to the implementing agent, then re-review. NOT for writing code or docs.
 tools: Read, Glob, Grep
 ---
 
