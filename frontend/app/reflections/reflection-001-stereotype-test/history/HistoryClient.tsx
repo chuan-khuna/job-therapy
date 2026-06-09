@@ -6,16 +6,16 @@ import { Trash2 } from "lucide-react";
 import SectionLabel from "@/components/shared/SectionLabel";
 import Tag from "@/components/shared/Tag";
 import TypeCard from "@/components/quiz/TypeCard";
-import type { QuizResult } from "@/lib/api/results";
+import type { ReflectionResult } from "@/lib/api/results";
 import { QUESTIONS, TYPES, QUIZ_ID, type Answers } from "../quiz-def";
 import { deleteResultAction } from "./actions";
 
 interface Props {
-  results: QuizResult[];
+  results: ReflectionResult[];
 }
 
 // JSON keys come back as strings — normalise to numeric ids
-function answersOf(result: QuizResult): Answers {
+function answersOf(result: ReflectionResult): Answers {
   return Object.fromEntries(
     Object.entries(result.answers).map(([k, v]) => [Number(k), v === true]),
   ) as Answers;
@@ -88,7 +88,7 @@ export default function HistoryClient({ results }: Props) {
         >
           ยังไม่มีประวัติการส่งผล
         </p>
-        <Link href={`/quizzes/${QUIZ_ID}`} className="btn btn-primary">
+        <Link href={`/reflections/${QUIZ_ID}`} className="btn btn-primary">
           เริ่มทำแบบประเมิน
         </Link>
       </div>

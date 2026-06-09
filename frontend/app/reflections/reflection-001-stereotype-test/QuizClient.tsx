@@ -10,11 +10,11 @@ import TypesPanel from "@/components/quiz/TypesPanel";
 import ResultRow from "@/components/quiz/ResultRow";
 import SectionLabel from "@/components/shared/SectionLabel";
 import Button from "@/components/shared/Button";
-import type { QuizResult } from "@/lib/api/results";
+import type { ReflectionResult } from "@/lib/api/results";
 import { QUESTIONS, TYPES, type Answers } from "./quiz-def";
 
 interface Props {
-  recentResults: QuizResult[];
+  recentResults: ReflectionResult[];
   today: string;
 }
 
@@ -84,7 +84,7 @@ export default function QuizClient({ recentResults, today }: Props) {
               เริ่มใหม่
             </Button>
             <Link
-              href="/quizzes/quiz-001-stereotype-test/history"
+              href="/reflections/reflection-001-stereotype-test/history"
               className="btn btn-ghost"
             >
               ประวัติ

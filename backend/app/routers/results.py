@@ -1,4 +1,4 @@
-"""Result endpoints — log and read quiz results.
+"""Result endpoints — log and read reflection results.
 
 Persistence is SQLModel over the local SQLite database (see ``app.db``).
 """
@@ -19,7 +19,7 @@ router = APIRouter(prefix="/results", tags=["results"])
 class ResultCreate(BaseModel):
     """Request body for logging a result."""
 
-    quiz_id: str
+    reflection_id: str
     date: str
     answers: dict[str, object]
     matched_types: list[str]
@@ -35,7 +35,7 @@ class ResultRead(BaseModel):
     """Response shape for a logged result."""
 
     id: UUID
-    quiz_id: str
+    reflection_id: str
     date: str
     answers: dict[str, object]
     matched_types: list[str]
@@ -54,13 +54,13 @@ class ResultRead(BaseModel):
 @router.get("", response_model=list[ResultRead])
 def list_results(
     session: Session = Depends(get_session),
-    quiz_id: str | None = Query(default=None, description="Filter to one quiz."),
+    reflection_id: str | None = Query(default=None, description="Filter to one reflection."),
     limit: int | None = Query(default=None, ge=1, description="Cap the row count."),
 ) -> list[Result]:
-    """Return logged results, newest first. Optionally filter by quiz and cap the count."""
+    """Return logged results, newest first. Optionally filter by reflection and cap the count."""
     statement = select(Result).order_by(Result.created_at.desc())  # type: ignore[attr-defined]
-    if quiz_id is not None:
-        statement = statement.where(Result.quiz_id == quiz_id)
+    if reflection_id is not None:
+        statement = statement.where(Result.reflection_id == reflection_id)
     if limit is not None:
         statement = statement.limit(limit)
     return list(session.exec(statement).all())

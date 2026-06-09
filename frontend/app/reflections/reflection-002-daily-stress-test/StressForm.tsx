@@ -1,5 +1,3 @@
-"use client";
-
 import ChipGroup from "@/components/quiz/ChipGroup";
 import ChoiceGroup from "@/components/quiz/ChoiceGroup";
 import SectionLabel from "@/components/shared/SectionLabel";

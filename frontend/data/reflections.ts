@@ -1,4 +1,4 @@
-export interface QuizMeta {
+export interface ReflectionMeta {
   id: string;
   slug: string;
   name: string;
@@ -8,10 +8,10 @@ export interface QuizMeta {
   tags: string[];
 }
 
-export const quizzes: QuizMeta[] = [
+export const reflections: ReflectionMeta[] = [
   {
-    id: "quiz-001-stereotype-test",
-    slug: "quiz-001-stereotype-test",
+    id: "reflection-001-stereotype-test",
+    slug: "reflection-001-stereotype-test",
     name: "คุณเป็นคนทำงานประเภทไหน",
     description: "ค้นหา stereotype ของคุณใน 5 ประเภทหลัก จาก 11 คำถาม",
     questionCount: 11,
@@ -19,8 +19,8 @@ export const quizzes: QuizMeta[] = [
     tags: ["Job therapy - Tessa West"],
   },
   {
-    id: "quiz-002-daily-stress-test",
-    slug: "quiz-002-daily-stress-test",
+    id: "reflection-002-daily-stress-test",
+    slug: "reflection-002-daily-stress-test",
     name: "บททดสอบความเครียดประจำวัน",
     description:
       "บันทึกความกังวลตอนเช้าและเหตุการณ์เครียดตอนเย็น เพื่อดูแพตเทิร์นในแต่ละวัน",

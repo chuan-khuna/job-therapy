@@ -12,10 +12,10 @@ from scalar_fastapi import get_scalar_api_reference
 from app.db import init_db
 from app.routers import (
     health,
-    quizzes,
+    reflections,
     results,
-    stereotype_quiz,
-    tessa_daily_stress_quiz,
+    stereotype_reflection,
+    tessa_daily_stress_reflection,
 )
 
 
@@ -34,9 +34,9 @@ app = FastAPI(
 )
 
 app.include_router(health.router)
-app.include_router(quizzes.router)
-app.include_router(stereotype_quiz.router)
-app.include_router(tessa_daily_stress_quiz.router)
+app.include_router(reflections.router)
+app.include_router(stereotype_reflection.router)
+app.include_router(tessa_daily_stress_reflection.router)
 app.include_router(results.router)
 
 

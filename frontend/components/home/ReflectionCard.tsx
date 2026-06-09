@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Tag from "@/components/shared/Tag";
 
-interface QuizCardProps {
+interface ReflectionCardProps {
   href: string;
   historyHref?: string;
   name: string;
@@ -12,7 +12,7 @@ interface QuizCardProps {
   lastDate?: string | null;
 }
 
-export default function QuizCard({
+export default function ReflectionCard({
   href,
   historyHref,
   name,
@@ -21,7 +21,7 @@ export default function QuizCard({
   typeCount,
   tags,
   lastDate,
-}: QuizCardProps) {
+}: ReflectionCardProps) {
   return (
     <div
       className="card card-link"

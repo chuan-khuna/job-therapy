@@ -13,12 +13,12 @@ from sqlmodel import Field, SQLModel
 
 
 class Result(SQLModel, table=True):
-    """A logged quiz result."""
+    """A logged reflection result."""
 
     __tablename__ = "results"
 
     id: UUID = Field(default_factory=uuid7, primary_key=True)
-    quiz_id: str = Field(index=True)
+    reflection_id: str = Field(index=True)
     # The day the result is logged for, "YYYY-MM-DD" (distinct from created_at).
     date: str = Field(index=True)
     # JSON-shaped payloads stored as a JSON column.

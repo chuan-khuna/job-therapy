@@ -1,6 +1,6 @@
-"""Stereotype quiz — "คุณเป็นคนทำงานประเภทไหน".
+"""Stereotype reflection — "คุณเป็นคนทำงานประเภทไหน".
 
-Serves the full quiz definition (questions + worker-type catalog) so the
+Serves the full reflection definition (questions + worker-type catalog) so the
 frontend can render it from a single backend-owned source of truth. The
 yes/no scoring rules stay in the client; this module owns the content.
 """
@@ -8,14 +8,14 @@ yes/no scoring rules stay in the client; this module owns the content.
 from pydantic import BaseModel
 from fastapi import APIRouter
 
-router = APIRouter(prefix="/quizzes/stereotype", tags=["quizzes"])
+router = APIRouter(prefix="/reflections/stereotype", tags=["reflections"])
 
-QUIZ_ID = "quiz-001-stereotype-test"
-QUIZ_TITLE = "คุณเป็นคนทำงานประเภทไหน"
+REFLECTION_ID = "reflection-001-stereotype-test"
+REFLECTION_TITLE = "คุณเป็นคนทำงานประเภทไหน"
 
 
 class QuizType(BaseModel):
-    """A worker-type outcome the quiz can match."""
+    """A worker-type outcome the reflection can match."""
 
     id: str
     name: str
@@ -32,8 +32,8 @@ class Question(BaseModel):
     note: str | None = None
 
 
-class StereotypeQuiz(BaseModel):
-    """Full definition for the stereotype quiz."""
+class StereotypeReflection(BaseModel):
+    """Full definition for the stereotype reflection."""
 
     id: str
     title: str
@@ -114,12 +114,12 @@ QUESTIONS: list[Question] = [
     ),
 ]
 
-DEFINITION = StereotypeQuiz(
-    id=QUIZ_ID, title=QUIZ_TITLE, types=TYPES, questions=QUESTIONS
+DEFINITION = StereotypeReflection(
+    id=REFLECTION_ID, title=REFLECTION_TITLE, types=TYPES, questions=QUESTIONS
 )
 
 
-@router.get("", response_model=StereotypeQuiz)
-async def get_definition() -> StereotypeQuiz:
-    """Return the full stereotype quiz definition."""
+@router.get("", response_model=StereotypeReflection)
+async def get_definition() -> StereotypeReflection:
+    """Return the full stereotype reflection definition."""
     return DEFINITION

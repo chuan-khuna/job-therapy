@@ -1,4 +1,4 @@
-export const QUIZ_ID = "quiz-002-daily-stress-test";
+export const QUIZ_ID = "reflection-002-daily-stress-test";
 
 export const QUIZ_NAME = "บททดสอบความเครียดประจำวัน";
 

@@ -6,5 +6,5 @@ import { QUIZ_ID } from "../quiz-def";
 
 export async function deleteResultAction(id: string) {
   await deleteResult(id);
-  revalidatePath(`/quizzes/${QUIZ_ID}/history`);
+  revalidatePath(`/reflections/${QUIZ_ID}/history`);
 }

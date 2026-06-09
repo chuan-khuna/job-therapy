@@ -7,16 +7,16 @@ import SectionLabel from "@/components/shared/SectionLabel";
 import Tag from "@/components/shared/Tag";
 import Button from "@/components/shared/Button";
 import MarkdownEditor from "@/components/shared/MarkdownEditor";
-import type { QuizResult } from "@/lib/api/results";
+import type { ReflectionResult } from "@/lib/api/results";
 import { EMPTY_ANSWERS, QUIZ_ID, type StressAnswers } from "../quiz-def";
 import StressForm from "../StressForm";
 import { deleteResultAction, updateResultAction } from "./actions";
 
 interface Props {
-  results: QuizResult[];
+  results: ReflectionResult[];
 }
 
-function answersOf(result: QuizResult): StressAnswers {
+function answersOf(result: ReflectionResult): StressAnswers {
   return { ...EMPTY_ANSWERS, ...(result.answers as Partial<StressAnswers>) };
 }
 
@@ -146,7 +146,7 @@ function ResultView({ answers }: { answers: StressAnswers }) {
 
 // Detail panel — read-only by default, edit mode via top-right button.
 // Remounted per entry via key={result.id}
-function EditPanel({ result }: { result: QuizResult }) {
+function EditPanel({ result }: { result: ReflectionResult }) {
   const [answers, setAnswers] = useState<StressAnswers>(() =>
     answersOf(result),
   );
@@ -268,7 +268,7 @@ export default function HistoryClient({ results }: Props) {
         >
           ยังไม่มีประวัติการส่งผล
         </p>
-        <Link href={`/quizzes/${QUIZ_ID}`} className="btn btn-primary">
+        <Link href={`/reflections/${QUIZ_ID}`} className="btn btn-primary">
           เริ่มทำแบบประเมิน
         </Link>
       </div>
@@ -389,7 +389,7 @@ export default function HistoryClient({ results }: Props) {
         </div>
       </div>
 
-      {/* Right — editable quiz form for the selected entry */}
+      {/* Right — editable form for the selected entry */}
       <EditPanel key={selected.id} result={selected} />
     </div>
   );

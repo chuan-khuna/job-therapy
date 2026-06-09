@@ -21,7 +21,10 @@ export default async function HistoryPage() {
         title="ประวัติการทำแบบประเมิน"
         subtitle={`${QUIZ_NAME} — เลือกบันทึกเพื่อดูและแก้ไข`}
         right={
-          <Link href={`/quizzes/${QUIZ_ID}`} className="btn btn-ghost btn-sm">
+          <Link
+            href={`/reflections/${QUIZ_ID}`}
+            className="btn btn-ghost btn-sm"
+          >
             ทำแบบประเมิน
           </Link>
         }

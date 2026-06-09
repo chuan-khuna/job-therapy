@@ -1,7 +1,7 @@
 import Link from "next/link";
-import QuizCard from "@/components/home/QuizCard";
+import ReflectionCard from "@/components/home/ReflectionCard";
 import SectionLabel from "@/components/shared/SectionLabel";
-import { quizzes } from "@/data/quizzes";
+import { reflections } from "@/data/reflections";
 import { site } from "@/data/site";
 import { getArticles } from "@/lib/articles";
 import { getLastResultStamp } from "@/lib/api/results";
@@ -18,7 +18,7 @@ function formatStamp(stamp: { date: string; created_at: string }): string {
 
 export default async function HomePage() {
   const lastDates = await Promise.all(
-    quizzes.map(async (q) => {
+    reflections.map(async (q) => {
       try {
         const stamp = await getLastResultStamp(q.id);
         return stamp ? formatStamp(stamp) : null;
@@ -84,7 +84,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Quizzes */}
+      {/* Reflections */}
       <section>
         <div className="mx-auto max-w-[1200px] px-5 py-8 sm:px-8 sm:py-12">
           <SectionLabel style={{ marginBottom: "1.5rem" }}>
@@ -92,16 +92,16 @@ export default async function HomePage() {
           </SectionLabel>
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {quizzes.map((quiz, i) => (
-              <QuizCard
-                key={quiz.id}
-                href={`/quizzes/${quiz.slug}`}
-                historyHref={`/quizzes/${quiz.slug}/history`}
-                name={quiz.name}
-                description={quiz.description}
-                questionCount={quiz.questionCount}
-                typeCount={quiz.typeCount}
-                tags={quiz.tags}
+            {reflections.map((reflection, i) => (
+              <ReflectionCard
+                key={reflection.id}
+                href={`/reflections/${reflection.slug}`}
+                historyHref={`/reflections/${reflection.slug}/history`}
+                name={reflection.name}
+                description={reflection.description}
+                questionCount={reflection.questionCount}
+                typeCount={reflection.typeCount}
+                tags={reflection.tags}
                 lastDate={lastDates[i]}
               />
             ))}

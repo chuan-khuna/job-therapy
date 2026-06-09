@@ -9,13 +9,14 @@ const BASE_URL = process.env.BACKEND_URL ?? "http://localhost:8000";
 
 // Mirrors the backend ResultRead schema. answers / matched_types arrive as
 // real JSON (the backend stores them in JSON columns), so no parsing here.
-export interface QuizResult {
+export interface ReflectionResult {
   id: string;
-  quiz_id: string;
+  reflection_id: string;
   date: string;
   answers: Record<string, unknown>;
   matched_types: string[];
   created_at: string;
+  updated_at: string;
 }
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
@@ -33,9 +34,9 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   return res.status === 204 ? (undefined as T) : ((await res.json()) as T);
 }
 
-// answers is any JSON-serialisable shape — each quiz defines its own
-export async function saveQuizResult(params: {
-  quizId: string;
+// answers is any JSON-serialisable shape — each reflection defines its own
+export async function saveReflectionResult(params: {
+  reflectionId: string;
   date: string;
   answers: unknown;
   matchedTypes: string[];
@@ -43,7 +44,7 @@ export async function saveQuizResult(params: {
   await request("/results", {
     method: "POST",
     body: JSON.stringify({
-      quiz_id: params.quizId,
+      reflection_id: params.reflectionId,
       date: params.date,
       answers: params.answers,
       matched_types: params.matchedTypes,
@@ -52,16 +53,21 @@ export async function saveQuizResult(params: {
 }
 
 export async function getRecentResults(
-  quizId: string,
+  reflectionId: string,
   limit = 7,
-): Promise<QuizResult[]> {
-  const query = new URLSearchParams({ quiz_id: quizId, limit: String(limit) });
-  return request<QuizResult[]>(`/results?${query}`);
+): Promise<ReflectionResult[]> {
+  const query = new URLSearchParams({
+    reflection_id: reflectionId,
+    limit: String(limit),
+  });
+  return request<ReflectionResult[]>(`/results?${query}`);
 }
 
-export async function getAllResults(quizId: string): Promise<QuizResult[]> {
-  const query = new URLSearchParams({ quiz_id: quizId });
-  return request<QuizResult[]>(`/results?${query}`);
+export async function getAllResults(
+  reflectionId: string,
+): Promise<ReflectionResult[]> {
+  const query = new URLSearchParams({ reflection_id: reflectionId });
+  return request<ReflectionResult[]>(`/results?${query}`);
 }
 
 export async function updateResultAnswers(
@@ -79,8 +85,8 @@ export async function deleteResult(id: string): Promise<void> {
 }
 
 export async function getLastResultStamp(
-  quizId: string,
+  reflectionId: string,
 ): Promise<{ date: string; created_at: string } | null> {
-  const [row] = await getRecentResults(quizId, 1);
+  const [row] = await getRecentResults(reflectionId, 1);
   return row ? { date: row.date, created_at: row.created_at } : null;
 }
