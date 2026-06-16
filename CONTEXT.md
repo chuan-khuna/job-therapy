@@ -4,6 +4,28 @@ A digital self-assessment tool for surfacing workplace misalignment. This glossa
 defines the project's domain language. It is a glossary, not a spec — no
 implementation details.
 
+## Reflections
+
+**Reflection**:
+A structured self-assessment the user works through (Thai UI: _แบบประเมิน_). The
+canonical name for these throughout code and UI. The source book (Tessa West's
+_Job Therapy_) calls them "quizzes" and the Thai translation calls them
+"แบบทดสอบ", but the product deliberately diverges: it frames them as honest
+self-reflection, not a graded test — there is no good/bad score.
+_Avoid_: quiz, test, แบบทดสอบ, assessment
+
+## Chapters
+
+**Chapter**:
+A single chapter from the source book (Tessa West's _Job Therapy_), surfaced as
+one page (Thai UI: _บท_). It carries a written summary of that book chapter and
+groups the Reflections that belong to it. A Reflection has a home Chapter but may
+be referenced by other Chapters too (many-to-many) — Chapters reference
+Reflections by id; the link always points from Chapter to Reflection.
+Distinct from an Article, which is freestanding general content not tied to a
+book chapter.
+_Avoid_: section, topic, module, lesson
+
 ## Mood Log
 
 **Entry**:
