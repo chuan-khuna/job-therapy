@@ -8,12 +8,12 @@ A digital self-assessment tool inspired by _Job Therapy_ by Tessa West. Users ta
 
 ## Repository layout
 
-This is a two-service monorepo. Project-wide files (`.docs/`, `DESIGN.md`, this guide, the `justfile`) live at the root; each service owns its own dependencies and tooling.
+This is a two-service monorepo. Project-wide files (`docs/`, `DESIGN.md`, this guide, the `justfile`) live at the root; each service owns its own dependencies and tooling.
 
 ```
 backend/    Python FastAPI service — owns the SQLite database (see backend/README.md)
 frontend/   Next.js 16 app — the UI; talks to the backend over HTTP
-.docs/      Project documents (ADR, PRD, RFC, doc)
+docs/       Project documents (ADR, PRD, RFC, doc)
 justfile    Task runner — recipes run in the right service via [working-directory]
 ```
 
@@ -29,7 +29,7 @@ This project defines specialized subagents in `.claude/agents/`. The main Claude
 | `backend-developer` | Python/FastAPI/SQLModel changes under `backend/` — endpoints, models, data access, business logic |
 | `frontend-developer` | Next.js/React/Tailwind changes under `frontend/` — components, routes, pages, styling, data fetching |
 | `tester-and-security-guard` | Read-only correctness **and** security review across both services |
-| `doc-writer` | Project documents under `.docs/` |
+| `doc-writer` | Project documents under `docs/` |
 
 **Delegation policy (MUST follow):**
 
@@ -118,26 +118,26 @@ frontend/
     presets/
       warm-paper.css   Default theme
   package.json         bun project + dependencies
-.docs/                 Project documents (see below)
+docs/                  Project documents (see below)
 DESIGN.md / DESIGN.html
 justfile
 ```
 
 ## Project documentation
 
-Project documents (design records, specs, proposals) live under `.docs/`, organized by category:
+Project documents (design records, specs, proposals) live under `docs/`, organized by category:
 
 ```
-.docs/
+docs/
   <category>/
     yyyy-mm-dd-topic.md      # or .html
 ```
 
-- **Path format**: `.docs/<category>/<yyyy-mm-dd>-<topic>.{md,html}`
+- **Path format**: `docs/<category>/<yyyy-mm-dd>-<topic>.{md,html}`
 - **Category** is the kind of document — e.g. `adr` (architecture decision record), `prd` (product requirements), `rfc` (request for comments), `doc` (general documentation — explaining how things/logic in this project work). Add new categories as needed.
 - **Date prefix** is the date the document was authored (`yyyy-mm-dd`), so files sort chronologically within a category.
 - **Topic** is a short kebab-case slug.
-- Examples: `.docs/adr/2026-06-08-frontend-backend-split.md`, `.docs/prd/2026-06-08-daily-logging.md`
+- Examples: `docs/adr/2026-06-08-frontend-backend-split.md`, `docs/prd/2026-06-08-daily-logging.md`
 - When a document is requested as **HTML**, follow `DESIGN.md` (and `DESIGN.html`) for the visual language — use the `warm-paper` theme tokens, not ad-hoc styles.
   - **Code blocks**: highlight with [Shiki](https://shiki.style) using the `catppuccin-mocha` theme.
   - **Diagrams**: use [Mermaid](https://mermaid.js.org) for flowcharts, sequence diagrams, etc.
