@@ -258,6 +258,23 @@ h4 {
   --tw-prose-td-borders: var(--color-border);
 }
 
+/* ── chapter table of contents ── */
+.chapter-toc a {
+  color: var(--color-text-muted);
+  border-left: 2px solid transparent;
+  transition:
+    color 120ms,
+    border-color 120ms;
+}
+.chapter-toc a:hover {
+  color: var(--color-text);
+}
+.chapter-toc a[data-active] {
+  color: var(--color-ink);
+  border-left-color: var(--color-accent);
+  font-weight: 500;
+}
+
 /* ── progress bar ── */
 .progress-wrap {
   background: oklch(89% 0.022 142);

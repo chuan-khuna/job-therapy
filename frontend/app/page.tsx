@@ -4,6 +4,7 @@ import SectionLabel from "@/components/shared/SectionLabel";
 import { reflections } from "@/data/reflections";
 import { site } from "@/data/site";
 import { getArticles } from "@/lib/articles";
+import { getChapters } from "@/lib/chapters";
 import { getLastResultStamp } from "@/lib/api/results";
 
 // created_at is an ISO 8601 UTC timestamp from the backend
@@ -29,6 +30,7 @@ export default async function HomePage() {
   );
 
   const articles = await getArticles();
+  const chapters = await getChapters();
 
   return (
     <main className="flex-1">
@@ -104,6 +106,60 @@ export default async function HomePage() {
                 tags={reflection.tags}
                 lastDate={lastDates[i]}
               />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Chapters */}
+      <section>
+        <div className="mx-auto max-w-[1200px] px-5 py-8 sm:px-8 sm:py-12">
+          <SectionLabel style={{ marginBottom: "1.5rem" }}>บท</SectionLabel>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {chapters.length === 0 && (
+              <p
+                style={{
+                  fontSize: "13px",
+                  color: "var(--color-text-muted)",
+                }}
+              >
+                ยังไม่มีบท
+              </p>
+            )}
+            {chapters.map((chapter) => (
+              <Link
+                key={chapter.slug}
+                href={`/chapters/${chapter.slug}`}
+                style={{ textDecoration: "none" }}
+              >
+                <div
+                  className="card card-link"
+                  style={{ padding: "1rem 1.25rem" }}
+                >
+                  <p
+                    style={{
+                      fontSize: "10px",
+                      fontFamily: "var(--font-mono)",
+                      color: "var(--color-text-muted)",
+                      letterSpacing: "0.04em",
+                      marginBottom: "4px",
+                    }}
+                  >
+                    บทที่ {chapter.order}
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-serif)",
+                      fontSize: "15px",
+                      fontWeight: 700,
+                      color: "var(--color-ink)",
+                    }}
+                  >
+                    {chapter.title}
+                  </p>
+                </div>
+              </Link>
             ))}
           </div>
         </div>
