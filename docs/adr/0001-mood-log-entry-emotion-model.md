@@ -1,5 +1,6 @@
 ---
 status: accepted
+date: 2026-06-09
 ---
 
 # Mood Log: an Entry holds many Emotions, and the Emotion occurrence is the counted unit

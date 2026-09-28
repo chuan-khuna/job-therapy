@@ -129,18 +129,35 @@ Project documents (design records, specs, proposals) live under `docs/`, organiz
 
 ```
 docs/
+  adr/
+    NNNN-topic.md            # ADRs: sequential number, not a date
   <category>/
-    yyyy-mm-dd-topic.md      # or .html
+    yyyy-mm-dd-topic.md      # everything else (or .html)
 ```
 
-- **Path format**: `docs/<category>/<yyyy-mm-dd>-<topic>.{md,html}`
-- **Category** is the kind of document — e.g. `adr` (architecture decision record), `prd` (product requirements), `rfc` (request for comments), `doc` (general documentation — explaining how things/logic in this project work). Add new categories as needed.
+- **ADRs** live in `docs/adr/` as `NNNN-<topic>.md`, numbered sequentially from `0001` (scan for the highest number and add one). Record the authored date and status in frontmatter (`status: proposed | accepted | deprecated | superseded by ADR-NNNN`, `date: yyyy-mm-dd`). Format and "when to write one" rules follow the `domain-modeling` skill's `ADR-FORMAT.md` — an ADR can be a single paragraph.
+- **Other documents** use `docs/<category>/<yyyy-mm-dd>-<topic>.{md,html}`.
+- **Category** is the kind of document — e.g. `prd` (product requirements), `rfc` (request for comments), `doc` (general documentation — explaining how things/logic in this project work), `handoff`. Add new categories as needed.
 - **Date prefix** is the date the document was authored (`yyyy-mm-dd`), so files sort chronologically within a category.
 - **Topic** is a short kebab-case slug.
-- Examples: `docs/adr/2026-06-08-frontend-backend-split.md`, `docs/prd/2026-06-08-daily-logging.md`
+- Examples: `docs/adr/0003-frontend-backend-split.md`, `docs/prd/2026-06-08-daily-logging.md`
 - When a document is requested as **HTML**, follow `DESIGN.md` (and `DESIGN.html`) for the visual language — use the `warm-paper` theme tokens, not ad-hoc styles.
   - **Code blocks**: highlight with [Shiki](https://shiki.style) using the `catppuccin-mocha` theme.
   - **Diagrams**: use [Mermaid](https://mermaid.js.org) for flowcharts, sequence diagrams, etc.
+
+## Agent skills
+
+### Issue tracker
+
+Issues and specs are tracked as local markdown files under `.scratch/<feature-slug>/`. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+The five default triage roles (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`), recorded as a `Status:` line in each issue file. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: one root `CONTEXT.md` glossary plus sequentially numbered ADRs in `docs/adr/`. See `docs/agents/domain.md`.
 
 ## Commands
 

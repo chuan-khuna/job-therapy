@@ -1,7 +1,7 @@
 # Handoff — Chapters content type (frontend implementation)
 
 **Status:** ready to implement
-**Owner of decisions:** see [ADR `2026-06-16-chapters-content-type`](../adr/2026-06-16-chapters-content-type.md)
+**Owner of decisions:** see [ADR-0002 (chapters content type)](../adr/0002-chapters-content-type.md)
 **Glossary:** `CONTEXT.md` → _Reflection_, _Chapter_
 
 This brief turns the accepted ADR into a file-by-file task list for

@@ -1,5 +1,6 @@
 ---
 status: accepted
+date: 2026-06-16
 ---
 
 # Add a "Chapters" content type to the frontend
