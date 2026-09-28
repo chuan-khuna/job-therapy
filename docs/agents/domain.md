@@ -6,6 +6,7 @@ How the engineering skills should consume this repo's domain documentation when 
 
 - **`CONTEXT.md`** at the repo root: the domain glossary (Reflection, Chapter, Mood Log, …).
 - **`docs/adr/`**: read ADRs that touch the area you're about to work in.
+- **`docs/documents/INDEX.md`**: an index of the docs that explain how parts of the system work. Open the ones relevant to your area.
 
 If any of these files don't exist, **proceed silently**. Don't flag their absence; don't suggest creating them upfront. The `/domain-modeling` skill (reached via `/grill-with-docs` and `/improve-codebase-architecture`) creates them lazily when terms or decisions actually get resolved.
 
