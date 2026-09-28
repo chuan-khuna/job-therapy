@@ -28,15 +28,14 @@ This project defines specialized subagents in `.claude/agents/`. The main Claude
 | --- | --- |
 | `backend-developer` | Python/FastAPI/SQLModel changes under `backend/` — endpoints, models, data access, business logic |
 | `frontend-developer` | Next.js/React/Tailwind changes under `frontend/` — components, routes, pages, styling, data fetching |
-| `tester-and-security-guard` | Read-only correctness **and** security review across both services |
+| `reviewer` | Read-only correctness **and** security review across both services |
 | `doc-writer` | Project documents under `docs/` |
 
 **Delegation policy (MUST follow):**
 
-1. **Route implementation by area.** Non-trivial backend coding goes to `backend-developer`; non-trivial frontend coding goes to `frontend-developer`. The orchestrator may still handle small, cross-cutting, or purely investigative tasks directly — but a substantive feature or change in one service should be delegated to that service's agent.
-2. **Mandatory review gate.** **When `backend-developer` or `frontend-developer` reports a task finished, the orchestrator MUST hand the resulting diff to `tester-and-security-guard` for a code-quality and security review before the task is considered done and before committing.** Pass the changed `file:line` ranges and a short description of the change.
-3. **Act on the review.** Route any Critical/High findings back to the implementing agent to fix, then re-review. Only surface the task as complete once the review is clean (or the remaining findings are explicitly accepted by the user).
-4. A change touching both services triggers a review covering both; `tester-and-security-guard` already spans the full stack.
+1. **Route implementation by area.** Non-trivial backend coding goes to `backend-developer`; non-trivial frontend coding goes to `frontend-developer`. The orchestrator may still handle small, cross-cutting, or purely investigative tasks directly — but a substantive feature or change in one service should be delegated to that service's agent. When the work is a `.scratch/` ticket, pass the ticket path.
+2. **Mandatory review gate.** **When `backend-developer` or `frontend-developer` reports a task finished, the orchestrator MUST hand the developer's report (its Changed / Verified / Open sections) to `reviewer` before the task is considered done and before committing.** One review covers both services when a change touches both.
+3. **Act on the verdict.** `Verdict: FAIL` → route the Critical/High findings back to the implementing agent, then re-review. The task is complete only on `Verdict: PASS` (or when the user explicitly accepts the remaining findings).
 
 Note: this gate is a convention the orchestrator follows by reading this file — it is not machine-enforced, so do not skip it.
 
@@ -125,25 +124,10 @@ justfile
 
 ## Project documentation
 
-Project documents (design records, specs, proposals) live under `docs/`, organized by category:
+Project documents live under `docs/`. **Before writing or moving any document, read `docs/README.md`** — the single source for layout, naming (ADRs are `docs/adr/NNNN-<topic>.md`; everything else `docs/<category>/<yyyy-mm-dd>-<topic>.{md,html}`), and HTML styling.
 
-```
-docs/
-  adr/
-    NNNN-topic.md            # ADRs: sequential number, not a date
-  <category>/
-    yyyy-mm-dd-topic.md      # everything else (or .html)
-```
-
-- **ADRs** live in `docs/adr/` as `NNNN-<topic>.md`, numbered sequentially from `0001` (scan for the highest number and add one). Record the authored date and status in frontmatter (`status: proposed | accepted | deprecated | superseded by ADR-NNNN`, `date: yyyy-mm-dd`). Format and "when to write one" rules follow the `domain-modeling` skill's `ADR-FORMAT.md` — an ADR can be a single paragraph.
-- **Other documents** use `docs/<category>/<yyyy-mm-dd>-<topic>.{md,html}`.
-- **Category** is the kind of document — e.g. `prd` (product requirements), `rfc` (request for comments), `doc` (general documentation — explaining how things/logic in this project work), `handoff`. Add new categories as needed.
-- **Date prefix** is the date the document was authored (`yyyy-mm-dd`), so files sort chronologically within a category.
-- **Topic** is a short kebab-case slug.
-- Examples: `docs/adr/0003-frontend-backend-split.md`, `docs/prd/2026-06-08-daily-logging.md`
-- When a document is requested as **HTML**, follow `DESIGN.md` (and `DESIGN.html`) for the visual language — use the `warm-paper` theme tokens, not ad-hoc styles.
-  - **Code blocks**: highlight with [Shiki](https://shiki.style) using the `catppuccin-mocha` theme.
-  - **Diagrams**: use [Mermaid](https://mermaid.js.org) for flowcharts, sequence diagrams, etc.
+- **How something works** → check `docs/documents/INDEX.md` first; it indexes the explanatory docs.
+- **Why something is the way it is** → `docs/adr/`. An accepted ADR outranks an older line in this file.
 
 ## Agent skills
 
